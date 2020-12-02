@@ -1,0 +1,23 @@
+{
+  "name": "yostlabs",
+  "version": "1.0.0",
+  "description": "Store page for YostLabs",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danstuff/yostlabs.git"
+  },
+  "author": "DJY",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/danstuff/yostlabs/issues"
+  },
+  "homepage": "https://github.com/danstuff/yostlabs#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}

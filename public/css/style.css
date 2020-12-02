@@ -1,0 +1,190 @@
+:root{
+    --txt-light: #bbbbbb;
+    --txt-dark: #282828;
+    --thumb: #fcfcfc;
+    --bkg: #ffffff;
+}
+
+body {
+    padding-top: 150px;
+    color: var(--txt-dark);
+    background-color: var(--bkg);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: sans-serif;
+    font-weight: 200;
+    letter-spacing: 0.25rem;
+    text-transform: uppercase;
+    color: var(--txt-dark);
+}
+
+a {
+    color: var(--txt-light);
+
+    -webkit-transition: all 0.1s ease-in-out;
+    transition: all 0.1s ease-in-out;
+}
+
+a:hover, a:focus, a:active {
+    filter: brightness(110%);
+}
+
+hr {
+    color: var(--txt-light);
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar {
+    padding: 0;
+    background-color: var(--bkg);
+}
+
+.nav-logo img {
+    width: 200px;
+    padding: 1rem;
+}
+
+.nav-list {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+
+    margin-top: 0.5rem;
+    margin-right: 1rem;
+}
+
+.nav-item {
+    letter-spacing: 0.05rem;
+    text-transform: uppercase;
+    display: inline-block;
+}
+
+@media (max-width: 505px) {
+    .nav-logo {
+        margin: 0 auto;
+        display: block;
+    }
+
+    .nav-list {
+        display: block;
+        margin: 0 auto;
+    }
+}
+
+.icons {
+    text-align: center;
+}
+
+.icons a {
+    display: inline-block;
+
+    height: 2rem;
+    width: 2rem;
+    font-size: 2rem;
+    line-height: 2rem;
+    margin: 0.25rem;
+
+    color: var(--txt-light);
+
+    text-align: center;
+}
+
+.thumbnail {
+    width: 15rem;
+    height: 15rem; 
+
+    background-color: var(--thumb);
+    
+    border-style: solid;
+    border-color: var(--txt-light);
+    border-width: 1px;
+
+    text-align: center;
+
+    cursor: pointer;
+    
+    margin: 5px;
+    display: none;
+    
+    position: relative;
+    
+    -webkit-transition: all 0.1s ease-in-out;
+    transition: all 0.1s ease-in-out;
+
+    animation-name: fadein;
+    animation-duration: 0.75s;
+}
+
+.thumbnail:hover {
+    filter: brightness(110%);
+}
+
+.thumbnail i {
+    font-size: 5rem;
+    line-height: 15rem;
+    color: var(--thumb);
+    text-shadow: 0px 0px 2px var(--txt-dark);
+    width:100%;
+
+    position: absolute;
+    top: 0;
+    left:0;
+}
+
+.thumbnail img {
+    width: 100%;
+    height: 100%;
+
+    margin: 0;
+    padding: 0;
+
+    position: absolute;
+    top: 0;
+    left:0;
+}
+
+.thumbnail p {
+    text-align: center;
+    overflow: hidden;
+
+    width: 100%;
+    height: 0;
+
+    line-height: 32px;
+
+    background-color: var(--thumb);
+    opacity: 0%;
+
+    position: absolute;
+    bottom: 0;
+
+    margin: 0;
+}
+
+.fadein {
+    animation-name: fadein;
+    animation-duration: 0.75s;
+}
+
+@keyframes fadein {
+    0% { 
+        opacity: 0%;
+        transform: translate(0px, 100px);
+    }
+    100% { 
+        opacity: 100%;
+        transform: translate(0px, 0px);
+    }
+}
+
+#contactForm {
+    width: 75%;
+}
