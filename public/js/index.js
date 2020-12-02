@@ -7,11 +7,13 @@ $(".thumbnail").each(function(i) {
 
 $(".thumbnail").hover(
     function() {
-        var p = $(this).children("p");
-        p.animate({ height: "32px", opacity: "100%" }, 100);
+        $(this).children("p").addClass("p-show");
     }, 
     function() {
-        var p = $(this).children("p");
-        p.animate({ height: "0", opacity: "0%" }, 100);
+        $(this).children("p").removeClass("p-show");
     });
 
+$(".thumbnail").click(function() {
+    var src = $(this).children("img").attr("src");
+    window.location.href = "item.html?src="+src;
+});
