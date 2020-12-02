@@ -14,6 +14,5 @@ $(".thumbnail").hover(
     });
 
 $(".thumbnail").click(function() {
-    var src = $(this).children("img").attr("src");
-    window.location.href = "item.html?src="+src;
+    window.location.href = "item/" + $(this).attr("id");
 });
