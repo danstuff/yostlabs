@@ -1,13 +1,20 @@
 const express = require("express");
 const fs = require("fs");
+const nmailer = require("nodemailer");
+const bparser = require("body-parser");
 
+const mailInfo = require("./secure/mailInfo");
 const itemInfo = require("./itemInfo");
 
 const app = express();
 const port = 3000;
 
+var transport = nmailer.createTransport(mailInfo.transport);
+
+app.use(bparser.urlencoded({ extended: true }));
+
 app.get("/", (req, res) => {
-    console.log("VIEW index.html");
+    console.log("GET index.html");
 
     fs.readFile("public/index.html", "utf8", function(err, file_str) {
         let item_list = "";
@@ -15,9 +22,9 @@ app.get("/", (req, res) => {
             function(info) {
                 item_list += 
                     "<div class=\"item-display thumbnail\" id=\""+info.id+"\">" +
-                        "<i class=\"fas fa-question\"></i>" +
-                        info.img +
-                        "<p>"+info.name+"</p>"+
+                    "<i class=\"fas fa-question\"></i>" +
+                    info.img +
+                    "<p>"+info.name+"</p>"+
                     "</div>";
             },
             function() {
@@ -28,18 +35,23 @@ app.get("/", (req, res) => {
 });
 
 app.get("/about", (req, res) => {
-    console.log("VIEW about.html");
+    console.log("GET about.html");
     res.sendFile("about.html", { root: "public" });
 });
 
 app.get("/resume", (req, res) => {
-    console.log("VIEW resume.html");
+    console.log("GET resume.html");
     res.sendFile("resume.html", { root: "public" });
+});
+
+app.get("/submit", (req, res) => {
+    console.log("GET submit.html");
+    res.sendFile("submit.html", { root: "public" });
 });
 
 app.get("/item/:id", (req, res) => {
     let id = req.params.id;
-    console.log("VIEW item.html ID " + id);
+    console.log("GET item.html ID " + id);
 
     fs.readFile("public/item.html", "utf8", function(err, file_str) {
         itemInfo.get(id, null, function(info) {
@@ -61,6 +73,34 @@ app.get("*", (req, res) => {
         }
     });
 
+});
+
+app.post("/", (req, res) => {
+    console.log("POST");
+
+    if(mailInfo.validate(req.body)) {
+        var opt = mailInfo.options;
+        opt.subject = "YostLabs - New Message from " + req.body.name;
+        opt.text = "Your friendly neighborhood mail bot here!\n" +
+            req.body.name + " sent you a message on YostLabs.net:\n\n" +
+            req.body.message + "\n\n" +
+            "Here's their contact info:\n\n" +
+            req.body.email + "\n" +
+            req.body.phone + "\n\n" + 
+            "Have a good day!";
+
+        transport.sendMail(opt, function(err, info) {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log("POST MAILED");
+            }
+        });
+    } else {
+        console.log("POST DENIED");
+    } 
+
+    res.send("OK");
 });
 
 app.listen(port, () => {
