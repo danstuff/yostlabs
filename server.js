@@ -2,16 +2,25 @@ const express = require("express");
 const fs = require("fs");
 const nmailer = require("nodemailer");
 const bparser = require("body-parser");
+const { google } = require("googleapis");
 
 const mailInfo = require("./secure/mailInfo");
 const itemInfo = require("./itemInfo");
 
+const OAuth2 = google.auth.OAuth2;
+
 const app = express();
 const port = 3000;
 
-var transport = nmailer.createTransport(mailInfo.transport);
-
 app.use(bparser.urlencoded({ extended: true }));
+app.use(bparser.json());
+
+const OAuth2Client = new OAuth2(mailInfo.transport.auth.clientId, mailInfo.transport.auth.clientSecret);
+
+OAuth2Client.setCredentials({ refresh_token: mailInfo.transport.auth.refreshToken });
+mailInfo.transport.auth.accessToken = OAuth2Client.getAccessToken();
+
+const transport = nmailer.createTransport(mailInfo.transport);
 
 app.get("/", (req, res) => {
     console.log("GET index.html");
