@@ -32,6 +32,11 @@ app.get("/about", (req, res) => {
     res.sendFile("about.html", { root: "public" });
 });
 
+app.get("/resume", (req, res) => {
+    console.log("VIEW resume.html");
+    res.sendFile("resume.html", { root: "public" });
+});
+
 app.get("/item/:id", (req, res) => {
     let id = req.params.id;
     console.log("VIEW item.html ID " + id);

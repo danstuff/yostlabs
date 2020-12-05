@@ -25,11 +25,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.4"
-     inkscape:cx="-30.631526"
-     inkscape:cy="-22.506469"
+     inkscape:zoom="1.979899"
+     inkscape:cx="133.07531"
+     inkscape:cy="-1.6981292"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="g911"
      showgrid="false"
      units="in"
      inkscape:window-width="1920"
@@ -58,50 +58,58 @@
        id="g911"
        transform="translate(-1.5875,9.1514397e-6)"
        style="fill:#282828;fill-opacity:1">
-      <text
-         id="text817"
-         y="289.14008"
-         x="16.895353"
+      <g
+         aria-label="Y"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.11111069px;line-height:1.25;font-family:Beckman;-inkscape-font-specification:'Beckman, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#282828;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-         xml:space="preserve"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.11111069px;font-family:Beckman;-inkscape-font-specification:'Beckman, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:0.26458332;fill:#282828;fill-opacity:1"
-           y="289.14008"
-           x="16.895353"
-           id="tspan815"
-           sodipodi:role="line">Y</tspan></text>
-      <text
-         id="text821"
-         y="289.14362"
-         x="24.426342"
+         id="text817">
+        <path
+           d="m 23.428798,279.44574 -1.975556,3.25967 -1.975555,-3.25967 h -1.876778 l 3.048,5.06589 v 4.64256 h 1.622777 v -4.67078 l 3.048,-5.03767 z"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.11111069px;font-family:Beckman;-inkscape-font-specification:'Beckman, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#282828;fill-opacity:1;stroke-width:0.26458332"
+           id="path824" />
+      </g>
+      <g
+         aria-label="OST"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.58333302px;line-height:1.25;font-family:Beckman;-inkscape-font-specification:'Beckman, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0.79374999px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#282828;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-         xml:space="preserve"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.58333302px;font-family:Beckman;-inkscape-font-specification:'Beckman, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0.79374999px;writing-mode:lr-tb;text-anchor:start;stroke-width:0.26458332;fill:#282828;fill-opacity:1"
-           y="289.14362"
-           x="24.426342"
-           id="tspan819"
-           sodipodi:role="line">OST</tspan></text>
-      <text
-         id="text825"
-         y="289.14008"
-         x="46.330696"
+         id="text821">
+        <path
+           d="m 28.585592,281.87287 c -2.00025,0 -3.630083,1.62983 -3.630083,3.64066 0,2.01084 1.629833,3.64067 3.630083,3.64067 2.010833,0 3.640666,-1.62983 3.640666,-3.64067 0,-2.01083 -1.629833,-3.64066 -3.640666,-3.64066 z m 0,6.06425 c -1.3335,0 -2.423583,-1.09009 -2.423583,-2.42359 0,-1.34408 1.090083,-2.43416 2.423583,-2.43416 1.344083,0 2.434166,1.09008 2.434166,2.43416 0,1.3335 -1.090083,2.42359 -2.434166,2.42359 z"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.58333302px;font-family:Beckman;-inkscape-font-specification:'Beckman, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0.79374999px;writing-mode:lr-tb;text-anchor:start;fill:#282828;fill-opacity:1;stroke-width:0.26458332"
+           id="path827" />
+        <path
+           d="m 37.138082,285.16428 -1.322917,-0.49741 c -0.370416,-0.13759 -0.582083,-0.52917 -0.518583,-0.91017 0.07408,-0.39158 0.41275,-0.67733 0.804333,-0.67733 h 0.328084 c 0.306916,0 0.592666,0.17991 0.73025,0.46566 l 1.090083,-0.53975 c -0.338667,-0.6985 -1.04775,-1.13241 -1.820333,-1.13241 h -0.328084 c -0.973666,0 -1.820333,0.6985 -1.989666,1.66158 -0.179917,0.97367 0.359833,1.92617 1.280583,2.26483 l 1.322917,0.49742 c 0.3175,0.11642 0.529166,0.42333 0.529166,0.762 v 0.0317 c 0,0.45508 -0.370416,0.81492 -0.814916,0.81492 h -0.328084 c -0.391583,0 -0.73025,-0.27517 -0.804333,-0.66675 l -1.195917,0.20108 c 0.169334,0.97367 1.016,1.68275 2.00025,1.68275 h 0.328084 c 1.11125,0 2.021416,-0.91017 2.021416,-2.032 v -0.0317 c 0,-0.84667 -0.518583,-1.59808 -1.312333,-1.89442 z"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.58333302px;font-family:Beckman;-inkscape-font-specification:'Beckman, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0.79374999px;writing-mode:lr-tb;text-anchor:start;fill:#282828;fill-opacity:1;stroke-width:0.26458332"
+           id="path829" />
+        <path
+           d="m 40.309609,281.87287 v 1.21708 h 1.608667 v 6.06425 h 1.217083 v -6.06425 h 1.61925 v -1.21708 z"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.58333302px;font-family:Beckman;-inkscape-font-specification:'Beckman, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0.79374999px;writing-mode:lr-tb;text-anchor:start;fill:#282828;fill-opacity:1;stroke-width:0.26458332"
+           id="path831" />
+      </g>
+      <g
+         aria-label="L"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.11111069px;line-height:1.25;font-family:Beckman;-inkscape-font-specification:'Beckman, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#282828;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-         xml:space="preserve"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.11111069px;font-family:Beckman;-inkscape-font-specification:'Beckman, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:0.26458332;fill:#282828;fill-opacity:1"
-           y="289.14008"
-           x="46.330696"
-           id="tspan823"
-           sodipodi:role="line">L</tspan></text>
-      <text
-         id="text829"
-         y="289.14362"
-         x="53.918121"
+         id="text825">
+        <path
+           d="m 48.644918,287.53141 v -8.08567 h -1.608666 v 9.70845 h 5.658555 v -1.62278 z"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.11111069px;font-family:Beckman;-inkscape-font-specification:'Beckman, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#282828;fill-opacity:1;stroke-width:0.26458332"
+           id="path841" />
+      </g>
+      <g
+         aria-label="ABS"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.58333302px;line-height:1.25;font-family:Beckman;-inkscape-font-specification:'Beckman, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#282828;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-         xml:space="preserve"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.58333302px;font-family:Beckman;-inkscape-font-specification:'Beckman, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0.79374999px;writing-mode:lr-tb;text-anchor:start;stroke-width:0.26458332;fill:#282828;fill-opacity:1"
-           y="289.14362"
-           x="53.918121"
-           id="tspan827"
-           sodipodi:role="line">ABS</tspan></text>
+         id="text829">
+        <path
+           d="m 57.516455,281.80937 -3.069167,7.34483 h 1.312333 l 0.508,-1.2065 h 2.487084 l 0.497416,1.2065 h 1.312333 z m -0.740834,4.92125 0.740834,-1.76742 0.73025,1.76742 z"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.58333302px;font-family:Beckman;-inkscape-font-specification:'Beckman, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0.79374999px;writing-mode:lr-tb;text-anchor:start;fill:#282828;fill-opacity:1;stroke-width:0.26458332"
+           id="path834" />
+        <path
+           d="m 66.678314,285.19603 c 0.4445,-0.64558 0.497416,-1.49225 0.127,-2.19075 -0.359834,-0.6985 -1.090084,-1.13241 -1.87325,-1.13241 h -2.497667 v 7.27075 h 3.153833 c 0.963084,0 1.799167,-0.64559 2.053167,-1.56634 0.243417,-0.92075 -0.148167,-1.89441 -0.963083,-2.38125 z m -3.037417,-2.11666 h 1.291167 c 0.497416,0 0.910166,0.41275 0.910166,0.91016 0,0.508 -0.41275,0.91017 -0.910166,0.91017 h -1.291167 z m 1.947333,4.84716 h -1.947333 v -1.80975 h 1.947333 c 0.508,0 0.910167,0.40217 0.910167,0.89959 0,0.508 -0.402167,0.91016 -0.910167,0.91016 z"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.58333302px;font-family:Beckman;-inkscape-font-specification:'Beckman, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0.79374999px;writing-mode:lr-tb;text-anchor:start;fill:#282828;fill-opacity:1;stroke-width:0.26458332"
+           id="path836" />
+        <path
+           d="m 72.632596,285.16428 -1.322916,-0.49741 c -0.370417,-0.13759 -0.582084,-0.52917 -0.518584,-0.91017 0.07408,-0.39158 0.41275,-0.67733 0.804334,-0.67733 h 0.328083 c 0.306917,0 0.592667,0.17991 0.73025,0.46566 l 1.090083,-0.53975 c -0.338666,-0.6985 -1.04775,-1.13241 -1.820333,-1.13241 H 71.59543 c -0.973667,0 -1.820333,0.6985 -1.989667,1.66158 -0.179916,0.97367 0.359834,1.92617 1.280583,2.26483 l 1.322917,0.49742 c 0.3175,0.11642 0.529167,0.42333 0.529167,0.762 v 0.0317 c 0,0.45508 -0.370417,0.81492 -0.814917,0.81492 H 71.59543 c -0.391584,0 -0.73025,-0.27517 -0.804334,-0.66675 l -1.195916,0.20108 c 0.169333,0.97367 1.016,1.68275 2.00025,1.68275 h 0.328083 c 1.11125,0 2.021417,-0.91017 2.021417,-2.032 v -0.0317 c 0,-0.84667 -0.518584,-1.59808 -1.312334,-1.89442 z"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.58333302px;font-family:Beckman;-inkscape-font-specification:'Beckman, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0.79374999px;writing-mode:lr-tb;text-anchor:start;fill:#282828;fill-opacity:1;stroke-width:0.26458332"
+           id="path838" />
+      </g>
     </g>
     <g
        id="g916"
