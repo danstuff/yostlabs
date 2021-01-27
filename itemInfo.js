@@ -19,7 +19,7 @@ module.exports = {
                 if((line_data[0] == id || id == "%%ALL%%") && line_data.length >= 4) {
                     info.id = line_data[0];
                     info.name = line_data[1];
-                    info.img = "<img src=\"../img/" + line_data[2] + "\"></img>";
+                    info.img = "<img src=\"../img/" + line_data[2] + "\" alt=\"" + line_data[1] + "\"></img>";
                     info.desc = line_data[3];
                     info.msg = "Hello, \nI am interested in the " + line_data[1] + "."; 
 
