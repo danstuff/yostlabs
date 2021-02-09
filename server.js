@@ -75,10 +75,11 @@ app.get("/item/:id", (req, res) => {
 
 app.get("/shaderserve", (req, res) => {
     console.log("GET shaderServe/main.html");
-    res.sendFile("main.html", { root: "shaderServe" });
+    res.sendFile("shaderServe/main.html", { root: "public" });
 });
 
 app.get("*", (req, res) => {
+    console.log("GET "+req.url);
     fs.readFile("public/"+req.url, function(err, file) {
         if(err) {
             res.redirect("/");
