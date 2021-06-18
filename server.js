@@ -66,16 +66,12 @@ app.get("/item/:id", (req, res) => {
         itemInfo.get(id, null, function(info) {
             file_str = file_str.replace("%itemname%", info.name);
             file_str = file_str.replace("%itemimg%", info.img);
+            file_str = file_str.replace("%itemslides%", info.slides);
             file_str = file_str.replace("%itemdesc%", info.desc);
             file_str = file_str.replace("%itemmsg%", info.msg);
             res.send(file_str);
         });
     });
-});
-
-app.get("/shaderserve", (req, res) => {
-    console.log("GET shaderServe/main.html");
-    res.sendFile("shaderServe/main.html", { root: "public" });
 });
 
 app.get("*", (req, res) => {

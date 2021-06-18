@@ -5,14 +5,6 @@ $(".thumbnail").each(function(i) {
     }, i*100);
 });
 
-$(".thumbnail").hover(
-    function() {
-        $(this).children("p").addClass("p-show");
-    }, 
-    function() {
-        $(this).children("p").removeClass("p-show");
-    });
-
 $(".thumbnail").click(function() {
     window.location.href = "item/" + $(this).attr("id");
 });

@@ -1,11 +1,14 @@
 const fs = require("fs");
 
+const slidehtml = fs.readFileSync("public/slideshow.html").toString();
+
 module.exports = {
     get: function(id, itemCallback, doneCallback) {
         let info = {
             id: "NULL",
             name: "Item not found",
             img: "",
+            slides: "",
             desc: "The item you are looking for is not available.",
             msg: ""
         };
@@ -19,7 +22,10 @@ module.exports = {
                 if((line_data[0] == id || id == "%%ALL%%") && line_data.length >= 4) {
                     info.id = line_data[0];
                     info.name = line_data[1];
-                    info.img = "<img src=\"../img/" + line_data[2] + "\" alt=\"" + line_data[1] + "\"></img>";
+
+                    info.img = "<img src=\"../img/" + line_data[2] + "/0.jpg\" alt=\" \"></img>";
+                    info.slides = slidehtml.replace(/%imgdir%/g, line_data[2]);
+
                     info.desc = line_data[3];
                     info.msg = "Hello, \nI am interested in the " + line_data[1] + "."; 
 

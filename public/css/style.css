@@ -139,6 +139,24 @@ hr {
     left:0;
 }
 
+.prev, .next {
+    cursor: pointer;
+    position: absolute;
+    width: auto;
+    padding: 16px;
+    font-weight: bold;
+    font-size: 18px;
+    user-select: none;
+}
+
+.prev {
+    left: 0;
+}
+
+.next {
+    right: 0;
+}
+
 .thumbnail {
     width: 15rem;
     height: 15rem; 
@@ -146,7 +164,7 @@ hr {
 
     display: none;
     
-    cursor: pointer;    
+    cursor: pointer;
 
     -webkit-transition: all 0.1s ease-in-out;
     transition: all 0.1s ease-in-out;
@@ -164,20 +182,17 @@ hr {
     overflow: hidden;
 
     width: 100%;
-    height: 0;
+    height: 32px;
 
     line-height: 32px;
 
     background-color: var(--item-disp);
-    opacity: 0%;
+    opacity: 75%;
 
     position: absolute;
     bottom: 0;
 
     margin: 0;
-
-    -webkit-transition: all 0.1s ease-in-out;
-    transition: all 0.1s ease-in-out;
 }
 
 .showcase {
@@ -196,10 +211,6 @@ hr {
     animation-duration: 0.75s;
 }
 
-.p-show {
-    height: 32px !important;
-    opacity: 100% !important;
-}
 
 .form-control {
     background: var(--form-bkg);
