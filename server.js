@@ -15,6 +15,7 @@ const port = 3000;
 app.use(bparser.urlencoded({ extended: true }));
 app.use(bparser.json());
 
+//google mailer service
 const OAuth2Client = new OAuth2(mailInfo.transport.auth.clientId, mailInfo.transport.auth.clientSecret);
 
 OAuth2Client.setCredentials({ refresh_token: mailInfo.transport.auth.refreshToken });
@@ -22,9 +23,26 @@ mailInfo.transport.auth.accessToken = OAuth2Client.getAccessToken();
 
 const transport = nmailer.createTransport(mailInfo.transport);
 
-app.get("/", (req, res) => {
-    console.log("GET index.html");
+//logging
+var log4js = require("log4js");
+log4js.configure({
+    appenders: {
+        out: { type: "console" },
+        app: { type: "file", filename: "./secure/"+(Date.now())+".log" }
+    },
+    categories: {
+        default: { appenders: ["out", "app"], level: "debug" }
+    }
+});
 
+var logger = log4js.getLogger();
+logger.level = "debug"
+
+//index
+app.get("/", (req, res) => {
+    logger.debug("GET index.html");
+
+    //replace macros in the index with a list of items
     fs.readFile("public/index.html", "utf8", function(err, file_str) {
         let item_list = "";
         itemInfo.get("%%ALL%%", 
@@ -43,25 +61,28 @@ app.get("/", (req, res) => {
     });
 });
 
+//basic pages
 app.get("/about", (req, res) => {
-    console.log("GET about.html");
+    logger.debug("GET about.html");
     res.sendFile("about.html", { root: "public" });
 });
 
 app.get("/resume", (req, res) => {
-    console.log("GET resume.html");
+    logger.debug("GET resume.html");
     res.sendFile("resume.html", { root: "public" });
 });
 
 app.get("/submit", (req, res) => {
-    console.log("GET submit.html");
+    logger.debug("GET submit.html");
     res.sendFile("submit.html", { root: "public" });
 });
 
+//item page (includes macros)
 app.get("/item/:id", (req, res) => {
     let id = req.params.id;
-    console.log("GET item.html ID " + id);
+    logger.debug("GET item.html ID " + id);
 
+    //replace macros in the item page with the item data
     fs.readFile("public/item.html", "utf8", function(err, file_str) {
         itemInfo.get(id, null, function(info) {
             file_str = file_str.replace("%itemname%", info.name);
@@ -74,10 +95,11 @@ app.get("/item/:id", (req, res) => {
     });
 });
 
+//anything else
 app.get("*", (req, res) => {
-    console.log("GET "+req.url);
     fs.readFile("public/"+req.url, function(err, file) {
         if(err) {
+            logger.error(err);
             res.redirect("/");
         } else {
             res.sendFile(req.url, { root: "public" });
@@ -86,8 +108,9 @@ app.get("*", (req, res) => {
 
 });
 
+//mail sending
 app.post("/", (req, res) => {
-    console.log("POST");
+    logger.debug("POST");
 
     if(mailInfo.validate(req.body)) {
         var opt = mailInfo.options;
@@ -102,18 +125,19 @@ app.post("/", (req, res) => {
 
         transport.sendMail(opt, function(err, info) {
             if (err) {
-                console.log(err);
+                logger.error(err);
             } else {
-                console.log("POST MAILED");
+                logger.debug("POST MAILED");
             }
         });
     } else {
-        console.log("POST DENIED");
+        logger.debug("POST DENIED");
     } 
 
     res.send("OK");
 });
 
+//launch
 app.listen(port, () => {
-    console.log("Starting on port " + port);
+    logger.debug("Starting on port " + port);
 });
