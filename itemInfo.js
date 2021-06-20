@@ -23,7 +23,7 @@ module.exports = {
                     info.id = line_data[0];
                     info.name = line_data[1];
 
-                    info.img = "<img src=\"../img/" + line_data[2] + "/0.jpg\" alt=\" \"></img>";
+                    info.img = "<img src=\"../img/" + line_data[2] + "/thumb.jpg\" alt=\" \"></img>";
                     info.slides = slidehtml.replace(/%imgdir%/g, line_data[2]);
 
                     info.desc = line_data[3];
