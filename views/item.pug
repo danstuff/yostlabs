@@ -1,0 +1,23 @@
+extends contact
+
+block contact-content
+    div(class='container p-0 fadein')
+        section(class='d-flex')
+            div(class='w-100')
+                h2(class='mb-5 text-center') #{item.name}
+
+                div(class='d-flex justify-content-center')
+                    div(class='item-display showcase mb-5')
+                        i(class='fas fa-question')
+
+                        each image in ['0.jpg', '1.jpg', '2.jpg']
+                            div(class='slide')
+                                img(src='/images/'+item.folder+'/'+image style='width:100%' alt=' ')
+
+                        i(class='prev fas fa-arrow-left' onclick='plusSlide(-1)')
+                        i(class='next fas fa-arrow-right' onclick='plusSlide(1)')
+
+                div(class='d-flex justify-content-center')
+                    p(class='showcase-desc') #{item.description}
+
+    script(src='/javascripts/slideshow.js')

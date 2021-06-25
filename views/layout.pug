@@ -1,0 +1,33 @@
+doctype html
+html
+    head
+        title='Yostlabs'
+
+        link(rel='stylesheet', href='/stylesheets/bootstrap/bootstrap.css')
+        link(rel='stylesheet', href='/stylesheets/fontawesome/css/all.min.css')
+
+        link(rel='stylesheet', href='/stylesheets/style.css')
+
+        link(rel='shortcut icon' href='/images/favicon.ico')
+        
+        script(src='/javascripts/jquery/jquery.min.js')
+
+    body
+        // navigation bar
+        div(class='navcontainer')
+            nav(class='nav-bar fixed-top')
+
+                a(class='nav-logo' href='/')
+                    img(src='/images/logo.svg' alt=' ')
+
+                ul(class='nav-list')
+                    li
+                        a(class='nav-link' href='/') Products
+                    li
+                        a(class='nav-link' href='/about') About
+                    li
+                        a(class='nav-link' href='https://www.patreon.com/yostlabs' target='_blank') Patreon
+                hr
+
+        block layout-content
+

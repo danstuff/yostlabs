@@ -1,0 +1,6 @@
+extends layout
+
+block layout-content
+    div(class='container p-0 fadein')
+        h1 #{error.status} - #{message}
+        pre #{error.stack}
