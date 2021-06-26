@@ -31,10 +31,17 @@ $("#contactForm").submit(function(event) {
     }
 
     if(errmsg == "") {
-        $.post("/", body, function() {
-            window.location.href = "/submit";
-        });
+        $("#name").val(""); 
+        $("#email").val("");
+        $("#phone").val("")
+        $("#message").val("");
+
+        $("#submitMessage").removeClass("text-danger");
+        $("#submitMessage").html("Your message was submitted. Thank you!");
+
+        $.post("/", body);
     } else {
-        $("#errmsg").html(errmsg);
+        $("#submitMessage").addClass("text-danger");
+        $("#submitMessage").html(errmsg);
     }
 });

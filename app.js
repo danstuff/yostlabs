@@ -5,14 +5,6 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-// auto-mailing system
-var nodeMailer = require('nodemailer');
-var { google } = require('googleapis');
-
-var OAuth2 = google.auth.OAuth2;
-
-var mailInfo = require("./secure/mailInfo");
-
 // routes
 var indexRouter = require('./routes/index');
 var itemRouter = require('./routes/item');
