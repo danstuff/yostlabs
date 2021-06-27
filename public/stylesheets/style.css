@@ -49,6 +49,11 @@ hr {
     background-color: var(--bkg);
 }
 
+.nav-bar hr {
+    position: absolute;
+    bottom: 0;
+}
+
 .nav-logo img {
     width: 200px;
     padding: 1rem;
@@ -68,14 +73,21 @@ hr {
     display: inline-block;
 }
 
-@media (max-width: 515px) {
+@media (max-width: 600px) {
     .nav-logo {
-        margin: 0 auto;
+        width:100%;
+        text-align:center;
         display: block;
     }
 
+    .nav-logo img {
+        padding: 0.5rem;
+    }
+
     .nav-list {
-        margin: 0 auto;
+        width:100%;
+        text-align:center;
+        padding: 0.5rem;
         display: block;
     }
 }
