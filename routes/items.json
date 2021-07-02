@@ -46,5 +46,12 @@
         "name" : "Modern End Table",
         "folder" : "end_table",
         "description" : "This sleek red and black end table would fit nicely in any modern interior. Contact me below for pricing."
+    },
+
+    "09354" : {
+        "id" : "09354",
+        "name" : "Driftwood Long Box",
+        "folder" : "driftwood_box",
+        "description" : "This rustic driftwood box would be perfect for holding pencils, incence, sunglasses, or otherwise lengthy objects. Contact me below for pricing."
     }
 }
