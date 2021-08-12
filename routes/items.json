@@ -5,13 +5,6 @@
         "folder" : "sunshine_tiles",
         "description" : "These hand-crafted oak tiles will add a burst of rustic positivity to your home. They can be used as wall decorations, as coasters, or however you see fit. Contact me below for pricing."
     },
-
-    "10953" : {
-        "id" : "10953",
-        "name" : "Custom Stamps",
-        "folder" : "custom_stamps",
-        "description" : "Stamping things is one of life's great pleasures. Now you can get your very own custom stamps made from 100% recycled materials! Contact me below for a pricing estimate."
-    },
     
     "08951" : {
         "id" : "08951",
@@ -53,5 +46,12 @@
         "name" : "Driftwood Long Box",
         "folder" : "driftwood_box",
         "description" : "This rustic driftwood box would be perfect for holding pencils, incence, sunglasses, or otherwise lengthy objects. Contact me below for pricing."
+    },
+
+    "84201" : {
+        "id" : "84201",
+        "name" : "Oak Serving Trays",
+        "folder" : "oak_trays",
+        "description" : "These oak serving trays come in all shapes, sizes, and colors, and are completely food-safe. Contact me below for pricing."
     }
 }
