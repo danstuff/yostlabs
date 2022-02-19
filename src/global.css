@@ -1,0 +1,14 @@
+.fill {
+    width: 100%;
+    flex: 1;
+}
+
+.img-box {
+    overflow: hidden;
+    width: 100%;
+}
+
+.img-fit {
+    object-fit: cover;
+    height: 100%;
+}
