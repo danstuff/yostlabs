@@ -1,15 +1,25 @@
+import {
+    BrowserRouter,
+    Routes,
+    Route,
+} from 'react-router-dom';
+
 import { 
+    Anchor,
     Box,
     Button,
+    Footer,
     Grommet,
+    Markdown,
     ResponsiveContext,
-    Stack,
     Text,
 } from 'grommet';
 
 import {
     ContactInfo,
     Gamepad,
+    Github,
+    Linkedin,
     Tools,
 } from 'grommet-icons';
 
@@ -20,14 +30,14 @@ import 'swiper/css/autoplay';
 
 import './global.css';
 
-import Layout from './layout.json';
+import Layout from './layout.js';
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
 
 const Theme = {
     global: {
-        font: {
-            family: 'sans-serif'
+        colors: {
+            brand: 'dark-2'
         }
     }
 }
@@ -48,22 +58,25 @@ function AppBar(props) {
     return (
         <Box
             direction={props.size === 'small' ? 'column' : 'row'}
+            pad={{ horizontal: 'medium' }} 
+            height={{ min: '100px' }} 
             align='center'
             justify='between'
-            pad={{ horizontal: 'medium', vertical: 'small' }}
             elevation='medium'
             style={{ zIndex: '10' }}> 
 
-            <img alt='yostlabs'
-                src={PUBLIC_URL+'logo.svg'}
-                width={128}
-                height={48}/>
+            <a href='/'>
+                <img alt='yostlabs'
+                    src={PUBLIC_URL+'logo.svg'}
+                    width={128}
+                    height={48}/>
+            </a>
 
             <Box direction='row'>
                 <AppButton
                     icon={<Gamepad/>}
                     label='Demos'
-                    href='/demos'/>
+                    href='/demo'/>
                 <AppButton
                     icon={<Tools/>}
                     label='Woodwork'
@@ -74,35 +87,89 @@ function AppBar(props) {
                     href='/about'/>
             </Box>
         </Box>
+   );
+}
+
+function AppSlides(props) {
+    return (
+        <Swiper modules={[Autoplay]} autoplay className='fill'>
+
+            {props.slides.map(datum => (
+                <SwiperSlide>
+                    <a href={datum.href}>
+                        <Box fill>
+                            <img 
+                                src={PUBLIC_URL+datum.src}
+                                alt={datum.label}
+                                className='img-fit'/>
+
+                            { datum.label && 
+                                <Box pad='small' align='center' justify='center' background='light-2'>
+                                    <Text className='slide'>{datum.label}</Text>
+                                </Box>
+                            }
+                        </Box>
+                    </a>
+                </SwiperSlide>
+            ))}
+        </Swiper>
     );
 }
 
-function App() {
+function AppFooter() {
+    return (
+        <Footer align='center' justify='center' border='top'>
+            <Anchor icon={<Github size='large'/>}/>
+            <Anchor icon={<Linkedin size='large'/>}/>
+        </Footer>
+    );
+}
 
+function AppBody(props) {
     return (
         <Grommet theme={Theme} full>
         <Box fill>
             <ResponsiveContext.Consumer>
                 {size => (<AppBar size={size}/>)}
             </ResponsiveContext.Consumer>
+ 
+            { props.slides &&
+                <AppSlides slides={props.slides}/> }
+            { props.markdown &&
+                <Box height={{ min: '200px' }} pad={{ horizontal: 'large' }}>
+                    <Markdown>{props.markdown}</Markdown>
+                </Box>
+            }
 
-            <Swiper modules={[Autoplay]} autoplay className='fill'>
-                {Layout.index.slides.map(datum => (
-                    <SwiperSlide>
-                    <Box fill>
-                        <Box className='img-box'>
-                            <img src={PUBLIC_URL+'woodwork/oak_trays/0.jpg'} 
-                                className='img-fit'/>
-                        </Box>
-                        <Box height='xsmall' align='center' justify='center'>
-                        <Text className='slide'>{datum.label}</Text>
-                        </Box>
-                    </Box>
-                    </SwiperSlide>
-                ))}
-            </Swiper>
+            <AppFooter/>
         </Box>
         </Grommet>
+    );
+}
+
+function App(props) {
+    return (
+        <BrowserRouter>
+            <Routes>
+                <Route path='/'
+                    element={
+                        <AppBody 
+                            slides={Layout.pages[0].slides}
+                            markdown={Layout.pages[0].markdown}/>
+                    }
+                />
+
+                { Layout.pages.map(datum => (
+                    <Route path={datum.name}
+                        element={
+                            <AppBody 
+                                slides={datum.slides}
+                                markdown={datum.markdown}/>
+                        }
+                    />
+                )) }
+            </Routes>
+        </BrowserRouter>
     );
 }
 
