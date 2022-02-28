@@ -4,7 +4,7 @@ const Layout = {
             name : 'index',
             slides : [
                 { 
-                    src : "img_demos/enso.jpg",
+                    src : "img_demos/yostos.jpg",
                     href : "demo",
                     label : "Live Demos" 
                 },
@@ -27,9 +27,44 @@ Live software demos and woodworking, all created by Daniel Yost.`
             slides : [
                 {
                     src : "img_wood/Sunshine Tiles/0.jpg",
-                    label : "Sunshine Tiles"
-                    
+                    label : "Sunshine Tiles" 
+                },
+
+                {
+                    src : "img_wood/Rustic Coffee Table/0.jpg",
+                    label : "Rustic Coffee Table" 
+                },
+
+                {
+                    src : "img_wood/Incense Holders/0.jpg",
+                    label : "Incense Holders" 
+                },
+
+                {
+                    src : "img_wood/Oak Serving Trays/0.jpg",
+                    label : "Oak Serving Trays" 
+                },
+
+                {
+                    src : "img_wood/Skyline/0.jpg",
+                    label : "Skyline" 
+                },
+
+                {
+                    src : "img_wood/Modern End Table/0.jpg",
+                    label : "Modern End Table" 
+                },
+
+                {
+                    src : "img_wood/Driftwood Long Box/0.jpg",
+                    label : "Driftwood Long Box" 
+                },
+
+                {
+                    src : "img_wood/Ruler/0.jpg",
+                    label : "Ruler" 
                 }
+
             ]
         },
 
@@ -37,15 +72,21 @@ Live software demos and woodworking, all created by Daniel Yost.`
             name : 'demo',
             slides : [
                 {
-                    src : "img_demos/enso.jpg",
-                    href : "http://enso.yostlabs.net",
-                    label : "Enso Virtual Zen Garden"
+                    src : "img_demos/marpo.png",
+                    href : "http://marpo.yostlabs.net",
+                    label : "Marist Parking Overview"
                 },
 
                 {
                     src : "img_demos/yostos.jpg",
                     href : "http://os.yostlabs.net",
                     label : "YostOS - A Virtual Typescript OS"
+                },
+
+                {
+                    src : "img_demos/enso.jpg",
+                    href : "http://enso.yostlabs.net",
+                    label : "Enso Virtual Zen Garden"
                 }
             ]
         },

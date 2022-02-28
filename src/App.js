@@ -21,6 +21,7 @@ import {
     Github,
     Linkedin,
     Tools,
+    Youtube,
 } from 'grommet-icons';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -119,8 +120,12 @@ function AppSlides(props) {
 function AppFooter() {
     return (
         <Footer align='center' justify='center' border='top'>
-            <Anchor icon={<Github size='large'/>}/>
-            <Anchor icon={<Linkedin size='large'/>}/>
+            <Anchor href='https://github.com/danstuff' 
+                icon={<Github size='large'/>}/>
+            <Anchor href='https://linkedin.com/in/danyost23' 
+                icon={<Linkedin size='large'/>}/>
+            <Anchor href='https://www.youtube.com/channel/UC-sw1y_rTgRLysS2FgYSfqA'
+                icon={<Youtube size='large'/>}/>
         </Footer>
     );
 }
