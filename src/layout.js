@@ -72,16 +72,17 @@ Live software demos and woodworking, all created by Daniel Yost.`
             name : 'demo',
             slides : [
                 {
+                    src : "img_demos/yostos.jpg",
+                    href : "http://os.yostlabs.net",
+                    label : "YostOS - A Virtual Typescript OS"
+                },
+
+                {
                     src : "img_demos/marpo.png",
                     href : "http://marpo.yostlabs.net",
                     label : "Marist Parking Overview"
                 },
 
-                {
-                    src : "img_demos/yostos.jpg",
-                    href : "http://os.yostlabs.net",
-                    label : "YostOS - A Virtual Typescript OS"
-                },
 
                 {
                     src : "img_demos/enso.jpg",
@@ -100,7 +101,7 @@ Live software demos and woodworking, all created by Daniel Yost.`
 
 I'm a self-motivated maker, designer, and programmer who specializes in building secure, high-performance libraries and applications that work across multiple platforms. In my spare time, I run YostLabs to share my creations with the world.
 
-[View R‌ésum‌é](/resume)`
+[View R‌ésum‌é](/Daniel_Yost_Resume_2022.pdf)`
         }
     ]
 }
