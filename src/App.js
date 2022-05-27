@@ -20,7 +20,6 @@ import {
     Gamepad,
     Github,
     Linkedin,
-    Tools,
     Youtube,
 } from 'grommet-icons';
 
@@ -79,10 +78,6 @@ function AppBar(props) {
                     label='Demos'
                     href='/demo'/>
                 <AppButton
-                    icon={<Tools/>}
-                    label='Woodwork'
-                    href='/wood'/>
-                <AppButton
                     icon={<ContactInfo/>}
                     label='About'
                     href='/about'/>
@@ -119,7 +114,7 @@ function AppSlides(props) {
 
 function AppFooter() {
     return (
-        <Footer align='center' justify='center' border='top'>
+        <Footer align='end' justify='center' border='top'>
             <Anchor href='https://github.com/danstuff' 
                 icon={<Github size='large'/>}/>
             <Anchor href='https://linkedin.com/in/danyost23' 
@@ -145,6 +140,7 @@ function AppBody(props) {
                     <Markdown>{props.markdown}</Markdown>
                 </Box>
             }
+            <Box flex></Box>
 
             <AppFooter/>
         </Box>
