@@ -1,54 +1,64 @@
-const DemoSlides = [
-    {
-        src : "img_demos/yostos.jpg",
-        href : "https://yostlabs.net/os",
-        label : "YostOS - A Virtual Typescript OS"
-    },
-
-    {
-        src : "img_demos/marpo.png",
-        href : "https://yostlabs.net/marpo",
-        label : "Marist Parking Overview"
-    },
-
-
-    {
-        src : "img_demos/enso.jpg",
-        href : "https://yostlabs.net/enso",
-        label : "Enso - Virtual Zen Garden"
-    }
-]
-
 const Layout = {
-    pages : [
+  navbar_logo : "img/logo_23_wide.svg",
+  categories : [
+    { 
+      name : "games",
+      markdown : "# Games",
+      tiles : [
         {
-            name : 'index',
-            slides : DemoSlides, 
-
-            markdown : `
-# Welcome to YostLabs
-
-Live software demos created by Daniel Yost.`
+          title : "Enso",
+          desc : "An Online Interactive Zen Garden",
+          year : "2021",
+          image : "img/tiles/enso.png",
+          href : "https://yostlabs.net/enso",
         },
         {
-            name : 'demo',
-            slides : DemoSlides
+          title : "Space Crusade",
+          desc : "A Crunchy Arcade Shooter",
+          year : "2016",
+          image : "img/tiles/space_crusade.png",
+          href : "https://yostlabs.net/spacecrusade",
         },
-
         {
-            name : 'about',
-            markdown : `
-# Daniel Yost
+          title : "Cacophone",
+          desc : "An Audiovisual Pendulum Toy",
+          year : "2016",
+          image : "img/tiles/cacophone.png",
+          href : "https://yostlabs.net/cacophone",
+        },
+      ],
+    },
+    { 
+      name : "woodwork",
+      markdown : "# Woodwork",
+      tiles : [
+        // TODO
+      ],
+    },
+    { 
+      name : "about",
+      markdown : `
+# About Daniel Yost
 
-*Poughkeepsie, NY | [danyost23@gmail.com](mailto:danyost23@gmail.com) | [github.com/danstuff](https://github.com/danstuff)*
+*Troy, NY | [danyost23@gmail.com](mailto:danyost23@gmail.com) | [github.com/danstuff](https://github.com/danstuff)*
 
-I'm a self-motivated maker, designer, and programmer who specializes in building secure, high-performance libraries and applications that work across multiple platforms. In my spare time, I run YostLabs to share my creations with the world.
+I'm a tools engineer at [Velan Studios](https://www.velanstudios.com/). In my spare time, I run yostlabs to share miscellaneous creations with the world. Thanks for having a look around.
 
-[View R‌ésum‌é](/Daniel_Yost_Resume_2022.pdf)
+![Profile Picture](img/icons/profile.svg)
+`,
+    },
+  ],
+  modal : {
+    markdown : `
+[![%title%](%image%)](%href%)
 
-`
-        }
-    ]
-}
+## %title% (%year%)
 
-export default Layout;
+*%desc%*
+`,
+    cta_markdown : "[Play Now](%href%)",
+    close_icon : "img/icons/close.svg", 
+  }
+};
+
+export { Layout };
