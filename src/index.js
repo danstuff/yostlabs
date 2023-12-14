@@ -3,6 +3,9 @@ import $ from "jquery";
 import * as DOMPurify from 'dompurify';
 import * as marked from 'marked';
 
+const INITIAL_FADE_MS = 500;
+const FADE_MS = 100;
+
 // Append a generic element to the document.
 // $root - the parent element to append to.
 // type - the type of element, "img", "div", etc.
@@ -75,16 +78,15 @@ function composeHeader($root) {
         addText($item, category.name);
 
         $item.click(() => {
-            $("category").hide(() => {
+            $(".category").fadeOut(FADE_MS);
 
-            });
-            $([document.documentElement, document.body]).animate({
-                scrollTop: $("#" + category.name).offset().top
-            }, AUTO_SCROLL_MS);
+            setTimeout(() => {
+                $("." + category.name).fadeIn(FADE_MS);
+            }, FADE_MS);
         });
     });
 
-    addElement($header, "hr", {});
+    addElement($header, "hr")
 }
 
 // Entry point. Build the entire webpage.
@@ -94,12 +96,8 @@ function composePage($root) {
 
     var $page = addDiv($root, "page");
 
-    // Add content for each category
+    // Add content for each category.
     forEachCategory((i, category) => {
-        if (i > 0) {
-            addElement($page, "hr", {});
-        }
-
         var $category = addDiv($page, "category " + category.name);
 
         if (category.markdown) {
@@ -110,6 +108,10 @@ function composePage($root) {
             category.script.startup($category);
         }
 
+        $category.css({ display: "none"});
+        if (i == 0) {
+            $category.fadeIn(INITIAL_FADE_MS);
+        }
     });
 }
 

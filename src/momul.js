@@ -1,169 +1,213 @@
-/* 
- * TODO:
- *  - animations/tweening
- *  - pieces remaining / pieces taken
- */
-
 import Two from 'two.js';
 import TWEEN from "tween.js";
 import $ from "jquery";
 
-const TILE_SIZE = 80;
-const TILES_PER_ROW = 8;
+const config =
+{
+    board_size : 640,
+    tiles_per_row: 9,
 
-const PIECE_SCALE = 0.75;
-const SELECTOR_SCALE = 0.9;
+    reserve_pieces : 4,
 
-const MULS_PER_TEAM = 8;
+    ghost :
+    {
+        size : 0.25,
+        color : 'rgba(0, 0, 0, 0.5)',
+    },
 
-const ACTION_PUT = 1;
-const ACTION_MOVE = 2;
-const ACTION_REMOVE = 3;
+    goal :
+    {
+        size : 0.9,
+        color : 'rgba(0, 0, 0, 0.5)',
+    },
 
-var team_a;
-var team_b;
+    piece :
+    {   
+        size : 0.75,
+        selected_size : 0.85,
+    },
+};
+
+var team_a =
+{
+    fill_color : 'rgb(0, 191, 168)',
+    stroke_color : 'rgba(0, 191, 168, 0.33)',
+
+    shape : (x, y) => 
+    {
+        return new Two.Star(x, y, 1, 1, 3);
+    },
+    shape_target : (r) => 
+    {
+        return { innerRadius: r*2, outerRadius: r*2 };
+    },
+};
+
+var team_b = 
+{
+    fill_color : 'rgb(191, 0, 168)',
+    stroke_color : 'rgba(191, 0, 168, 0.33)',
+
+    shape : (x, y) => 
+    {
+        return new Two.Circle(x, y, 1);
+    },
+    shape_target : (r) => 
+    {
+        return { radius: r };
+    },
+};
 
 var two;
 
-function startup($root) {
-    team_a = newTeam();
-    team_b = newTeam();
+function startup($root) 
+{
+    config.tile_size = Math.floor(config.board_size / config.tiles_per_row);
 
-    two = new Two({
+    two = new Two(
+    {
         type: Two.Types.svg,
         fullscreen: false,
     }).appendTo($root[0]);
 
-    putBoard()
+    setupTeam(team_a);
+    setupTeam(team_b);
 
-    putPiece(team_a, 4, 0);
-    putPiece(team_a, 5, 1);
-    putPiece(team_a, 6, 2);
-    putPiece(team_a, 7, 3);
+    putBoard();
 
-    putPiece(team_b, 0, 4);
-    putPiece(team_b, 1, 5);
-    putPiece(team_b, 2, 6);
-    putPiece(team_b, 3, 7);
+    putPiece(team_a, 0, 5);
+    putPiece(team_a, 1, 6);
+    putPiece(team_a, 2, 7);
+    putPiece(team_a, 3, 8);
 
-    two.bind('update', () => {
+    putPiece(team_b, 5, 0);
+    putPiece(team_b, 6, 1);
+    putPiece(team_b, 7, 2);
+    putPiece(team_b, 8, 3);
+
+    two.bind('update', () => 
+    {
         TWEEN.update();
     }).play();
 
-    $root.click((e) => {
-        let tx = Math.floor(e.pageX / TILE_SIZE);
-        let ty = Math.floor(e.pageY / TILE_SIZE);
+    $root.on("click", (e) => 
+    {
+        let cx = e.pageX - $root.offset().left
+        let cy = e.pageY - $root.offset().top
+
+        let tx = Math.floor(cx / config.tile_size);
+        let ty = Math.floor(cy / config.tile_size);
 
         if (!isInside(tx, ty))
         {
             return;
         }
-
-        movePiece(two, team_a, tx, ty);
-        movePiece(two, team_b, tx, ty);
-
-        console.log(team_a, team_b);
+        
+        if (movePiece(team_a, tx, ty)) 
+        {
+            aiMovePiece(team_b);
+        }
+        updateGhosts(team_a);
     });
 }
 
-function newTeam()
+function setupTeam(team)
 {
-    return {
-        pieces : [],
-        piece_selected : null,
-        ltx : 0,
-        lty : 0,
-        muls_remaining : MULS_PER_TEAM,
-    };
+    team.pieces = [];
+    team.piece_selected = null;
+    team.ghosts = [];
+    team.ltx = 0;
+    team.lty = 0;
+    team.reserve_pieces = config.reserve_pieces;
 }
 
 function putBoard()
 {
     let lines = [];
 
-    for (let x = 0; x <= TILES_PER_ROW; x++)
+    for (let x = 0; x <= config.board_size; x += config.tile_size)
     {
-        lines.push(new Two.Line(TILE_SIZE*x, 0, TILE_SIZE*x, TILE_SIZE*TILES_PER_ROW));
+        lines.push(new Two.Line(x, 0, x, config.board_size))
     }
 
-    for (let y = 0; y <= TILES_PER_ROW; y++)
+    for (let y = 0; y <= config.board_size; y += config.tile_size)
     {
-        lines.push(new Two.Line(0, TILE_SIZE*y, TILE_SIZE*TILES_PER_ROW, TILE_SIZE*y));
+        lines.push(new Two.Line(0, y, config.board_size, y));
     }
 
     let board = new Two.Group(lines);
     two.add(board);
 
-    let goal_a = new Two.Circle((TILES_PER_ROW-0.5)*TILE_SIZE, TILE_SIZE/2, TILE_SIZE/2);
-    two.add(goal_a);
-
-    let goal_b = new Two.Star(TILE_SIZE/2, (TILES_PER_ROW-0.5)*TILE_SIZE, TILE_SIZE, TILE_SIZE, 3);
-    two.add(goal_b);
-
-    return board, goal_a, goal_b;
+    putPiece(team_a, 0, config.tiles_per_row-1, "goal");
+    putPiece(team_b, config.tiles_per_row-1, 0, "goal");
 }
 
-function putPiece(team, tx, ty)
+function putPiece(team, tx, ty, variation)
 {
-    let piece = null;
-    let px = tx*TILE_SIZE + TILE_SIZE/2;
-    let py = ty*TILE_SIZE + TILE_SIZE/2;
-    let r = PIECE_SCALE*TILE_SIZE/2;
-    let target = null;
+    let piece_x = tx*config.tile_size + config.tile_size/2;
+    let piece_y = ty*config.tile_size + config.tile_size/2;
+    let tile_radius = config.tile_size/2;
 
-    if (team == team_a)
+    let piece = team.shape(piece_x, piece_y);
+
+    if (variation)
     {
-        piece = new Two.Circle(px, py, 1);
-        piece.fill = 'rgba(191, 0, 168, 0.33)';
-        piece.stroke = 'rgb(191, 0, 168)';
-
-        target = { radius: r };
+        piece.fill = config[variation].color;
+        piece.stroke = '';
     }
-    else if (team == team_b)
+    else
     {
-        piece = new Two.Star(px, py, 1, 1, 3);
-        piece.fill = 'rgba(0, 191, 168, 0.33)';
-        piece.stroke = 'rgb(0, 191, 168)';
-
-        target = { innerRadius: r*2, outerRadius: r*2 };
+        piece.fill = team.fill_color;
+        piece.stroke = team.stroke_color;
+        piece.linewidth = 5;
+        variation = "piece";
     }
+
+    let target = team.shape_target(tile_radius*config[variation].size);
 
     const tween = new TWEEN.Tween(piece)
         .to(target, 250)
         .easing(TWEEN.Easing.Cubic.Out)
         .start();
 
-    piece.linewidth = 5;
-
     two.add(piece);
-    team.pieces.push(piece);
+
+    let variation_list = variation + "s";
+    if (team[variation_list])
+    {
+        team[variation_list].push(piece);
+    }
 }
 
-function movePiece(two, team, tx, ty)
+function movePiece(team, tx, ty)
 {
     let piece_clicked = getPiece(team, tx, ty);
     if (team.piece_selected && !piece_clicked && isValidMove(team, tx, ty))
     {
         setPiecePos(team.piece_selected, tx, ty);
-        removeEnemyPiece(two, team, tx, ty);
+        removeEnemyPiece(team, tx, ty);
 
         setPieceStrokeWidth(team.piece_selected, 5);
         team.piece_selected = null;
+
+        return true;
     }
     else if (team.piece_selected && team.piece_selected == piece_clicked)
     {
-        let ttx = team == team_a ? tx - 1 : tx + 1;
-        let tty = team == team_a ? ty + 1 : ty - 1;
+        let ttx = (team == team_b) ? tx - 1 : tx + 1;
+        let tty = (team == team_b) ? ty + 1 : ty - 1;
 
-        if (isInside(ttx, tty) && team.muls_remaining > 0 && !getPiece(team, ttx, tty))
+        if (isInside(ttx, tty) && team.reserve_pieces > 0 && !getPiece(team, ttx, tty))
         {
-            team.muls_remaining--;
+            team.reserve_pieces--;
             putPiece(team, ttx, tty);
-            removeEnemyPiece(two, team, ttx, tty);
+            removeEnemyPiece(team, ttx, tty);
         }
 
         setPieceStrokeWidth(team.piece_selected, 5);
         team.piece_selected = null;
+
+        return true;
     }
     else if (piece_clicked)
     {
@@ -172,9 +216,38 @@ function movePiece(two, team, tx, ty)
         team.ltx = tx;
         team.lty = ty;
     }
+    return false;
 }
 
-function removeEnemyPiece(two, team, tx, ty)
+function aiMovePiece(team)
+{
+    // TODO
+}
+
+function updateGhosts(team)
+{
+    for (let i in team.ghosts)
+    {
+        two.remove(team.ghosts[i]);
+    }
+    team.ghosts = [];
+
+    if (team.piece_selected)
+    {
+        for (let x = 0; x <= config.tiles_per_row; x++)
+        {
+            for (let y = 0; y <= config.tiles_per_row; y++)
+            {
+                if (isValidMove(team, x, y))
+                {
+                    putPiece(team, x, y, "ghost");
+                }
+            }
+        }
+    }
+}
+
+function removeEnemyPiece(team, tx, ty)
 {
     let enemy_team = team == team_a ? team_b : team_a;
     let enemy_piece = getPiece(enemy_team, tx, ty);
@@ -204,8 +277,8 @@ function getPiece(team, tx, ty)
 
 function setPiecePos(piece, tx, ty)
 {    
-    let px = tx * TILE_SIZE + TILE_SIZE/2;
-    let py = ty * TILE_SIZE + TILE_SIZE/2;
+    let px = tx*config.tile_size + config.tile_size/2;
+    let py = ty*config.tile_size + config.tile_size/2;
 
     let t = 200 + Math.sqrt(
         Math.pow(piece.position.x - px, 2) + 
@@ -219,8 +292,8 @@ function setPiecePos(piece, tx, ty)
 
 function getPiecePos(piece)
 {
-    let px = Math.floor(piece.position.x / TILE_SIZE);
-    let py = Math.floor(piece.position.y / TILE_SIZE);
+    let px = Math.floor(piece.position.x / config.tile_size);
+    let py = Math.floor(piece.position.y / config.tile_size);
 
     return [ px, py ];
 }
@@ -234,8 +307,8 @@ function isValidMove(team, tx, ty)
     {
         return false;
     }
-    else if ((tx == 0 && ty == TILES_PER_ROW-1) || 
-        (tx == TILES_PER_ROW-1 && ty == 0))
+    else if ((tx == 0 && ty == config.tiles_per_row-1) || 
+        (tx == config.tiles_per_row-1 && ty == 0))
     {
         return false;
     }
@@ -269,7 +342,7 @@ function isValidMove(team, tx, ty)
 
 function isInside(tx, ty)
 {
-    return (tx < TILES_PER_ROW && ty < TILES_PER_ROW && tx >= 0 && ty >= 0);
+    return (tx < config.tiles_per_row && ty < config.tiles_per_row && tx >= 0 && ty >= 0);
 }
 
 function setPieceStrokeWidth(piece, sw)
