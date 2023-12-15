@@ -2,6 +2,8 @@ import Two from 'two.js';
 import TWEEN from "tween.js";
 import $ from "jquery";
 
+import * as ai from "./momul.ai.js";
+
 const config =
 {
     board_size : 640,
@@ -41,6 +43,9 @@ var team_a =
     {
         return { innerRadius: r*2, outerRadius: r*2 };
     },
+
+    goal_x : 0,
+    goal_y : config.tiles_per_row - 1,
 };
 
 var team_b = 
@@ -56,6 +61,9 @@ var team_b =
     {
         return { radius: r };
     },
+
+    goal_x : config.tiles_per_row - 1,
+    goal_y : 0,
 };
 
 var two;
@@ -63,6 +71,7 @@ var two;
 function startup($root) 
 {
     config.tile_size = Math.floor(config.board_size / config.tiles_per_row);
+    ai.startup(config);
 
     two = new Two(
     {
@@ -105,7 +114,15 @@ function startup($root)
         
         if (movePiece(team_a, tx, ty)) 
         {
-            aiMovePiece(team_b);
+            let best_move = ai.findBestMove(team_b);
+            setTimeout(() =>
+            {
+                movePiece(team_b, best_move.tx0, best_move.ty0);
+            }, 500);
+            setTimeout(() =>
+            {
+                movePiece(team_b, best_move.tx1, best_move.ty1);
+            }, 1000);
         }
         updateGhosts(team_a);
     });
@@ -119,6 +136,7 @@ function setupTeam(team)
     team.ltx = 0;
     team.lty = 0;
     team.reserve_pieces = config.reserve_pieces;
+    team.enemy = (team == team_a) ? team_b : team_a;
 }
 
 function putBoard()
@@ -138,8 +156,8 @@ function putBoard()
     let board = new Two.Group(lines);
     two.add(board);
 
-    putPiece(team_a, 0, config.tiles_per_row-1, "goal");
-    putPiece(team_b, config.tiles_per_row-1, 0, "goal");
+    putPiece(team_a, team_a.goal_x, team_a.goal_y, "goal");
+    putPiece(team_b, team_b.goal_x, team_b.goal_y, "goal");
 }
 
 function putPiece(team, tx, ty, variation)
@@ -181,8 +199,8 @@ function putPiece(team, tx, ty, variation)
 
 function movePiece(team, tx, ty)
 {
-    let piece_clicked = getPiece(team, tx, ty);
-    if (team.piece_selected && !piece_clicked && isValidMove(team, tx, ty))
+    let piece_clicked = ai.getPiece(team, tx, ty);
+    if (team.piece_selected && !piece_clicked && ai.isValidMove(team, tx, ty))
     {
         setPiecePos(team.piece_selected, tx, ty);
         removeEnemyPiece(team, tx, ty);
@@ -197,7 +215,7 @@ function movePiece(team, tx, ty)
         let ttx = (team == team_b) ? tx - 1 : tx + 1;
         let tty = (team == team_b) ? ty + 1 : ty - 1;
 
-        if (isInside(ttx, tty) && team.reserve_pieces > 0 && !getPiece(team, ttx, tty))
+        if (isInside(ttx, tty) && team.reserve_pieces > 0 && !ai.getPiece(team, ttx, tty))
         {
             team.reserve_pieces--;
             putPiece(team, ttx, tty);
@@ -219,11 +237,6 @@ function movePiece(team, tx, ty)
     return false;
 }
 
-function aiMovePiece(team)
-{
-    // TODO
-}
-
 function updateGhosts(team)
 {
     for (let i in team.ghosts)
@@ -238,7 +251,7 @@ function updateGhosts(team)
         {
             for (let y = 0; y <= config.tiles_per_row; y++)
             {
-                if (isValidMove(team, x, y))
+                if (ai.isValidMove(team, x, y))
                 {
                     putPiece(team, x, y, "ghost");
                 }
@@ -249,31 +262,16 @@ function updateGhosts(team)
 
 function removeEnemyPiece(team, tx, ty)
 {
-    let enemy_team = team == team_a ? team_b : team_a;
-    let enemy_piece = getPiece(enemy_team, tx, ty);
+    let enemy_piece = ai.getPiece(team.enemy, tx, ty);
 
     if (enemy_piece)
     {
         two.remove(enemy_piece);
-        enemy_team.pieces.splice(enemy_team.pieces.indexOf(enemy_piece), 1);
-        enemy_team.piece_selected = null;
+        team.enemy.pieces.splice(team.enemy.pieces.indexOf(enemy_piece), 1);
+        team.enemy.piece_selected = null;
     }
 }
 
-function getPiece(team, tx, ty)
-{
-    for (let i in team.pieces)
-    {
-        let piece = team.pieces[i];
-        let pos = getPiecePos(piece)
-        if (tx == pos[0] && ty == pos[1])
-        {
-            return piece;
-        }
-    }
-
-    return null;
-}
 
 function setPiecePos(piece, tx, ty)
 {    
@@ -288,56 +286,6 @@ function setPiecePos(piece, tx, ty)
         .to({x: px, y: py}, t)
         .easing(TWEEN.Easing.Exponential.Out)
         .start();
-}
-
-function getPiecePos(piece)
-{
-    let px = Math.floor(piece.position.x / config.tile_size);
-    let py = Math.floor(piece.position.y / config.tile_size);
-
-    return [ px, py ];
-}
-
-function isValidMove(team, tx, ty)
-{
-    let dx = tx - team.ltx;
-    let dy = ty - team.lty;
-
-    if (dx && dy)
-    {
-        return false;
-    }
-    else if ((tx == 0 && ty == config.tiles_per_row-1) || 
-        (tx == config.tiles_per_row-1 && ty == 0))
-    {
-        return false;
-    }
-    else
-    {
-        let enemy_team = team == team_a ? team_b : team_a;
-
-        let x_step = dx ? dx / Math.abs(dx) : 0;
-        let y_step = dy ? dy / Math.abs(dy) : 0;
-
-        let x = team.ltx;
-        let y = team.lty;
-
-        do
-        {
-            x += x_step;
-            y += y_step;
-
-            let mp = getPiece(team, x, y);
-            let ep = getPiece(enemy_team, x, y);
-
-            if (mp || (ep && (x != tx || y != ty)))
-            {
-                return false;
-            }
-        } while (x != tx || y != ty);
-
-        return true;
-    }
 }
 
 function isInside(tx, ty)

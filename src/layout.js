@@ -10,11 +10,19 @@ const Layout = {
         { 
             name : "about",
             markdown : `
-![Profile Picture](img/icons/profile.svg)
+![Board Picture](img/momul_board.svg)
 
-# About Daniel Yost
+# About Momul
 
-*Troy, NY | [danyost23@gmail.com](mailto:danyost23@gmail.com) | [github.com/danstuff](https://github.com/danstuff)*
+Momul is an abstract strategy game inspired by chess, but designed to be significantly easier to learn and play.
+
+---
+
+![Profile Picture](img/profile.svg)
+
+# About Me
+
+*Daniel Yost | Troy, NY | [github.com/danstuff](https://github.com/danstuff)*
 
 I'm a tools engineer at [Velan Studios](https://www.velanstudios.com/). In my spare time, I run yostlabs to share miscellaneous creations with the world. Thanks for having a look around.
 `,
