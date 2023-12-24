@@ -69,10 +69,10 @@ a {
 }
 
 .about img {
-    height: 8em;
-    display: inline-box;
+    width: 8em;
+    display: block;
     float: left;
-    padding-right: 1.5em;
+    padding: 1.5em;
 }
 
 .momul {
