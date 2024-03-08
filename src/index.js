@@ -44,24 +44,95 @@ function addMarkdown($root, markdown) {
     $root.append(DOMPurify.sanitize(marked.parse(markdown)));
 }
 
-// Find all occurences in a text string of each %key% in fields,
-// and replace them with the values of each corresponding field in fields.
-// text - the text string to replace values in.
-// fields - the list of key-value pairs to find and replace in the text.
-function findReplace(text, fields) {
-    var keys = Object.keys(fields);
-    var values = Object.values(fields);
-    for (var i in keys) {
-        text = text.replaceAll("%" + keys[i] + "%", values[i]);
-    }
-    return text;
-}
-
 // Iterate over each category in Layout and call a function on it.
 // category_callback - the function to call for each category.
 function forEachCategory(category_callback) {
     for (var i in Layout.categories) {
         category_callback(i, Layout.categories[i]);
+    }
+}
+
+// Build a list of slides for a category.
+// $root - the parent element to append to.
+// slides - the list of slides. Each slide requires an "image" and may also have a "link_to" URL.
+function composeSlides($root, slides) {
+    function _slideIn($slide, direction) {
+        /* Slide in FROM the given direction. */
+        var w = $slide.width();
+        $slide
+            .show(0)
+            .css({ 
+                translate: direction == "left" ? -w+"px": (2*w)+"px",
+                opacity: "0.0",
+            })
+            .animate({ translate: "0px", opacity: "1.0" }, 400, "linear");
+    }
+
+    function _slideOut($slide, direction) {
+        /* Slide out TO the given direction. */
+        var w = $slide.width();
+        $slide
+            .animate({ 
+                translate: direction == "left" ? -w+"px": (2*w)+"px",
+                opacity: "0.0",
+            }, 400, "linear")
+            .hide(0);
+    }
+
+    function _click_delta($slide, e) {
+        /* Click distance from the center of the slide. */
+        return e.pageX - ($slide.offset().left + ($slide.width()*0.5));
+    }
+    
+    function _linkSlides($lhs_slide, $center_slide, $rhs_slide) {
+        /* Clicking on the left side of the image slides right,
+         * and clicking on the right slides left. */
+        $center_slide.on("click", (e) => {
+            if (_click_delta($center_slide, e) >= 0)
+            {
+                _slideOut($center_slide, "left");
+                _slideIn($rhs_slide, "right");
+            }
+            else
+            {
+                _slideOut($center_slide, "right");
+                _slideIn($lhs_slide, "left");
+            }
+        });
+    }
+
+    /* Create a div for each slide. */
+    var $slides = [];
+    for (var i in slides) {
+        var slide = slides[i];
+
+        var $slide = /*slide.link_to ? 
+            addElement($root, "a", { href: slide.link_to, class: "slide" }) :*/
+            addDiv($root, "slide");
+        addImage($slide, slide.image);
+
+        var $left_arrow = addDiv($slide, "slide_left_arrow");
+        addText($left_arrow, "<");
+
+        var $right_arrow = addDiv($slide, "slide_right_arrow");
+        addText($right_arrow, ">");
+
+        if (i > 0) {
+            $slide.css({ display: "none" });
+        }
+
+        $slides.push($slide);
+    }
+
+    function _loop(i) {
+        return (i + $slides.length) % $slides.length;
+    }
+
+    /* Cause clicking each slide to animate + replace it with another. */
+    console.log($slides.length);
+    for (var key in $slides) {
+        var i = Number(key);
+        _linkSlides($slides[_loop(i-1)], $slides[i], $slides[_loop(i+1)]);
     }
 }
 
@@ -72,16 +143,16 @@ function composeHeader($root) {
     addImage($header, Layout.navbar_logo);
 
     var $items = addDiv($header, "navbar_items");
-    forEachCategory((i, category) => {
+    forEachCategory((category_name, _) => {
 
         var $item = addDiv($items, "navbar_item");
-        addText($item, category.name);
+        addText($item, category_name);
 
-        $item.click(() => {
+        $item.on("click", () => {
             $(".category").fadeOut(FADE_MS);
 
             setTimeout(() => {
-                $("." + category.name).fadeIn(FADE_MS);
+                $("." + category_name).fadeIn(FADE_MS);
             }, FADE_MS);
         });
     });
@@ -96,21 +167,27 @@ function composePage($root) {
 
     var $page = addDiv($root, "page");
 
-    // Add content for each category.
-    forEachCategory((i, category) => {
-        var $category = addDiv($page, "category " + category.name);
+    /* Add content for each category. */
+    var first = true;
+    forEachCategory((name, category) => {
+        var $category = addDiv($page, "category " + name);
+
+        if (category.script && category.script.startup) {
+            category.script.startup($category);
+        }
+
+        if (category.slides) {
+            composeSlides($category, category.slides);
+        }
 
         if (category.markdown) {
             addMarkdown($category, category.markdown);
         } 
 
-        if (category.script) {
-            category.script.startup($category);
-        }
-
         $category.css({ display: "none"});
-        if (i == 0) {
+        if (first) {
             $category.fadeIn(INITIAL_FADE_MS);
+            first = false;
         }
     });
 }
