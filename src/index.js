@@ -88,12 +88,14 @@ function composeSlides($root, slides) {
         /* Clicking on the left side of the image slides right,
          * and clicking on the right slides left. */
         $center_slide.on("click", (e) => {
-            if (_click_delta($center_slide, e) >= 0)
+            var slide_dist = $center_slide.width() * 0.33;
+            var click_delta = _click_delta($center_slide, e);
+            if (click_delta >= slide_dist)
             {
                 _slideOut($center_slide, "left");
                 _slideIn($rhs_slide, "right");
             }
-            else
+            else if (click_delta <= -slide_dist)
             {
                 _slideOut($center_slide, "right");
                 _slideIn($lhs_slide, "left");
@@ -111,11 +113,13 @@ function composeSlides($root, slides) {
             addDiv($root, "slide");
         addImage($slide, slide.image);
 
-        var $left_arrow = addDiv($slide, "slide_left_arrow");
-        addText($left_arrow, "<");
+        var $left_arrow = addDiv($slide, "slide_arrow");
+        addText(addDiv($left_arrow), "<");
+        $left_arrow.css({ left: "0" })
 
-        var $right_arrow = addDiv($slide, "slide_right_arrow");
-        addText($right_arrow, ">");
+        var $right_arrow = addDiv($slide, "slide_arrow");
+        addText(addDiv($right_arrow), ">");
+        $right_arrow.css({ right: "0" })
 
         if (i > 0) {
             $slide.css({ display: "none" });

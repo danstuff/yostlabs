@@ -3,10 +3,10 @@ const Layout = {
     categories : {
         software : { 
             slides : [
-                /*{ 
+                { 
                     image: "img/software/momul.jpg",
                     link_to: "https://yostlabs.net/momul/",
-                },*/
+                },
                 { 
                     image: "img/software/enso.jpg",
                     link_to: "https://yostlabs.net/enso/",
@@ -35,9 +35,9 @@ const Layout = {
                 {
                     image: "img/woodworking/sunshine_tiles_v2.jpg",
                 },
-                /*{
+                {
                     image: "img/woodworking/oak_serving_tray_v1.jpg",
-                },*/
+                },
                 {
                     image: "img/woodworking/oak_serving_tray_v2.jpg",
                 },
