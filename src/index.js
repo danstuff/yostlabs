@@ -102,7 +102,7 @@ function composeSlides($root, slides) {
             }
             else if($center_slide.custom_link_to)
             {
-                window.location.href = $center_slide.custom_link_to;
+                window.open($center_slide.custom_link_to, "_blank").focus();
             }
         });
     }
