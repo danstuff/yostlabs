@@ -100,6 +100,10 @@ function composeSlides($root, slides) {
                 _slideOut($center_slide, "right");
                 _slideIn($lhs_slide, "left");
             }
+            else if($center_slide.custom_link_to)
+            {
+                window.location.href = $center_slide.custom_link_to;
+            }
         });
     }
 
@@ -108,10 +112,9 @@ function composeSlides($root, slides) {
     for (var i in slides) {
         var slide = slides[i];
 
-        var $slide = /*slide.link_to ? 
-            addElement($root, "a", { href: slide.link_to, class: "slide" }) :*/
-            addDiv($root, "slide");
+        var $slide = addDiv($root, "slide");
         addImage($slide, slide.image);
+        $slide.custom_link_to = slide.link_to;
 
         var $left_arrow = addDiv($slide, "slide_arrow");
         addText(addDiv($left_arrow), "<");
