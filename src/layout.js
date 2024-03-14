@@ -20,10 +20,10 @@ const Layout = {
         jewlery : {
             slides : [
                 {
-                    image: "img/jewlery/ring_to_fean.jpg",
+                    image: "img/jewlery/bracelet.jpg",
                 },
                 {
-                    image: "img/jewlery/band_of_fatherhood.jpg",
+                    image: "img/jewlery/ring.jpg",
                 },
             ],
         },
