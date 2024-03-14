@@ -46,7 +46,10 @@ const Layout = {
                 },
                 {
                     image: "img/woodworking/coffee_table.jpg",
-                }
+                },
+                {
+                    image: "img/woodworking/chair.jpg",
+                },
             ],
         },
         about : { 
