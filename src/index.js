@@ -136,7 +136,6 @@ function composeSlides($root, slides) {
     }
 
     /* Cause clicking each slide to animate + replace it with another. */
-    console.log($slides.length);
     for (var key in $slides) {
         var i = Number(key);
         _linkSlides($slides[_loop(i-1)], $slides[i], $slides[_loop(i+1)]);
