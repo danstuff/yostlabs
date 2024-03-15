@@ -9,7 +9,7 @@ const Layout = {
                 },
                 { 
                     image: "img/software/enso.jpg",
-                    link_to: "https://yostlabs.net/enso/",
+                    link_to: "https://yostlabs.net/enso-zen-garden/",
                 },
                 { 
                     image: "img/software/yostos.jpg",
@@ -60,7 +60,7 @@ const Layout = {
 
 *Daniel Yost | Troy, NY | [github.com/danstuff](https://github.com/danstuff) | [linkedin.com/in/danyost23](https://www.linkedin.com/in/danyost23)/*
 
-I'm a programmer, designer, and woodworker based in upstate NY. I currently work as a tools engineer at [Velan Studios](https://www.velanstudios.com/). In my spare time, I run yostlabs to share miscellaneous creations with the world. 
+I'm a programmer, designer, and woodworker based in upstate NY. In my spare time, I run yostlabs to share miscellaneous creations with the world. 
 
 Thanks for having a look around.
 `,
