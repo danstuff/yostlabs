@@ -102,7 +102,11 @@ function composeSlides($root, slides) {
             }
             else if($center_slide.custom_link_to)
             {
-                window.open($center_slide.custom_link_to, "_blank").focus();
+                window.location.href = $center_slide.custom_link_to;
+            }
+            else if($center_slide.custom_image_url)
+            {
+                window.location.href = "https://yostlabs.net/" + $center_slide.custom_image_url;
             }
         });
     }
@@ -114,6 +118,7 @@ function composeSlides($root, slides) {
 
         var $slide = addDiv($root, "slide");
         addImage($slide, slide.image);
+        $slide.custom_image_url = slide.image;
         $slide.custom_link_to = slide.link_to;
 
         var $left_arrow = addDiv($slide, "slide_arrow");

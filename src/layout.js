@@ -58,7 +58,7 @@ const Layout = {
 
 # About Me
 
-*Daniel Yost | Troy, NY | [github.com/danstuff](https://github.com/danstuff) | [linkedin.com/in/danyost23](https://www.linkedin.com/in/danyost23)/*
+*Daniel Yost | Troy, NY | <a href="https://github.com/danstuff" target="_blank">github.com/danstuff</a> | <a href="https://www.linkedin.com/in/danyost23" target="_blank">linkedin.com/in/danyost23</a>*
 
 I'm a programmer, designer, and woodworker based in upstate NY. In my spare time, I run yostlabs to share miscellaneous creations with the world. 
 
