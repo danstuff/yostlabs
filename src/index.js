@@ -82,7 +82,9 @@ function composeSlides($root, slides) {
         var slide = slides[i];
 
         var $slide = addDiv($root, "slide");
-        addImage($slide, slide.image, slide.link_to);
+        addImage($slide, 
+            slide.image,
+            slide.link_to ? slide.link_to : Layout.site_root_url + slide.image);
         
         if (slide.markdown) {
             addMarkdown($slide, slide.markdown);
