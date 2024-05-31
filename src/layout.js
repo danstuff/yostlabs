@@ -1,6 +1,9 @@
 const Layout = {
+    site_root_url : "https://yostlabs.net/",
+
     navbar_logo : "img/logo_23_wide.svg",
     arrow_icon : "img/arrow.svg",
+    
     categories : {
         live_demos : { 
             slides : [

@@ -68,6 +68,44 @@ function composeSlides($root, slides) {
     addImage($right_arrow, Layout.arrow_icon);
     $right_arrow.css({ right: "0" })
 
+
+    /* Create a div for each slide. */
+    // TODO add markdown for a slide.
+    var $slides = [];
+    for (var i in slides) {
+        var slide = slides[i];
+
+        var $slide = addDiv($root, "slide");
+        addImage($slide, slide.image);
+        $slide.custom_image_url = slide.image;
+        $slide.custom_link_to = slide.link_to;
+
+        if (i > 0) {
+            $slide.css({ display: "none" });
+        }
+
+        // TODO BUG seems like only the last slide is clickable?
+        $slide.on("click", (e) => {
+            if ($(slide).is(":visible"))
+            {          
+                if($slide.custom_link_to)
+                {
+                    window.location.href = $slide.custom_link_to;
+                }
+                else if($slide.custom_image_url)
+                {
+                    window.location.href = Layout.site_root_url + $slide.custom_image_url;
+                }
+            }
+        });
+
+        $slides.push($slide);
+    }
+
+    /* Cause clicking the side of each slide to animate + replace it with another. 
+    ** Clicking on the left side of the image slides right,
+    ** and clicking on the right slides left. */
+
     function _slideIn($slide, direction) {
         /* Slide in FROM the given direction. */
         var w = $slide.width();
@@ -90,66 +128,32 @@ function composeSlides($root, slides) {
             }, 400, "linear")
             .hide(0);
     }
-
-    function _click_delta($slide, e) {
-        /* Click distance from the center of the slide. */
-        return e.pageX - ($slide.offset().left + ($slide.width()*0.5));
-    }
     
-    function _linkSlides($lhs_slide, $center_slide, $rhs_slide) {
-        /* Clicking on the left side of the image slides right,
-         * and clicking on the right slides left. */
-        $center_slide.on("click", (e) => {
-            var slide_dist = $center_slide.width() * 0.33;
-            var click_delta = _click_delta($center_slide, e);
-            if (click_delta >= slide_dist)
-            {
-                _slideOut($center_slide, "left");
-                _slideIn($rhs_slide, "right");
-            }
-            else if (click_delta <= -slide_dist)
-            {
-                _slideOut($center_slide, "right");
-                _slideIn($lhs_slide, "left");
-            }
-            else if($center_slide.custom_link_to)
-            {
-                window.location.href = $center_slide.custom_link_to;
-            }
-            else if($center_slide.custom_image_url)
-            {
-                window.location.href = "https://yostlabs.net/" + $center_slide.custom_image_url;
-            }
-        });
-    }
-
-    /* Create a div for each slide. */
-    // TODO add markdown for a slide.
-    var $slides = [];
-    for (var i in slides) {
-        var slide = slides[i];
-
-        var $slide = addDiv($root, "slide");
-        addImage($slide, slide.image);
-        $slide.custom_image_url = slide.image;
-        $slide.custom_link_to = slide.link_to;
-
-        if (i > 0) {
-            $slide.css({ display: "none" });
-        }
-
-        $slides.push($slide);
-    }
-
     function _loop(i) {
         return (i + $slides.length) % $slides.length;
     }
 
-    /* Cause clicking each slide to animate + replace it with another. */
-    for (var key in $slides) {
-        var i = Number(key);
-        _linkSlides($slides[_loop(i-1)], $slides[i], $slides[_loop(i+1)]);
-    }
+    $left_arrow.on("click", (e) => {
+        for (var key in $slides) {
+            var i = Number(key);
+            if ($slides[i].is(":visible")) {
+                _slideOut($center_slide, "right");
+                _slideIn($slides[_loop(i-1)], "left");        
+                break;
+            }
+        }
+    });
+        
+    $right_arrow.on("click", (e) => {
+        for (var key in $slides) {
+            var i = Number(key);
+            if ($slides[i].is(":visible")) {
+                _slideOut($slides[i], "left");
+                _slideIn($slides[_loop(i+1)], "right");
+                break;
+            }
+        }   
+    });
 }
 
 // Build the header of the website.
