@@ -3,7 +3,7 @@ const Layout = {
 
     navbar_logo : "img/logo_23_wide.svg",
     arrow_icon : "img/arrow.svg",
-    
+
     categories : {
         live_demos : { 
             slides : [
@@ -11,27 +11,27 @@ const Layout = {
                     image : "img/software/momul.jpg",
                     link_to : "https://yostlabs.net/momul/",
                     markdown :`
-                    ### Momul
+# Momul
 
-                    A light chesslike strategy game.
+A light chess-like strategy game.
                     `
                 },
                 { 
                     image : "img/software/enso.jpg",
                     link_to : "https://yostlabs.net/enso-zen-garden/",
                     markdown :`
-                    ### Enso
+# Enso
 
-                    A virtual zen garden that changes with the seasons.
+A virtual zen garden that changes with the seasons.
                     `
                 },
                 { 
                     image : "img/software/yostos.jpg",
                     link_to : "https://yostlabs.net/yostos/",
                     markdown :`
-                    ### YostOS
+# YostOS
 
-                    A programmable virtual operating system written in TypeScript.
+A programmable virtual operating system written in TypeScript.
                     `
                 },
             ],

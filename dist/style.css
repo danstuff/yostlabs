@@ -67,20 +67,27 @@ a {
     margin: 2em 0;
 }
 
-
 .slide {
     position: absolute; 
     left: 50%;
-    transform: translateX(-50%)
-
+    transform: translateX(-50%);
+    background-color: #ddddf3;
+    box-shadow: 0 0 1em 1em #ddddf3;
 }
 
 .slide img {
-    max-height: 45em;
+    max-height: 100%;
     max-width: 100%;
     cursor: pointer;
 }
 
+.slide h1 {
+    margin: 0.5em 0.25em;
+}
+
+.slide p {
+    margin: 1em;
+}
 .slide_arrow {
     z-index: 1;
     position: absolute;

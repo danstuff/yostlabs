@@ -77,13 +77,16 @@ function composeSlides($root, slides) {
 
 
     /* Create a div for each slide. */
-    // TODO add markdown for a slide.
     var $slides = [];
     for (var i in slides) {
         var slide = slides[i];
 
         var $slide = addDiv($root, "slide");
         addImage($slide, slide.image, slide.link_to);
+        
+        if (slide.markdown) {
+            addMarkdown($slide, slide.markdown);
+        }
 
         if (i > 0) {
             $slide.css({ "display" : "none", "z-index" : "-1" });
