@@ -84,18 +84,14 @@ function composeSlides($root, slides) {
             $slide.css({ display: "none" });
         }
 
-        // TODO BUG seems like only the last slide is clickable?
         $slide.on("click", (e) => {
-            if ($(slide).is(":visible"))
-            {          
-                if($slide.custom_link_to)
-                {
-                    window.location.href = $slide.custom_link_to;
-                }
-                else if($slide.custom_image_url)
-                {
-                    window.location.href = Layout.site_root_url + $slide.custom_image_url;
-                }
+            if(slide.link_to)
+            {
+                window.location.href = slide.link_to;
+            }
+            else if(slide.image)
+            {
+                window.location.href = Layout.site_root_url + slide.image;
             }
         });
 
@@ -137,7 +133,7 @@ function composeSlides($root, slides) {
         for (var key in $slides) {
             var i = Number(key);
             if ($slides[i].is(":visible")) {
-                _slideOut($center_slide, "right");
+                _slideOut($slides[i], "right");
                 _slideIn($slides[_loop(i-1)], "left");        
                 break;
             }
@@ -166,7 +162,7 @@ function composeHeader($root) {
     forEachCategory((category_name, _) => {
 
         var $item = addDiv($items, "navbar_item");
-        addText($item, category_name);
+        addText($item, category_name.replace("_", " "));
 
         $item.on("click", () => {
             $(".category").fadeOut(FADE_MS);
