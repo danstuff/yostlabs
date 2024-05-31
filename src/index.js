@@ -20,8 +20,16 @@ function addElement($root, type, args) {
 // Append an image to the document.
 // $root - the parent element to append to.
 // src - the path to the image file.
-function addImage($root, src) {
-    return addElement($root, "img", { "src" : src });
+// link_to - (Optional) a URL to treat the image as a link.
+function addImage($root, src, link_to) {
+    if (link_to) {
+        var $a = addElement($root, "a", { "href" : link_to });
+        addElement($a, "img", { "src" : src });
+        return $a
+    }
+    else {
+        return addElement($root, "img", { "src" : src });
+    }
 }
 
 // Append a div of a specific class to the document.
@@ -60,13 +68,12 @@ function composeSlides($root, slides) {
     
     /* Add left and right arrows. */
     var $left_arrow = addDiv($root, "slide_arrow");
-    var $left_arrow_img = addImage($left_arrow, Layout.arrow_icon);
-    $left_arrow_img.css({ transform: "scaleX(-1)" });
-    $left_arrow.css({ left: "0" });
+    addImage($left_arrow, Layout.arrow_icon);
+    $left_arrow.css({ "left" : "0", "transform" : "scaleX(-1)" });
 
     var $right_arrow = addDiv($root, "slide_arrow");
     addImage($right_arrow, Layout.arrow_icon);
-    $right_arrow.css({ right: "0" })
+    $right_arrow.css({ "right" : "0" })
 
 
     /* Create a div for each slide. */
@@ -76,24 +83,11 @@ function composeSlides($root, slides) {
         var slide = slides[i];
 
         var $slide = addDiv($root, "slide");
-        addImage($slide, slide.image);
-        $slide.custom_image_url = slide.image;
-        $slide.custom_link_to = slide.link_to;
+        addImage($slide, slide.image, slide.link_to);
 
         if (i > 0) {
-            $slide.css({ display: "none" });
+            $slide.css({ "display" : "none", "z-index" : "-1" });
         }
-
-        $slide.on("click", (e) => {
-            if(slide.link_to)
-            {
-                window.location.href = slide.link_to;
-            }
-            else if(slide.image)
-            {
-                window.location.href = Layout.site_root_url + slide.image;
-            }
-        });
 
         $slides.push($slide);
     }
@@ -108,10 +102,11 @@ function composeSlides($root, slides) {
         $slide
             .show(0)
             .css({ 
-                translate: direction == "left" ? -w+"px": (2*w)+"px",
-                opacity: "0.0",
+                "translate" : direction == "left" ? -w+"px": (2*w)+"px",
+                "opacity" : "0.0",
+                "z-index" : "0",
             })
-            .animate({ translate: "0px", opacity: "1.0" }, 400, "linear");
+            .animate({ "translate" : "0px", "opacity" : "1.0" }, 400, "linear");
     }
 
     function _slideOut($slide, direction) {
@@ -119,8 +114,9 @@ function composeSlides($root, slides) {
         var w = $slide.width();
         $slide
             .animate({ 
-                translate: direction == "left" ? -w+"px": (2*w)+"px",
-                opacity: "0.0",
+                "translate": direction == "left" ? -w+"px": (2*w)+"px",
+                "opacity": "0.0",
+                "z-index" : "-1",
             }, 400, "linear")
             .hide(0);
     }
@@ -200,7 +196,7 @@ function composePage($root) {
             addMarkdown($category, category.markdown);
         } 
 
-        $category.css({ display: "none"});
+        $category.css({ "display": "none"});
         if (first) {
             $category.fadeIn(INITIAL_FADE_MS);
             first = false;

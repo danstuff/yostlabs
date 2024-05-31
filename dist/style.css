@@ -13,12 +13,12 @@ body {
 }
 
 hr {
-    margin: 0 auto;
+    margin: 0;
     padding: 0;
     width: 100%;
     height: 6px;
     border: none;
-    box-shadow: inset 0 6px 6px -6px rgba(0,0,0,0.5);
+    box-shadow: inset 0 6px 6px -6px #00000088;
 }
 
 h1, h2, h3, span {
@@ -73,13 +73,14 @@ a {
     left: 0;
     right:0;
     bottom: 4em;
-    cursor: pointer;
 }
 
 .slide img {
-    height: 100%;
-    width: 100%;
+    max-height: 100%;
+    max-width: 100%;
     object-fit: contain;
+    cursor: pointer;
+    box-shadow: inset 0 0 20px 20px black;
 }
 
 .slide_arrow {
@@ -91,10 +92,12 @@ a {
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
 }
 
 .slide_arrow img {
     height: 2em;
+    filter: drop-shadow(0 0 2px black) drop-shadow(0 0 20px black);
 }
 
 .about img {
