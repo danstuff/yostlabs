@@ -207,6 +207,26 @@ function composePage($root) {
             first = false;
         }
     });
+
+    /* Add footer. */
+    if (Layout.footer) {
+        var $footer = addDiv($page, "footer");
+        for (var i in Layout.footer.links) {
+            var link = Layout.footer.links[i];
+            var $footer_section = addElement($footer, "a", { "href" : link.link_to });
+        
+            if (link.icon) {
+                addImage($footer_section, link.icon);
+            }
+
+            if (link.text) {
+                addText($footer_section, link.text);
+            }
+        }
+        if (Layout.footer.copy_notice) {
+            addText(addDiv($footer, "copy_notice"), Layout.footer.copy_notice);            
+        }
+    }
 }
 
 composePage($("#root"));

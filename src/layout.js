@@ -69,18 +69,34 @@ A programmable virtual operating system written in TypeScript.
         },
         about : { 
             markdown : `
-![Profile Picture](img/profile.svg)
+<img class="profile" src="img/profile.svg"></img>
 
 # About Me
 
-*Daniel Yost | Westfield, NJ | <a href="https://github.com/danstuff" target="_blank">github.com/danstuff</a> | <a href="https://www.linkedin.com/in/danyost23" target="_blank">linkedin.com/in/danyost23</a>*
+*Daniel Yost  |  Westfield, NJ*
 
 I'm a programmer, designer, and woodworker based in New Jersey. In my spare time, I run yostlabs to share miscellaneous creations with the world. 
 
-Thanks for having a look around.
+Thanks for having a look around!
 `,
         },
     },
+    footer : {
+        links : [   
+            {
+                link_to : "https://github.com/danstuff",
+                icon : "img/github.svg",
+                text : "danstuff",
+            },
+            {
+                link_to : "https://www.linkedin.com/in/danyost23",
+                icon : "img/linkedin.svg",
+                text : "danyost23",
+            },
+        ],
+        copy_notice : "Created by Daniel Yost, 2024",
+    }
+
 };
 
 export { Layout };
