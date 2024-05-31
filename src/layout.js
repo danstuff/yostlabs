@@ -75,7 +75,7 @@ A programmable virtual operating system written in TypeScript.
 
 *Daniel Yost  |  Westfield, NJ*
 
-I'm a programmer, designer, and woodworker based in New Jersey. In my spare time, I run yostlabs to share miscellaneous creations with the world. 
+I'm a programmer, designer, and craftsman based in New Jersey. In my spare time, I run yostlabs to share miscellaneous creations with the world. 
 
 Thanks for having a look around!
 `,

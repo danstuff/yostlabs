@@ -36,7 +36,7 @@ a {
 .navbar {
     z-index: 2;
     width: 100%;
-    position: fixed;
+    position: absolute;
     background-color: #eeeeff;
 }
 
@@ -95,7 +95,7 @@ a {
     position: absolute;
     top: 0;
     bottom: 0;
-    width: 4em;
+    width: 6em;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -103,13 +103,14 @@ a {
 }
 
 .slide_arrow img {
-    height: 2em;
+    height: 4em;
     filter: drop-shadow(0 0 2px #00000088);
 }
 
 .about {
     margin: 0 auto;
     max-width: 50em;
+    padding: 1em;
 }
 
 .about .profile {
@@ -120,7 +121,7 @@ a {
 
 .footer {
     z-index: -1;
-    position: fixed;
+    position: absolute;
     bottom: 1em;
     color: #6e6e75;
     width: 100%;
