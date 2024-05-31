@@ -2,6 +2,7 @@ import { Layout } from "./layout.js";
 import $ from "jquery";
 import * as DOMPurify from 'dompurify';
 import * as marked from 'marked';
+import { transform } from "typescript";
 
 const INITIAL_FADE_MS = 500;
 const FADE_MS = 100;
@@ -56,6 +57,17 @@ function forEachCategory(category_callback) {
 // $root - the parent element to append to.
 // slides - the list of slides. Each slide requires an "image" and may also have a "link_to" URL.
 function composeSlides($root, slides) {
+    
+    /* Add left and right arrows. */
+    var $left_arrow = addDiv($root, "slide_arrow");
+    var $left_arrow_img = addImage($left_arrow, Layout.arrow_icon);
+    $left_arrow_img.css({ transform: "scaleX(-1)" });
+    $left_arrow.css({ left: "0" });
+
+    var $right_arrow = addDiv($root, "slide_arrow");
+    addImage($right_arrow, Layout.arrow_icon);
+    $right_arrow.css({ right: "0" })
+
     function _slideIn($slide, direction) {
         /* Slide in FROM the given direction. */
         var w = $slide.width();
@@ -112,6 +124,7 @@ function composeSlides($root, slides) {
     }
 
     /* Create a div for each slide. */
+    // TODO add markdown for a slide.
     var $slides = [];
     for (var i in slides) {
         var slide = slides[i];
@@ -120,14 +133,6 @@ function composeSlides($root, slides) {
         addImage($slide, slide.image);
         $slide.custom_image_url = slide.image;
         $slide.custom_link_to = slide.link_to;
-
-        var $left_arrow = addDiv($slide, "slide_arrow");
-        addText(addDiv($left_arrow), "<");
-        $left_arrow.css({ left: "0" })
-
-        var $right_arrow = addDiv($slide, "slide_arrow");
-        addText(addDiv($right_arrow), ">");
-        $right_arrow.css({ right: "0" })
 
         if (i > 0) {
             $slide.css({ display: "none" });

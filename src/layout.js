@@ -1,54 +1,66 @@
 const Layout = {
     navbar_logo : "img/logo_23_wide.svg",
+    arrow_icon : "img/arrow.svg",
     categories : {
-        software : { 
+        live_demos : { 
             slides : [
                 { 
-                    image: "img/software/momul.jpg",
-                    link_to: "https://yostlabs.net/momul/",
+                    image : "img/software/momul.jpg",
+                    link_to : "https://yostlabs.net/momul/",
+                    markdown :`
+                    ### Momul
+
+                    A light chesslike strategy game.
+                    `
                 },
                 { 
-                    image: "img/software/enso.jpg",
-                    link_to: "https://yostlabs.net/enso-zen-garden/",
+                    image : "img/software/enso.jpg",
+                    link_to : "https://yostlabs.net/enso-zen-garden/",
+                    markdown :`
+                    ### Enso
+
+                    A virtual zen garden that changes with the seasons.
+                    `
                 },
                 { 
-                    image: "img/software/yostos.jpg",
-                    link_to: "https://yostlabs.net/yostos/",
+                    image : "img/software/yostos.jpg",
+                    link_to : "https://yostlabs.net/yostos/",
+                    markdown :`
+                    ### YostOS
+
+                    A programmable virtual operating system written in TypeScript.
+                    `
                 },
             ],
         },
-        jewlery : {
+        crafts : {
             slides : [
                 {
-                    image: "img/jewlery/bracelet.jpg",
+                    image : "img/jewlery/bracelet.jpg",
                 },
                 {
-                    image: "img/jewlery/ring.jpg",
-                },
-            ],
-        },
-        woodworking : {
-            slides : [
-                {
-                    image: "img/woodworking/sunshine_tiles_v1.jpg",
+                    image : "img/jewlery/ring.jpg",
                 },
                 {
-                    image: "img/woodworking/sunshine_tiles_v2.jpg",
+                    image : "img/woodworking/sunshine_tiles_v1.jpg",
                 },
                 {
-                    image: "img/woodworking/oak_serving_tray_v1.jpg",
+                    image : "img/woodworking/sunshine_tiles_v2.jpg",
                 },
                 {
-                    image: "img/woodworking/oak_serving_tray_v2.jpg",
+                    image : "img/woodworking/oak_serving_tray_v1.jpg",
                 },
                 {
-                    image: "img/woodworking/incense_holders.jpg",
+                    image : "img/woodworking/oak_serving_tray_v2.jpg",
                 },
                 {
-                    image: "img/woodworking/coffee_table.jpg",
+                    image : "img/woodworking/incense_holders.jpg",
                 },
                 {
-                    image: "img/woodworking/chair.jpg",
+                    image : "img/woodworking/coffee_table.jpg",
+                },
+                {
+                    image : "img/woodworking/chair.jpg",
                 },
             ],
         },
@@ -58,9 +70,9 @@ const Layout = {
 
 # About Me
 
-*Daniel Yost | Troy, NY | <a href="https://github.com/danstuff" target="_blank">github.com/danstuff</a> | <a href="https://www.linkedin.com/in/danyost23" target="_blank">linkedin.com/in/danyost23</a>*
+*Daniel Yost | Westfield, NJ | <a href="https://github.com/danstuff" target="_blank">github.com/danstuff</a> | <a href="https://www.linkedin.com/in/danyost23" target="_blank">linkedin.com/in/danyost23</a>*
 
-I'm a programmer, designer, and woodworker based in upstate NY. In my spare time, I run yostlabs to share miscellaneous creations with the world. 
+I'm a programmer, designer, and woodworker based in New Jersey. In my spare time, I run yostlabs to share miscellaneous creations with the world. 
 
 Thanks for having a look around.
 `,
