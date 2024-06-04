@@ -2,7 +2,6 @@ import { Layout } from "./layout.js";
 import $ from "jquery";
 import * as DOMPurify from 'dompurify';
 import * as marked from 'marked';
-import { transform } from "typescript";
 
 const INITIAL_FADE_MS = 500;
 const FADE_MS = 100;
@@ -224,7 +223,7 @@ function composePage($root) {
             }
         }
         if (Layout.footer.copy_notice) {
-            addText(addDiv($footer, "copy_notice"), Layout.footer.copy_notice);            
+            addText(addDiv($footer, "copy_notice"), Layout.footer.copy_notice);             
         }
     }
 }

@@ -8,21 +8,21 @@ const Layout = {
         live_demos : { 
             slides : [
                 { 
-                    image : "img/software/momul.jpg",
-                    link_to : "https://yostlabs.net/momul/",
-                    markdown :`
-# Momul
-
-A light chess-like strategy game.
-                    `
-                },
-                { 
                     image : "img/software/enso.jpg",
                     link_to : "https://yostlabs.net/enso-zen-garden/",
                     markdown :`
 # Enso
 
 A virtual zen garden that changes with the seasons.
+                    `
+                },
+                { 
+                    image : "img/software/momul.jpg",
+                    link_to : "https://yostlabs.net/momul/",
+                    markdown :`
+# Momul
+
+A light chess-like strategy game.
                     `
                 },
                 { 

@@ -3,8 +3,8 @@
 body {
     font-family: serif;
     font-size: 18px;
-    background-color: #eeeeff;
-    color: black;
+    background-color: #19191b;
+    color: #fefefe;
 
     margin: 0;
     padding: 0;
@@ -37,7 +37,6 @@ a {
     z-index: 2;
     width: 100%;
     position: absolute;
-    background-color: #eeeeff;
 }
 
 .navbar img {
@@ -71,7 +70,7 @@ a {
     position: absolute; 
     left: 50%;
     transform: translateX(-50%);
-    background-color: #ddddf3;
+    background-color: #232327;
     padding: 0.5em;
     box-shadow: 0.25em 0.25em 0.25em -0.2em #00000088;
 }
@@ -104,7 +103,7 @@ a {
 
 .slide_arrow img {
     height: 4em;
-    filter: drop-shadow(0 0 2px #00000088);
+    filter: drop-shadow(0 0 2px #ffffff88);
 }
 
 .about {
