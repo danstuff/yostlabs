@@ -11,6 +11,7 @@ module.exports = {
         index: './src/index.pug',
         crafts: './src/crafts.pug',
         about: './src/about.pug',
+        not_found: './src/not_found.pug',
       },
       js: {
         filename: './assets/[name].js'
