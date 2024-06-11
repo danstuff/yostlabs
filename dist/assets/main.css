@@ -2080,3 +2080,11 @@ url(bootstrap-icons/font/fonts/bootstrap-icons.woff?dd67030699838ea613ee6dbda90e
 .bi-suitcase2-fill::before { content: "\f901"; }
 .bi-suitcase2::before { content: "\f902"; }
 .bi-vignette::before { content: "\f903"; }
+.btn-custom {
+    --bs-btn-bg: #4c00ff !important;
+    --bs-btn-border-color: #4c00ff !important;
+    --bs-btn-hover-bg: #5e1cfa !important;
+    --bs-btn-hover-border-color: #5e1cfa !important;
+    --bs-btn-active-bg: #3800bb !important;
+    --bs-btn-active-border-color: #3800bb !important;
+}
