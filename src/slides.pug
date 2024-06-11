@@ -1,0 +1,45 @@
+extends layout
+
+mixin slides(items)
+  // Item structure:
+  // [0] - Thumbnail image path
+  // [1] - Optional Title
+  // [2] - Optional Description
+  // [3] - Optional "Play Now" Demo URL
+  .carousel-indicators
+    each item, index in items
+      button(class={ active: index === 0 } style='filter: drop-shadow( 0px 0px 4px rgba(0, 0, 0, 1));' type='button', data-bs-target='#slideCarousel', data-bs-slide-to=index)
+  .carousel-inner.h-100
+    each item, index in items
+      .carousel-item.h-100(class={ active: index === 0 })
+        a(class={ 'pe-none': item.length >= 3 } href=item[0])
+          svg.bd-placeholder-img(width='100%', height='100%', preserveAspectRatio='xMidYMid slice', focusable='true')
+            radialGradient(fx='50%', fy='50%', r='55%', spreadMethod='pad', id='grad' + index)
+              stop(offset='20%', stop-color='#000000', stop-opacity='0')
+              stop(offset='40%', stop-color='#000000', stop-opacity='0.2')
+              stop(offset='60%', stop-color='#000000', stop-opacity='0.4')
+              stop(offset='80%', stop-color='#000000', stop-opacity='0.6')
+              stop(offset='100%', stop-color='#000000', stop-opacity='0.8')
+            image(width='100%', height='100%', preserveAspectRatio='xMidYMid slice',  href=item[0])
+            rect(filter='url(#blur)', style='fill:url(#grad' + index + ')' width='100%', height='100%')
+
+        .container
+          if item[1]
+            .carousel-caption.text-start.bg-dark.px-4.mb-4.shadow
+              h1= item[1]
+              if item[2]
+                p.opacity-75= item[2]
+                if item[3]
+                  p.my-0
+                    a.btn.btn-lg.btn-primary(href=item[3]) Play Now
+
+block main
+  #slideCarousel.carousel.slide.mb-6.pointer-event.h-100(data-bs-ride='carousel')
+    block slidewrapper
+
+    button.carousel-control-prev(type='button', data-bs-target='#slideCarousel', data-bs-slide='prev')
+      span.carousel-control-prev-icon(style='filter: drop-shadow( 0px 0px 4px rgba(0, 0, 0, 1)) drop-shadow( 0px 0px 4px rgba(0, 0, 0, 1));', aria-hidden='true')
+      span.visually-hidden Previous
+    button.carousel-control-next(type='button', data-bs-target='#slideCarousel', data-bs-slide='next')
+      span.carousel-control-next-icon(style='filter: drop-shadow( 0px 0px 4px rgba(0, 0, 0, 1)) drop-shadow( 0px 0px 4px rgba(0, 0, 0, 1));', aria-hidden='true')
+      span.visually-hidden Next

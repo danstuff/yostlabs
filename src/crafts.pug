@@ -1,0 +1,23 @@
+extends slides 
+
+block navitems
+  li.nav-item
+    a.nav-link(href='https://yostlabs.net/') Live Demos
+  li.nav-item
+    a.nav-link.active(aria-current='page', href='#') Crafts
+  li.nav-item
+    a.nav-link(href='https://yostlabs.net/about') About
+
+block slidewrapper
+  - var items = [
+  -   ['./assets/img/crafts/sunshine_tiles_v1.jpg'],
+  -   ['./assets/img/crafts/sunshine_tiles_v2.jpg'],
+  -   ['./assets/img/crafts/bracelet.jpg'],
+  -   ['./assets/img/crafts/ring.jpg'],
+  -   ['./assets/img/crafts/oak_serving_tray_v1.jpg'],
+  -   ['./assets/img/crafts/oak_serving_tray_v2.jpg'],
+  -   ['./assets/img/crafts/incense_holders.jpg'],
+  -   ['./assets/img/crafts/coffee_table.jpg'],
+  -   ['./assets/img/crafts/rocking_chair.jpg'], 
+  - ];
+  +slides(items)

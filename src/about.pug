@@ -1,0 +1,18 @@
+extends layout 
+
+block navitems
+  li.nav-item
+    a.nav-link(href='https://yostlabs.net/') Live Demos
+  li.nav-item
+    a.nav-link(href='https://yostlabs.net/crafts') Crafts
+  li.nav-item
+    a.nav-link.active(aria-current='page', href='#') About
+
+block main 
+  .container.d-flex.flex-column.align-items-center
+    img.m-4(height='150px' src='./assets/img/profile.svg')
+    div
+      h1.mb-0 About Me 
+      p.fst-italic Daniel Yost - Westfield, NJ 
+      p I'm a programmer, designer, and craftsman based in New Jersey. In my spare time, I run yostlabs to share my creations with the world. 
+      p Thanks for having a look around!
