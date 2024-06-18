@@ -2,11 +2,11 @@ extends slides
 
 block navitems
   li.nav-item
-    a.nav-link(href='https://yostlabs.net/') Live Demos
+    a.nav-link(href='https://yostlabs.net/', aria-label='Live Demos') Live Demos
   li.nav-item
-    a.nav-link.active(aria-current='page', href='#') Crafts
+    a.nav-link.active(href='#', aria-current='page', aria-label='Crafts') Crafts
   li.nav-item
-    a.nav-link(href='https://yostlabs.net/about') About
+    a.nav-link(href='https://yostlabs.net/About', aria-label='About') About
 
 block slidewrapper
   - var items = [
