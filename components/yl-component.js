@@ -23,7 +23,6 @@ export default class ylComponent extends HTMLElement {
   }
 
   set state(newState) {
-    console.log(this._state, newState);
     this._state = { ...this._state, ...newState };
     for (const key in newState) {
       this.setAttribute(key, JSON.stringify(newState[key]));
