@@ -1,5 +1,7 @@
 export default class ylComponent extends HTMLElement {
 
+  static attributes = [];
+
   html() {
     return ``;
   }
@@ -7,23 +9,9 @@ export default class ylComponent extends HTMLElement {
   css() {
     return ``;
   }
-  
-  get(attribute) {
-    return this.hasAttribute(attribute) ? 
-      this.getAttribute(attribute) || true : 
-      false;
-  }
 
-  set(attribute, value) {
-    if (typeof(value) == 'boolean') {
-      if (value) {
-        this.setAttribute(attribute, '');
-      } else {
-        this.removeAttribute(attribute);
-      }
-    } else {
-      this.setAttribute(attribute, value);
-    }
+  callbacks() {
+    return;
   }
 
   render() {
@@ -39,33 +27,12 @@ export default class ylComponent extends HTMLElement {
 
   constructor() {
     super();
-
+    this.callbacks();
     this.render();
-
-    // Register callback functions
-    for (const key in this) {
-      if (typeof(this[key]) === 'function' && key.startsWith('on')) {
-        
-        const callback = (e) => {
-          this[key](e);
-        }
-
-        if (key.startsWith("Document", 2)) {
-          document.addEventListener(key.slice(10), callback)
-        } else {
-          this.addEventListener(key.slice(2), callback);   
-          console.log(key)
-        }        
-      }
-    }
-
-    for (const attribute of this.constructor.observedAttributes) {
-      console.log(attribute, this[attribute]);
-    }
   }
 
   static get observedAttributes() {
-    return this.attributes();
+    return this.attributes;
   }
 
   attributeChangedCallback(_name, _oldValue, _newValue) {
