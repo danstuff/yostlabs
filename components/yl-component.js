@@ -1,8 +1,4 @@
 export default class ylComponent extends HTMLElement {
-  
-  initialize() {
-    return {};
-  }
 
   html() {
     return ``;
@@ -12,22 +8,22 @@ export default class ylComponent extends HTMLElement {
     return ``;
   }
   
-  get state() {
-    if (!this._state) {
-      this._state = {};
-    }
-    for (const key in this._state) {
-      this._state[key] = JSON.parse(this.getAttribute(key));
-    }
-    return this._state;
+  get(attribute) {
+    return this.hasAttribute(attribute) ? 
+      this.getAttribute(attribute) || true : 
+      false;
   }
 
-  set state(newState) {
-    this._state = { ...this._state, ...newState };
-    for (const key in newState) {
-      this.setAttribute(key, JSON.stringify(newState[key]));
+  set(attribute, value) {
+    if (typeof(value) == 'boolean') {
+      if (value) {
+        this.setAttribute(attribute, '');
+      } else {
+        this.removeAttribute(attribute);
+      }
+    } else {
+      this.setAttribute(attribute, value);
     }
-    this.render();
   }
 
   render() {
@@ -41,12 +37,43 @@ export default class ylComponent extends HTMLElement {
     `;
   }
 
-  connectedCallback() {
-    this.state = this.initialize();
+  constructor() {
+    super();
+
+    this.render();
+
+    // Register callback functions
+    for (const key in this) {
+      if (typeof(this[key]) === 'function' && key.startsWith('on')) {
+        
+        const callback = (e) => {
+          this[key](e);
+        }
+
+        if (key.startsWith("Document", 2)) {
+          document.addEventListener(key.slice(10), callback)
+        } else {
+          this.addEventListener(key.slice(2), callback);   
+          console.log(key)
+        }        
+      }
+    }
+
+    for (const attribute of this.constructor.observedAttributes) {
+      console.log(attribute, this[attribute]);
+    }
+  }
+
+  static get observedAttributes() {
+    return this.attributes();
+  }
+
+  attributeChangedCallback(_name, _oldValue, _newValue) {
+    this.render();
   }
 
   static define() {
-    /* Convert CamelCase class name to kebab-case element name */
+    // Convert CamelCase class name to kebab-case element name
     const elementName = this.name.replace(
       /([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase();
 

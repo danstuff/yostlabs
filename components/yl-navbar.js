@@ -2,15 +2,21 @@ import ylComponent from "./yl-component"
 
 export default class ylNavbar extends ylComponent {
 
-  initialize() {
-    return {
-      collapsed: true
-    };
+  static attributes() {
+    return ['collapsed'];
+  }
+
+  get collapsed() {
+    return 'foo'
+  }
+
+  set collapsed(value) {
+    return this.set('collapsed', value);
   }
 
   html() {
     return `
-      <p>${this.state.collapsed ? 'collapsy' : 'expandy'}</p>
+      <p>${this.collapsed ? 'collapsy' : 'expandy'}</p>
     `;
   }
 
@@ -20,6 +26,10 @@ export default class ylNavbar extends ylComponent {
         color: blue;
       }
     `;
+  }
+
+  onClick(e) {
+    this.collapsed = !this.collapsed;
   }
 }
 
