@@ -12,20 +12,17 @@ export default class ylComponent extends HTMLElement {
     return ``;
   }
 
-  callbacks() {
-  }
-
   constructor() {
     super();
 
     this.attachShadow({ mode: 'open' });
-    this.reflect();
-    this.callbacks();
-    this.render();
+    this.reflectAttributes();
+    this.registerCallbacks();
+    this.renderDOM();
   }
 
   attributeChangedCallback(_name, _oldValue, _newValue) {
-    this.render();
+    this.renderDOM();
   }
 
   /**
@@ -34,7 +31,7 @@ export default class ylComponent extends HTMLElement {
    * attribute 'foo' on a component using this.foo, or set the 
    * value of foo to 'bar' with this.foo = 'bar'.
    */
-  reflect() {
+  reflectAttributes() {
     for (const attribute of this.constructor.observedAttributes) {
       Object.defineProperty(this, attribute, {
         get: () => {
@@ -70,11 +67,28 @@ export default class ylComponent extends HTMLElement {
   }
 
   /**
+   * If the child class has functions defined such as
+   * 'onWindowResize' or 'onClick', register them as event
+   * listeners.
+   */
+  registerCallbacks() {
+    if (this.onWindowResize) {
+      window.addEventListener('resize', 
+        this.onWindowResize.bind(this));
+    }
+
+    if (this.onClick) {
+      this.addEventListener('click',
+        this.onClick.bind(this));
+    }
+  }
+
+  /**
    * Redraw the entire element's structure and style to the
    * element's shadowDOM. Performed automatically after creation and
    * after an attribute is changed.
    */ 
-  render() {
+  renderDOM() {
     this.shadowRoot.innerHTML = `
       ${this.html}
       <style>${this.css}</style>
@@ -87,7 +101,7 @@ export default class ylComponent extends HTMLElement {
    * name is converted to kebab-case element name, so class ylNavbar
    * links to component yl-navbar. 
    */ 
-  static define() {
+  static defineElement() {
     const elementName = this.name.replace(
       /([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase();
 

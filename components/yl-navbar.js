@@ -2,40 +2,37 @@ import ylComponent from "./yl-component"
 
 export default class ylNavbar extends ylComponent {
 
-  static attributes = ['collapsed'];
-
-  get collapsed() {
-    return this.hasAttribute('collapsed');
+  static get observedAttributes() {
+    return ['expanded', 'compact'];
   }
 
-  set collapsed(value) {
-    if (value) {
-      this.setAttribute('collapsed', '');
-    } else {
-      this.removeAttribute('collapsed')
-    }
-  }
-
-  html() {
+  get html() {
     return `
-      <p>${this.collapsed ? 'collapsy' : 'expandy'}</p>
+      <p>${this.expanded ? 'expanded!' : 'collapsed!'}</p>
+      <p>${this.compact ? 'compact!' : 'full!'}</p>
       <slot></slot>
     `;
   }
 
-  css() {
+  get css() {
     return `
-      p {
-        color: blue;
+      :host {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
       }
     `;
   }
 
-  callbacks() {
-    this.onclick = () => {
-      this.collapsed = !this.collapsed;
-    }
+  onClick() {
+    this.expanded = this.compact ? !this.expanded : false;
+  }
+
+  onWindowResize() {
+    this.compact = this.offsetWidth < 500;
+    this.expanded = this.compact ? this.expanded : false;
   }
 }
 
-ylNavbar.define();
+ylNavbar.defineElement();
