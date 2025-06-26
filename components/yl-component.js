@@ -75,9 +75,6 @@ export default class ylComponent extends HTMLElement {
    * after an attribute is changed.
    */ 
   render() {
-    if (!this.shadowRoot) {
-    }
-
     this.shadowRoot.innerHTML = `
       ${this.html}
       <style>${this.css}</style>
