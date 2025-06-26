@@ -2,21 +2,24 @@ import ylComponent from "./yl-component"
 
 export default class ylNavbar extends ylComponent {
 
-  static attributes() {
-    return ['collapsed'];
-  }
+  static attributes = ['collapsed'];
 
   get collapsed() {
-    return 'foo'
+    return this.hasAttribute('collapsed');
   }
 
   set collapsed(value) {
-    return this.set('collapsed', value);
+    if (value) {
+      this.setAttribute('collapsed', '');
+    } else {
+      this.removeAttribute('collapsed')
+    }
   }
 
   html() {
     return `
       <p>${this.collapsed ? 'collapsy' : 'expandy'}</p>
+      <slot></slot>
     `;
   }
 
@@ -28,8 +31,10 @@ export default class ylNavbar extends ylComponent {
     `;
   }
 
-  onClick(e) {
-    this.collapsed = !this.collapsed;
+  callbacks() {
+    this.onclick = () => {
+      this.collapsed = !this.collapsed;
+    }
   }
 }
 
