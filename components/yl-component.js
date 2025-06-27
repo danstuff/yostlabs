@@ -12,12 +12,17 @@ export default class ylComponent extends HTMLElement {
     return ``;
   }
 
+  mapDOM() {
+
+  }
+
   constructor() {
     super();
 
-    this.attachShadow({ mode: 'open' });
     this.reflectAttributes();
     this.registerCallbacks();
+    
+    this.attachShadow({ mode: 'open' });
     this.renderDOM();
   }
 
@@ -42,7 +47,7 @@ export default class ylComponent extends HTMLElement {
           }
 
           const num = Number(value);
-          if (num !== NaN) {
+          if (!Number.isNaN(num)) {
             return num;
           }
 
@@ -88,6 +93,9 @@ export default class ylComponent extends HTMLElement {
       ${this.html}
       <style>${this.css}</style>
     `;
+
+    this.dom = {};
+    this.mapDOM();
   }
 
   /**
