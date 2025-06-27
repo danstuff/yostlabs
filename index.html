@@ -9,18 +9,11 @@
     <script type="module" src="components/yl-navbar.js"></script>
   </head>
   <body>
-    <yl-navbar>
-      <yl-icon
-        image="images/logo_23.svg"
-        href="/"
-        size="m">
-      </yl-icon>
-      <yl-hamburger>
-        <a href="#" data-filter="software">Software</a>
-        <a href="#" data-filter="games">Games</a>
-        <a href="#" data-filter="woodwork">Woodwork</a>
-        <a href="#" data-filter="">All</a>
-      </yl-hamburger>
+    <yl-navbar icon="images/logo_23_wide.svg">
+      <a href="#" data-filter="software">Software</a>
+      <a href="#" data-filter="games">Games</a>
+      <a href="#" data-filter="woodwork">Woodwork</a>
+      <a href="#" data-filter="">All</a>
     </yl-navbar>
 
     <yl-tile
@@ -33,5 +26,20 @@
     <yl-modal>
       This is a sample modal!
     </yl-modal>
+
+    <yl-footer>
+      <yl-icon 
+        image="images/github.svg" 
+        href="github.com/danstuff">
+      </yl-icon>
+      <yl-icon 
+        image="images/linkedin.svg" 
+        href="linkedin.com/in/danyost23">
+      </yl-icon>
+      <yl-icon 
+        image="images/youtube.svg" 
+        href="https://www.youtube.com/@danielyost601">
+      </yl-icon>
+    </yl-footer>
   </body>
 </html>
