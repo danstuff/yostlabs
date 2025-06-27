@@ -1,5 +1,25 @@
 body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  background-color: black;
+  color: white;
+}
+
+yl-navbar {
+  background-image: linear-gradient(to bottom, black 0%, transparent 200%);
+}
+
+yl-navbar::part(icon) {
+  padding-left: 16px;
+}
+
+yl-navbar::part(links) {
+  padding: 32px;
+}
+
+yl-navbar a {
+  padding: 8px;
+  color: white;   
+  text-decoration: none;
 }
