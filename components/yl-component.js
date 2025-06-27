@@ -49,17 +49,12 @@ export default class ylComponent extends HTMLElement {
           return value;
         },
         set: (value) => {
-          switch (typeof(value)) {
-            case "boolean":
-              if (value) {
-                this.setAttribute(attribute, "");
-              } else {
-                this.removeAttribute(attribute);
-              }
-              break;
-            default:
-              this.setAttribute(attribute, value);
-              break;
+          if (value) {
+            this.setAttribute(attribute, 
+              typeof(value) == "boolean" ? 
+                "" : value);
+          } else {
+            this.removeAttribute(attribute);
           }
         }
       })
