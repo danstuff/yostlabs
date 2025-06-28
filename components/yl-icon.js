@@ -16,9 +16,10 @@ export default class ylIcon extends ylComponent {
 
   get css() {
     return `
-      img {
-        height: 32px;
-        width: 32px;
+      a, img {
+        height: inherit;
+        width: inherit;
+        text-decoration: none;
       }
     `;
   }
