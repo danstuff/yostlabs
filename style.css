@@ -1,7 +1,6 @@
 body {
   margin: 0;
   padding: 0;
-  width: 100%;
   background-color: black;
   color: white;
 }
@@ -25,13 +24,13 @@ yl-navbar a {
   text-decoration: none;
 }
 
-yl-footer yl-icon {
-  height: 32px;
-  margin: 16px 32px;
-}
-
 yl-footer::part(hr) {
   width: 400px;
   background: #000000;
   background: linear-gradient(90deg, black 0%, white 25%, white 75%, black 100%);
+}
+
+yl-footer yl-icon {
+  height: 32px;
+  margin: 16px 32px;
 }
