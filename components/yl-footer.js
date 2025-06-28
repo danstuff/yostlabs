@@ -21,9 +21,6 @@ export default class ylFooter extends ylComponent {
         display: flex;
         flex-direction: column;
 
-        position: absolute;
-        bottom: 0;
-
         width: 100%;
         align-items: center;
       }
