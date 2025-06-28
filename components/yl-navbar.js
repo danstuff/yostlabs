@@ -3,12 +3,14 @@ import ylComponent from "./yl-component"
 export default class ylNavbar extends ylComponent {
 
   static get observedAttributes() {
-    return ['compact', 'icon'];
+    return ['compact', 'icon', 'minwidth', 'url'];
   }
 
   get html() {
     return `
-      <img part="icon" src="${this.icon}"></img>
+      <a href="${this.url || "/"}">
+        <img part="icon" src="${this.icon}"></img>
+      </a>
       <slot part="links"></slot>
     `;
   }
@@ -23,17 +25,22 @@ export default class ylNavbar extends ylComponent {
         top: 0;
         left: 0;
         width: 100%;
+        z-index: 100;
+      }
+
+      :host([compact]) {
+        flex-direction: column;
       }
 
       slot {
-        display: block;
+        display: flex;
       }
     `;
   }
 
   mapDOM() {
     this.dom.icon = this.shadowRoot.querySelector('img');
-    this.dom.links = this.shadowRoot.querySelector('slot')
+    this.dom.slot = this.shadowRoot.querySelector('slot');
   }
 
   onClick() {
@@ -41,9 +48,7 @@ export default class ylNavbar extends ylComponent {
   }
 
   onWindowResize() {
-    this.compact = this.offsetWidth < 
-      this.dom.icon.offsetWidth + this.dom.links.offsetWidth;
-
+    this.compact = this.offsetWidth < this.minwidth;
     this.expanded = this.compact ? this.expanded : false;
   }
 }
