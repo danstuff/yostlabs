@@ -7,30 +7,20 @@ export default class ylFooter extends ylComponent {
   }
 
   get html() {
-    return `
-      <hr part="hr"></hr>
-      <div>
-        <slot></slot>
-      </div>`;
+    return `<slot></slot>`;
   }
 
   get css() {
     return `
       :host {
         display: flex;
+        justify-content: center;
+
+        position: absolute;
+        bottom: 0;
+
         width: 100%;
         align-items: center;
-      }
-
-      hr {
-        width: inherit;
-        height: 1px;
-        color: white;
-      }
-    
-      div {
-        display: flex;
-        flex-direction: row;
       }
     `;
   }
