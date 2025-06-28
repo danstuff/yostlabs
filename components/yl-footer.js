@@ -8,7 +8,7 @@ export default class ylFooter extends ylComponent {
 
   get html() {
     return `
-      <hr part=""></hr>
+      <hr part="hr"></hr>
       <div>
         <slot></slot>
       </div>`;
@@ -16,17 +16,21 @@ export default class ylFooter extends ylComponent {
 
   get css() {
     return `
-      hr {
+      :host {
+        display: flex;
         width: 100%;
+        align-items: center;
+      }
+
+      hr {
+        width: inherit;
         height: 1px;
         color: white;
       }
+    
       div {
-        width: 100%;
-      }
-
-      yl-icon {
-        height: 32px;
+        display: flex;
+        flex-direction: row;
       }
     `;
   }
