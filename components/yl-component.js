@@ -24,6 +24,10 @@ export default class ylComponent extends HTMLElement {
     
     this.attachShadow({ mode: 'open' });
     this.renderDOM();
+
+    if (this.onWindowResize) {
+      this.onWindowResize();
+    }
   }
 
   attributeChangedCallback(_name, _oldValue, _newValue) {
@@ -90,8 +94,8 @@ export default class ylComponent extends HTMLElement {
    */ 
   renderDOM() {
     this.shadowRoot.innerHTML = `
-      ${this.html}
       <style>${this.css}</style>
+      ${this.html}
     `;
 
     this.dom = {};
