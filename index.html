@@ -4,24 +4,28 @@
     <title>Yostlabs</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="style.css">
-    <link rel="icon" type="image/x-icon" href="images/logo_23.svg">
+    <link rel="icon" type="image/x-icon" href="images/icons/logo_23.svg">
 
     <script type="module" src="components/yl-navbar.js"></script>
+    <script type="module" src="components/yl-icon.js"></script>
+    <script type="module" src="components/yl-footer.js"></script>
   </head>
   <body>
-    <yl-navbar icon="images/logo_23_wide.svg">
+    <yl-navbar icon="images/icons/logo_23_wide.svg" minwidth="530">
       <a href="#" data-filter="software">Software</a>
       <a href="#" data-filter="games">Games</a>
-      <a href="#" data-filter="woodwork">Woodwork</a>
+      <a href="#" data-filter="crafts">Crafts</a>
       <a href="#" data-filter="">All</a>
     </yl-navbar>
 
-    <yl-tile
-      title="Test"
-      category="software"
-      image="images/test.png"
-      description="This is a test of the thing!">
-    </yl-tile>
+    <yl-tileset>
+      <yl-tile
+        title="Test"
+        category="software"
+        image="images/test.png"
+        description="This is a test of the thing!">
+      </yl-tile>
+    </yl-tileset>
 
     <yl-modal>
       This is a sample modal!
@@ -29,15 +33,15 @@
 
     <yl-footer>
       <yl-icon 
-        image="images/github.svg" 
+        image="images/icons/github.svg" 
         href="github.com/danstuff">
       </yl-icon>
       <yl-icon 
-        image="images/linkedin.svg" 
+        image="images/icons/linkedin.svg" 
         href="linkedin.com/in/danyost23">
       </yl-icon>
       <yl-icon 
-        image="images/youtube.svg" 
+        image="images/icons/youtube.svg" 
         href="https://www.youtube.com/@danielyost601">
       </yl-icon>
     </yl-footer>
