@@ -7,19 +7,20 @@ body {
 }
 
 yl-navbar {
-  background-image: linear-gradient(to bottom, black 0%, transparent 200%);
+  background-color: black;
+  box-shadow: 0px 0px 50px 55px #000000 ;
 }
 
 yl-navbar::part(icon) {
-  padding-left: 16px;
+  margin: 16px;
 }
 
 yl-navbar::part(links) {
-  padding: 32px;
+  margin: 16px 32px;
 }
 
 yl-navbar a {
-  padding: 8px;
+  margin: 8px;
   color: white;   
   text-decoration: none;
 }
