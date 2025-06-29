@@ -21,7 +21,7 @@ export default class ylNavbar extends ylComponent {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        position: absolute;
+        position: sticky;
         top: 0;
         left: 0;
         width: 100%;
@@ -50,6 +50,10 @@ export default class ylNavbar extends ylComponent {
   onWindowResize() {
     this.compact = this.offsetWidth < this.minwidth;
     this.expanded = this.compact ? this.expanded : false;
+  }
+
+  onImagesLoaded() {
+    this.onWindowResize();
   }
 }
 
