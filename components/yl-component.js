@@ -79,17 +79,8 @@ export default class ylComponent extends HTMLElement {
     }
 
     if (this.onClick) {
-      this.addEventListener('click',
+      this.shadowRoot.addEventListener('click',
         this.onClick.bind(this));
-    }
-
-    if (this.onImagesLoaded) {
-      this.imagesLeft = (this.shadowRoot.images?.length || 0) + 1;
-      for (const image in this.shadowRoot.images) {
-        image.addEventListener('load',
-          this.checkImagesLoaded.bind(this));
-      }
-      this.checkImagesLoaded();
     }
   }
 
@@ -108,11 +99,19 @@ export default class ylComponent extends HTMLElement {
     this.mapDOM();
   }
 
-  checkImagesLoaded() {
-    this.imagesLeft--;
-    if (this.imagesLeft == 0) {
-      this.onImagesLoaded();
-    }
+  /**
+   * Bind an event from another part of the application to an event on this component.
+   * @param {*} root The root element to search with selector.
+   * @param {*} selector The selector to query root for descendant elements.
+   * @param {*} srcEvent The event on to bind to on the external elements.  
+   * @param {*} targetEvent The function to trigger on this component when srcEvent is fired.
+   */
+  bind(root, selector, srcEvent, targetEvent) {
+    root.querySelectorAll(selector).forEach(element => {
+      element.addEventListener(srcEvent, e => {
+        this[targetEvent](e);
+      })
+    })
   }
 
   /**
