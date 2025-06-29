@@ -7,6 +7,7 @@
     <link rel="icon" type="image/x-icon" href="images/icons/logo_23.svg">
 
     <script type="module" src="components/yl-navbar.js"></script>
+    <script type="module" src="components/yl-body.js"></script>
     <script type="module" src="components/yl-filterset.js"></script>
     <script type="module" src="components/yl-tile.js"></script>
     <script type="module" src="components/yl-footer.js"></script>
@@ -20,18 +21,16 @@
       <a href="#" data-filter="">All</a>
     </yl-navbar>
 
-    <yl-filterset>
-      <yl-tile
-        title="Test"
-        image="images/test.png"
-        description="This is a test of the thing!"
-        data-category="software">
-      </yl-tile>
-    </yl-filterset>
-
-    <yl-modal>
-      This is a sample modal!
-    </yl-modal>
+    <yl-body>
+      <yl-filterset>
+        <yl-tile
+          title="Test"
+          image="images/test.png"
+          description="This is a test of the thing!"
+          data-category="software">
+        </yl-tile>
+      </yl-filterset>
+    </yl-body>
 
     <yl-footer>
       <yl-icon 
@@ -47,5 +46,9 @@
         href="https://www.youtube.com/@danielyost601">
       </yl-icon>
     </yl-footer>
+
+    <yl-modal>
+      This is a sample modal!
+    </yl-modal>
   </body>
 </html>
