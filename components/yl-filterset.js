@@ -3,17 +3,32 @@ import ylComponent from "./yl-component";
 export default class ylFilterset extends ylComponent {
 
   static get observedAttributes() {
-    return [];
+    return ['name'];
   }
 
-  get html() {
-    return `
-      <slot></slot>
-    `;
+  filterBy(filter) {
+    const filterCategory = 
+      filter.dataset[`${this.name}Filter`] || "";
+
+    for (const child of this.children) {
+      const childCategory = 
+        child.dataset[`${this.name}Category`] || "";
+
+      child.style.display = 
+        filterCategory == childCategory || filterCategory == "" ?
+          "initial" : "none";
+    }
   }
 
-  get css() {
-    return ``;
+  connectedCallback() {
+    const filters = 
+      document.querySelectorAll(`[data-${this.name}-filter]`);
+
+    for (const filter of filters) {
+      filter.addEventListener('click', () => {
+        this.filterBy(filter);
+      });
+    }
   }
 }
 
