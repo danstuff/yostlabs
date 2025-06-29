@@ -15,23 +15,21 @@
   </head>
   <body>
     <yl-navbar icon="images/icons/logo_23_wide.svg" minwidth="530">
-      <a href="#" data-filter="software">Software</a>
-      <a href="#" data-filter="games">Games</a>
-      <a href="#" data-filter="crafts">Crafts</a>
-      <a href="#" data-filter="">All</a>
+      <a href="#" data-app-filter="software">Software</a>
+      <a href="#" data-app-filter="games">Games</a>
+      <a href="#" data-app-filter="crafts">Crafts</a>
+      <a href="#" data-app-filter="">All</a>
     </yl-navbar>
 
-    <yl-body>
-      <yl-filterset>
-        <yl-tile
-          title="Test"
-          image="images/test.png"
-          description="This is a test of the thing!"
-          data-category="software">
-        </yl-tile>
-      </yl-filterset>
-    </yl-body>
-
+    <yl-filterset name="app">
+      <yl-tile
+        title="Test"
+        image="images/test.png"
+        description="This is a test of the thing!"
+        data-category="software">
+      </yl-tile>
+    </yl-filterset>
+    
     <yl-footer>
       <yl-icon 
         image="images/icons/github.svg" 
