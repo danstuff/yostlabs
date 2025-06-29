@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Yostlabs</title>
+    <title>yostlabs</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/x-icon" href="images/icons/logo_23.svg">
@@ -22,11 +22,37 @@
     </yl-navbar>
 
     <yl-filterset name="app">
+
       <yl-tile
         title="Test"
-        image="images/test.png"
+        image="images/live_demos/enso.jpg"
         description="This is a test of the thing!"
-        data-category="software">
+        data-category="software"
+        data-open-modal="tile">
+      </yl-tile>
+
+      <yl-tile
+        title="Test"
+        image="images/live_demos/enso.jpg"
+        description="This is a test of the thing!"
+        data-category="software"
+        data-open-modal="tile">
+      </yl-tile>
+
+      <yl-tile
+        title="Test"
+        image="images/live_demos/enso.jpg"
+        description="This is a test of the thing!"
+        data-category="software"
+        data-open-modal="tile">
+      </yl-tile>
+
+      <yl-tile
+        title="Test"
+        image="images/live_demos/enso.jpg"
+        description="This is a test of the thing!"
+        data-category="software"
+        data-open-modal="tile">
       </yl-tile>
     </yl-filterset>
     
@@ -45,8 +71,10 @@
       </yl-icon>
     </yl-footer>
 
-    <yl-modal>
-      This is a sample modal!
+    <yl-modal name="tile">
+      <img src="" class="fill"></img>
+      <h3></h3>
+      <p></p>
     </yl-modal>
   </body>
 </html>
