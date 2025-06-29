@@ -20,14 +20,11 @@ export default class ylComponent extends HTMLElement {
     super();
 
     this.reflectAttributes();
-    this.registerCallbacks();
     
     this.attachShadow({ mode: 'open' });
     this.renderDOM();
 
-    if (this.onWindowResize) {
-      this.onWindowResize();
-    }
+    this.registerCallbacks();
   }
 
   attributeChangedCallback(_name, _oldValue, _newValue) {
@@ -85,6 +82,15 @@ export default class ylComponent extends HTMLElement {
       this.addEventListener('click',
         this.onClick.bind(this));
     }
+
+    if (this.onImagesLoaded) {
+      this.imagesLeft = (this.shadowRoot.images?.length || 0) + 1;
+      for (const image in this.shadowRoot.images) {
+        image.addEventListener('load',
+          this.checkImagesLoaded.bind(this));
+      }
+      this.checkImagesLoaded();
+    }
   }
 
   /**
@@ -100,6 +106,13 @@ export default class ylComponent extends HTMLElement {
 
     this.dom = {};
     this.mapDOM();
+  }
+
+  checkImagesLoaded() {
+    this.imagesLeft--;
+    if (this.imagesLeft == 0) {
+      this.onImagesLoaded();
+    }
   }
 
   /**
