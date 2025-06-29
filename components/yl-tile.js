@@ -18,11 +18,16 @@ export default class ylTile extends ylComponent {
   get css() {
     return `
       a {
-        display: inline-flex;
+        display: flex;
         flex-direction: column;
         align-items:center;
         text-decoration: inherit;
         color: inherit;
+      }
+
+      img {
+        aspect-ratio: 1 / 1;
+        object-fit: cover;
       }
     `;
   }
