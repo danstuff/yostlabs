@@ -53,11 +53,8 @@ export default class ylModal extends ylComponent {
   }
 
   connectedCallback() {
-    if (!this.name) {
-      return;
-    }
     this.bind(document,
-      `[data-open-modal='${this.name}']`, 
+      `[data-open-modal='${this.name || ""}']`, 
       'click',
       'onOpenModal');
   }
