@@ -35,14 +35,32 @@ yl-navbar a {
 yl-filterset {
   margin-top: 10px;
   flex-grow: 1;
-  width: 100%;
-  max-width: 800px;
+  max-width: 900px;
+
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+yl-tile {
+  margin: 32px;
+}
+
+yl-tile::part(image) {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border: 1px solid white;
 }
 
 yl-footer::part(hr) {
   width: 400px;
   background: #000000;
-  background: linear-gradient(90deg, black 0%, white 25%, white 75%, black 100%);
+  background: linear-gradient(90deg,
+    black 0%,
+    white 25%,
+    white 75%,
+    black 100%);
 }
 
 yl-footer yl-icon {
