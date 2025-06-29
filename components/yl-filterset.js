@@ -6,9 +6,9 @@ export default class ylFilterset extends ylComponent {
     return ['name'];
   }
 
-  filterBy(filter) {
+  onFilter(e) {
     const filterCategory = 
-      filter.dataset[`${this.name}Filter`] || "";
+      e.target.dataset[`${this.name}Filter`] || "";
 
     for (const child of this.children) {
       const childCategory = 
@@ -21,14 +21,10 @@ export default class ylFilterset extends ylComponent {
   }
 
   connectedCallback() {
-    const filters = 
-      document.querySelectorAll(`[data-${this.name}-filter]`);
-
-    for (const filter of filters) {
-      filter.addEventListener('click', () => {
-        this.filterBy(filter);
-      });
-    }
+    this.bind(document, 
+      `[data-${this.name}-filter]`,
+      'click',
+      'onFilter');
   }
 }
 
