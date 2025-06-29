@@ -5,7 +5,7 @@ export default class ylComponent extends HTMLElement {
   }
 
   get html() {
-    return ``;
+    return `<slot></slot>`;
   }
 
   get css() {
