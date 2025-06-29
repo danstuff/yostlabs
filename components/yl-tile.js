@@ -3,7 +3,18 @@ import ylComponent from "./yl-component";
 export default class ylTile extends ylComponent {
 
   static get observedAttributes() {
-    return ['title', 'image'];
+    return ['title', 'image', 'description', 'href'];
+  }
+
+  get modalHTML() {
+    return `
+      <img src="${this.image}"></img>
+      <h3>${this.title}</h3>
+      <p>${this.description}</p>
+      ${this.href ? 
+        `<button href="${this.href}">Try It Now</button>` : 
+        ``}
+    `;
   }
 
   get html() {
