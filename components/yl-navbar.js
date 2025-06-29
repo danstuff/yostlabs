@@ -33,7 +33,7 @@ export default class ylNavbar extends ylComponent {
       }
 
       slot {
-        display: flex;
+        display: block;
       }
     `;
   }
@@ -52,7 +52,7 @@ export default class ylNavbar extends ylComponent {
     this.expanded = this.compact ? this.expanded : false;
   }
 
-  onImagesLoaded() {
+  connectedCallback() {
     this.onWindowResize();
   }
 }
