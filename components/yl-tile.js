@@ -17,11 +17,6 @@ export default class ylTile extends ylComponent {
 
   get css() {
     return `
-      :host {
-        display: inline-block;
-        width: fit-content;
-      }
-
       a {
         display: inline-flex;
         flex-direction: column;
