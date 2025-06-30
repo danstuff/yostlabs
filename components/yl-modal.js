@@ -8,8 +8,7 @@ export default class ylModal extends ylComponent {
 
   get html() {
     return `
-      <div part="background">
-      </div>
+      <div part="background"></div>
       <div part="container">
         <a part="closeButton" href="#">
           <svg
@@ -24,7 +23,9 @@ export default class ylModal extends ylComponent {
                 d="M 5,5 95,95"/>
           </svg>
         </a>
-        <slot></slot>
+        <div part="content">
+          <slot></slot>
+        </div>
       </div>
     `;
   }
@@ -58,17 +59,17 @@ export default class ylModal extends ylComponent {
         overflow-y: auto;
       }
 
+      div[part="content"] {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+      }
+
       div[part="background"] {
         position: fixed;
         z-index: 150;
         width: 100%;
         height: 100%;
-      }
-
-      slot {
-        display: flex;
-        flex-direction: column;
-        height: 90%;
       }
 
       a[part="closeButton"] {

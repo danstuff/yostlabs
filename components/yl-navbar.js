@@ -11,7 +11,9 @@ export default class ylNavbar extends ylComponent {
       <a href="${this.url || "/"}">
         <img part="icon" src="${this.icon}"></img>
       </a>
-      <slot part="links"></slot>
+      <div part="links">
+        <slot></slot>
+      </div>
     `;
   }
 
@@ -31,10 +33,6 @@ export default class ylNavbar extends ylComponent {
 
       :host([compact]) {
         flex-direction: column;
-      }
-
-      slot {
-        display: block;
       }
     `;
   }

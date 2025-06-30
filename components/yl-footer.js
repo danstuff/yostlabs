@@ -9,7 +9,7 @@ export default class ylFooter extends ylComponent {
   get html() {
     return `
       <hr part="hr"></hr>
-      <div>
+      <div part="container">
         <slot></slot>
       </div>
     `;
@@ -30,7 +30,7 @@ export default class ylFooter extends ylComponent {
         background-color: inherit;
       }
 
-      hr {
+      hr[part="hr"] {
         margin: 0;
         padding: 0;
         border: none;
@@ -38,8 +38,8 @@ export default class ylFooter extends ylComponent {
         max-width: 100%;
         height: 1px;
       }
-    
-      div {
+
+      div[part="container"] {
         display: flex;
       }
     `;
