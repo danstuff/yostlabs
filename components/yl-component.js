@@ -90,10 +90,11 @@ export default class ylComponent extends HTMLElement {
    * after an attribute is changed.
    */ 
   renderDOM() {
-    this.shadowRoot.innerHTML = `
-      <style>${this.css}</style>
-      ${this.html}
-    `;
+    this.shadowRoot.innerHTML = '';
+    if (this.css !== '') {
+      this.shadowRoot.innerHTML += `<style>${this.css}</style>`;
+    }
+    this.shadowRoot.innerHTML += this.html;
 
     this.dom = {};
     this.mapDOM();
