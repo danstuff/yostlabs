@@ -8,8 +8,10 @@ export default class ylModal extends ylComponent {
 
   get html() {
     return `
+      <div part="background">
+      </div>
       <div part="container">
-        <a href="#">x</a>
+        <a part="closeButton" href="#"></a>
         <slot></slot>
       </div>
     `;
@@ -19,30 +21,69 @@ export default class ylModal extends ylComponent {
     return `
       :host {
         display: none;
-        position: fixed;
+        position: absolute;
         width: 100vw;
         height: 100vh;
-        z-index: 200;
       }
 
       :host([open]) {
         display: flex;
+        z-index 200;
+      }
+      
+      div[part="container"] {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        max-width: 95%;
+        max-height: 95%;
+        z-index: 200;
+        overflow-y: auto;
       }
 
-      div {
+      div[part="background"] {
+        position: fixed;
+        z-index: 150;
+        width: 100%;
+        height: 100%;
+      }
+
+      slot {
         display: flex;
         flex-direction: column;
-        margin: auto;
-        max-width: 900px;
-        max-height: 100%;
-        overflow-y: auto;
+        height: 90%;
+      }
+
+      a {
+        position: absolute;
+        top: 0;
+        right: 0;
+      }
+
+      a::before, a::after {
+        content: "";
+        display: block;
+        text-decoration: none;
+        margin-top: -0.1em;
+        width: 1em;
+        height: 0.1em;
+        background-color: white;
+      }
+
+      a::before {
+        transform: rotate(-45deg);
+      }
+
+      a::after {
+        transform: rotate(45deg);
       }
     `;
   }
 
   mapDOM() {
     this.dom.closeButton = this.shadowRoot.querySelector('a');
-    this.dom.slot = this.shadowRoot.querySelector('slot');
+    this.dom.background = this.shadowRoot.querySelector('div[part="background"]');
   }
 
   onOpenModal(e) {
@@ -51,7 +92,7 @@ export default class ylModal extends ylComponent {
     const html = e.target.htmlModal;
     const css = e.target.cssModal;
     if (html || css) {
-      this.dom.slot.innerHTML = `
+      this.innerHTML = `
         <style>${css}</style>
         ${html}
       `;
@@ -59,7 +100,8 @@ export default class ylModal extends ylComponent {
   }
 
   onClick(e) {
-    if (e.target == this.dom.closeButton) {
+    if (e.target == this.dom.closeButton ||
+        e.target == this.dom.background) {
       this.open = false;
     }
   }
