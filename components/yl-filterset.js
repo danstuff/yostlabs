@@ -6,6 +6,14 @@ export default class ylFilterset extends ylComponent {
     return ['name'];
   }
 
+  get css() {
+    return `
+      :host {
+        display: contents;
+      }
+    `;
+  }
+
   onFilter(e) {
     const filterCategory = 
       e.target.dataset[`${this.name}Filter`] || "";

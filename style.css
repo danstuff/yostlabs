@@ -4,18 +4,9 @@ html, body {
   background-color: black;
   color: white;
   scrollbar-color: white black;
-  overflow-x: hidden;
-
-  width: 100vw;
-  min-height: 100vh;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
 yl-navbar {
-  background-color: black;
   box-shadow: 0px 0px 50px 40px #000000;
 }
 
@@ -33,14 +24,8 @@ yl-navbar a {
   text-decoration: none;
 }
 
-yl-filterset {
-  margin-top: 10px;
-  flex-grow: 1;
+yl-grid {
   max-width: 900px;
-
-  display: inline-flex;
-  flex-wrap: wrap;
-  justify-content: center;
 }
 
 yl-tile {
@@ -50,6 +35,10 @@ yl-tile {
 yl-tile::part(image) {
   width: 200px;
   border: 1px solid white;
+}
+
+yl-footer {
+  box-shadow: 0px 0px 50px 40px #000000;
 }
 
 yl-footer::part(hr) {
