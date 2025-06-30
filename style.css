@@ -79,5 +79,5 @@ yl-modal::part(background) {
 }
 
 yl-modal::part(closeButton) {
-  font-size: 24px;
+  font-size: 20px;
 }
