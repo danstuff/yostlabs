@@ -6,7 +6,7 @@ export default class ylTile extends ylComponent {
     return ['title', 'image', 'description', 'href'];
   }
 
-  get modalHTML() {
+  get htmlModal() {
     return `
       <img src="${this.image}"></img>
       <h3>${this.title}</h3>
@@ -15,6 +15,10 @@ export default class ylTile extends ylComponent {
         `<button href="${this.href}">Try It Now</button>` : 
         ``}
     `;
+  }
+
+  get cssModal() {
+    return ``
   }
 
   get html() {

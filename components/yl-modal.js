@@ -8,8 +8,10 @@ export default class ylModal extends ylComponent {
 
   get html() {
     return `
-      <a href="#">x</a>
-      <slot></slot>
+      <div part="container">
+        <a href="#">x</a>
+        <slot></slot>
+      </div>
     `;
   }
 
@@ -18,16 +20,22 @@ export default class ylModal extends ylComponent {
       :host {
         display: none;
         position: fixed;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
+        width: 100vw;
+        height: 100vh;
         z-index: 200;
-        max-width: 100%;
-        max-height: 100%;
       }
 
       :host([open]) {
-        display: block;
+        display: flex;
+      }
+
+      div {
+        display: flex;
+        flex-direction: column;
+        margin: auto;
+        max-width: 900px;
+        max-height: 100%;
+        overflow-y: auto;
       }
     `;
   }
@@ -40,9 +48,13 @@ export default class ylModal extends ylComponent {
   onOpenModal(e) {
     this.open = true;
 
-    const content = e.target.modalHTML;
-    if (content) {
-      this.dom.slot.innerHTML = content;
+    const html = e.target.htmlModal;
+    const css = e.target.cssModal;
+    if (html || css) {
+      this.dom.slot.innerHTML = `
+        <style>${css}</style>
+        ${html}
+      `;
     }
   }
 
