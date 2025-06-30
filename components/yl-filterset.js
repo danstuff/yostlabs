@@ -18,9 +18,10 @@ export default class ylFilterset extends ylComponent {
     const filterCategory = 
       e.target.dataset[`${this.name}Filter`] || "";
 
-    for (const child of this.children) {
-      const childCategory = 
-        child.dataset[`${this.name}Category`] || "";
+    const filterableChildren = 
+      this.querySelectorAll(`[data-${this.name}-category]`);
+    for (const child of filterableChildren) {
+      const childCategory = child.dataset[`${this.name}Category`];
 
       child.style.display = 
         filterCategory == childCategory || filterCategory == "" ?
