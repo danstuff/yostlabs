@@ -18,11 +18,16 @@ export default class ylFooter extends ylComponent {
   get css() {
     return `
       :host {
+        position: sticky;
+        bottom: 0;
+
         display: flex;
         flex-direction: column;
 
         width: 100%;
         align-items: center;
+
+        background-color: inherit;
       }
 
       hr {
@@ -30,6 +35,7 @@ export default class ylFooter extends ylComponent {
         padding: 0;
         border: none;
         width: 100%;
+        max-width: 100%;
         height: 1px;
       }
     

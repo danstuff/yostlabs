@@ -26,6 +26,7 @@ export default class ylNavbar extends ylComponent {
         left: 0;
         width: 100%;
         z-index: 100;
+        background-color: inherit;
       }
 
       :host([compact]) {
