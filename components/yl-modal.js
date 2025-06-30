@@ -11,7 +11,19 @@ export default class ylModal extends ylComponent {
       <div part="background">
       </div>
       <div part="container">
-        <a part="closeButton" href="#"></a>
+        <a part="closeButton" href="#">
+          <svg
+            width="100%"
+            height="100%"
+            viewBox="0 0 100 100">
+            <path
+                style="stroke:white;stroke-width:0.75em;"
+                d="M 5,95 95,5"/>
+            <path
+                style="stroke:white;stroke-width:0.75em;"
+                d="M 5,5 95,95"/>
+          </svg>
+        </a>
         <slot></slot>
       </div>
     `;
@@ -28,7 +40,7 @@ export default class ylModal extends ylComponent {
 
       :host([open]) {
         display: flex;
-        z-index 200;
+        z-index: 200;
       }
       
       div[part="container"] {
@@ -55,28 +67,16 @@ export default class ylModal extends ylComponent {
         height: 90%;
       }
 
-      a {
+      a[part="closeButton"] {
         position: absolute;
-        top: 0;
-        right: 0;
-      }
-
-      a::before, a::after {
-        content: "";
-        display: block;
-        text-decoration: none;
-        margin-top: -0.1em;
+        top: 0.5em;
+        right: 0.5em;
         width: 1em;
-        height: 0.1em;
-        background-color: white;
+        height: 1em;
       }
 
-      a::before {
-        transform: rotate(-45deg);
-      }
-
-      a::after {
-        transform: rotate(45deg);
+      a[part="closeButton"] svg {
+        pointer-events: none;
       }
     `;
   }
