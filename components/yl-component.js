@@ -167,3 +167,5 @@ export default class ylComponent extends HTMLElement {
     }
   }
 }
+
+ylComponent.defineElement();
