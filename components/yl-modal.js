@@ -94,13 +94,8 @@ export default class ylModal extends ylComponent {
   onOpenModal(e) {
     this.open = true;
 
-    const html = e.target.htmlModal;
-    const css = e.target.cssModal;
-    if (html || css) {
-      this.innerHTML = `
-        <style>${css}</style>
-        ${html}
-      `;
+    if (e.target.isComponent) {
+      this.fillStubs(e.target);
     }
   }
 

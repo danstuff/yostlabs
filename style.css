@@ -70,3 +70,16 @@ yl-modal::part(background) {
 yl-modal::part(closeButton) {
   font-size: 20px;
 }
+
+yl-modal yl-imageview {
+  border-top: 1px solid white;
+  border-bottom: 1px solid white;
+}
+
+yl-modal h3 {
+  margin: 0.5em;
+}
+
+yl-modal p, yl-modal a {
+  margin-left: 1em;
+}

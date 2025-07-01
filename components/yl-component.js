@@ -1,7 +1,15 @@
 export default class ylComponent extends HTMLElement {
 
+  static get STUB_PREFIX() {
+    return 'yl-stub-';
+  }
+
   static get observedAttributes() {
     return [];
+  }
+
+  get isComponent() {
+    return true;
   }
 
   get html() {
@@ -31,6 +39,31 @@ export default class ylComponent extends HTMLElement {
     this.renderDOM();
   }
 
+  static decodeAttribute(element, attribute) {
+    const value = element.getAttribute(attribute);
+
+    if (!value) {
+      return element.hasAttribute(attribute) || null;
+    }
+
+    const num = Number(value);
+    if (!Number.isNaN(num)) {
+      return num;
+    }
+
+    return value;
+  }
+
+  static encodeAttribute(element, attribute, value) {
+    if (value) {
+      element.setAttribute(attribute, 
+        typeof(value) == "boolean" ? 
+        "" : value);
+    } else {
+      element.removeAttribute(attribute);
+    }
+  }
+
   /**
    * Automatically define getters and setters for this object's 
    * observedAttributes. For example, you could get the value of
@@ -41,36 +74,18 @@ export default class ylComponent extends HTMLElement {
     for (const attribute of this.constructor.observedAttributes) {
       Object.defineProperty(this, attribute, {
         get: () => {
-          const value = this.getAttribute(attribute);
-
-          if (!value) {
-            return this.hasAttribute(attribute) || null;
-          }
-
-          const num = Number(value);
-          if (!Number.isNaN(num)) {
-            return num;
-          }
-
-          return value;
+          return ylComponent.decodeAttribute(this, attribute);
         },
         set: (value) => {
-          if (value) {
-            this.setAttribute(attribute, 
-              typeof(value) == "boolean" ? 
-                "" : value);
-          } else {
-            this.removeAttribute(attribute);
-          }
+          return ylComponent.encodeAttribute(this, attribute, value);
         }
       })
     }
   }
 
   /**
-   * If the child class has functions defined such as
-   * 'onWindowResize' or 'onClick', register them as event
-   * listeners.
+   * If the child class has specially named functions defined such as
+   * 'onWindowResize' or 'onClick', register them as event listeners.
    */
   registerCallbacks() {
     if (this.onWindowResize) {
@@ -111,8 +126,17 @@ export default class ylComponent extends HTMLElement {
     root.querySelectorAll(selector).forEach(element => {
       element.addEventListener(srcEvent, e => {
         this[targetEvent](e);
-      })
-    })
+      });
+    });
+  }
+
+
+  fillStubs(element) {
+    for (const attribute of element.attributes) {
+      this.innerHTML = this.innerHTML.replace(
+        this.constructor.STUB_PREFIX + attribute.name,
+        element.getAttribute(attribute.name));
+    }
   }
 
   /**
