@@ -56,8 +56,7 @@ yl-footer yl-icon {
   margin: 16px 32px;
 }
 
-yl-modal::part(container) {
-  background-color: black;
+yl-modal {
   border: 1px solid white;
   width: 1000px;
   height: 800px;
