@@ -14,6 +14,7 @@
     <script type="module" src="components/yl-icon.js"></script>
     <script type="module" src="components/yl-modal.js"></script>
     <script type="module" src="components/yl-imageview.js"></script>
+    <script type="module" src="components/yl-if.js"></script>
   </head>
   <body>
     <yl-navbar icon="images/icons/logo_23_wide.svg" minwidth="530">
@@ -84,12 +85,16 @@
     </yl-footer>
 
     <yl-modal name="tile">
-      <h3>yl-stub-title</h3>
-      <yl-imageview src="yl-stub-image"></yl-imageview>
-      <p>yl-stub-description</p>
-      <yl-if exists="yl-stub-href">
-        <a href="yl-stub-href">Try It Now</a>
-      </yl-if>
+      Content missing
+
+      <template>
+        <h3>yl-stub-title</h3>
+        <yl-imageview src="yl-stub-image"></yl-imageview>
+        <p>yl-stub-description</p>
+        <yl-if falsy="yl-stub-href">
+          <a href="yl-stub-href">Try It Now</a>
+        </yl-if>
+      </template>
     </yl-modal>
   </body>
 </html>
