@@ -8,13 +8,21 @@ export default class ylGrid extends ylComponent {
 
   get html() {
     return `
-      <slot></slot>
+      <div part="wrapper">
+        <slot></slot>
+      </div>
     `;
   }
 
   get css() {
     return `
       :host {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+      }
+
+      div[part="wrapper"] {
         display: inline-flex;
         flex-wrap: wrap;
         justify-content: center;

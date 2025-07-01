@@ -24,7 +24,7 @@ yl-navbar a {
   text-decoration: none;
 }
 
-yl-grid {
+yl-grid::part(wrapper) {
   max-width: 900px;
 }
 
