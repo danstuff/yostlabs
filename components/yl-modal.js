@@ -46,7 +46,7 @@ export default class ylModal extends ylComponent {
       :host([open]) {
         visibility: visible;
       }
-
+      
       div[part="content"] {
         display: flex;
         flex-direction: column;
@@ -64,10 +64,6 @@ export default class ylModal extends ylComponent {
 
       a[part="closeButton"] svg {
         pointer-events: none;
-      }
-        
-      :host([open]) a {
-        display: block;
       }
     `;
   }

@@ -58,12 +58,18 @@ yl-footer yl-icon {
 
 yl-modal {
   border: 1px solid white;
-  width: 1000px;
-  height: 800px;
+  width: 0px;
+  height: 0px;
+  opacity: 0%;
+  box-shadow: 0px 0px 100px 100px #000000;
+  transition-property: width, height, visibility, opacity;
+  transition-duration: 0.25s;
 }
 
-yl-modal::part(background) {
-  background-color: #00000080
+yl-modal[open] {
+  width: 1000px;
+  height: 800px;
+  opacity: 100%;
 }
 
 yl-modal::part(closeButton) {
