@@ -89,14 +89,12 @@ export default class ylModal extends ylComponent {
   mapDOM() {
     this.dom.closeButton = this.shadowRoot.querySelector('a');
     this.dom.background = this.shadowRoot.querySelector('div[part="background"]');
+    this.dom.template = this.querySelector('template');
   }
 
   onOpenModal(e) {
     this.open = true;
-
-    if (e.target.isComponent) {
-      this.fillStubs(e.target);
-    }
+    this.fillStubs(this.dom.template || {}, e.target);
   }
 
   onClick(e) {

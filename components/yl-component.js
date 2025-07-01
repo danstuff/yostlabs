@@ -55,6 +55,10 @@ export default class ylComponent extends HTMLElement {
   }
 
   static encodeAttribute(element, attribute, value) {
+    if (value == this.decodeAttribute(element, attribute)) {
+      return;
+    }
+
     if (value) {
       element.setAttribute(attribute, 
         typeof(value) == "boolean" ? 
@@ -105,6 +109,8 @@ export default class ylComponent extends HTMLElement {
    * after an attribute is changed.
    */ 
   renderDOM() {
+    // TODO preserve scroll position
+
     this.shadowRoot.innerHTML = '';
     if (this.css !== '') {
       this.shadowRoot.innerHTML += `<style>${this.css}</style>`;
@@ -131,12 +137,19 @@ export default class ylComponent extends HTMLElement {
   }
 
 
-  fillStubs(element) {
-    for (const attribute of element.attributes) {
-      this.innerHTML = this.innerHTML.replace(
+  fillStubs(template, source) {
+    let bufferHTML = template.innerHTML;
+    for (const attribute of source.attributes) {
+      bufferHTML = bufferHTML.replaceAll(
         this.constructor.STUB_PREFIX + attribute.name,
-        element.getAttribute(attribute.name));
+        source.getAttribute(attribute.name));
     }
+    bufferHTML = bufferHTML.replaceAll(
+      new RegExp(`(${this.constructor.STUB_PREFIX})\\w+`, 'g'),
+      "");
+
+    this.innerHTML = bufferHTML + template.outerHTML;
+    console.log(this.innerHTML);
   }
 
   /**
