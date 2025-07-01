@@ -17,6 +17,14 @@ export default class ylIf extends ylComponent {
       return ``;
     }
   }
+
+  get css() {
+    return `
+      :host {
+        display: contents;
+      }
+    `
+  }
 }
 
 ylIf.defineElement();
