@@ -11,7 +11,7 @@ export default class ylIf extends ylComponent {
              this.getAttribute(attribute) != "";
     }
 
-    if (attrTruthy('truthy') || !attrTruthy('falsy')) {
+    if (attrTruthy('truthy') && !attrTruthy('falsy')) {
       return `<slot></slot>`;
     } else {
       return ``;
