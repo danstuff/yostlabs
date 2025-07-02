@@ -1,5 +1,42 @@
 import ylComponent from './yl-component';
 
+class Test {
+  get status() {
+    const name = this.names.join(' ');
+    if (this.failCount <= 0) {
+      return `${name}: PASS`;
+    } else {
+      return `${name}: FAIL (${this.failCount})\n${this.failLog}`;
+    }
+  }
+
+  get failMessage() {
+    retuirn `  `;
+  }
+
+  constructor(names, run) {
+    this.names = [...names];
+    this.run = run;
+    this.failCount = 0;
+    this.failLog = "";
+  }
+
+  assert(condition, message) {
+    if (!condition) {
+      this.failCount++;
+      throw message;
+      this.failLog += " " + message;
+    }
+  }
+}
+
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+
 export default class ylTest extends ylComponent {
   static get observedAttributes() {
     return ['name', 'src', 'failcount'];
@@ -13,35 +50,27 @@ export default class ylTest extends ylComponent {
     `;
   }
 
-  get passOrFail() {
-    return this.result == 'running' ? 'PASS' : 'FAIL';
-  }
-
   connectedCallback() {
     this.name = "Loading Tests...";
     this.failcount = 0;
 
-    this.tests = {};
-    this.describeStack = [];
+    this.tests = [];
 
     // TODO I'm very concerned about the security of this LOL
     fetch(this.src).then(response => response.text()).then(data => {
+      
+      this.nameStack = [];
       Function(data).bind(this)();
 
+      shuffle(this.tests);
 
-      for (const key in this.tests) {
-        this.currentTest = key;
-        this.currentTestPassed = true;
+      // TODO run in parallel
+      for (const test of this.tests) {
+        this.currentTest = test;
+        test.run();
+        console.log(test.status);
 
-        this.tests[key]();
-
-        console.log(`${key}: ${this.currentTestPassed ? 'PASS' : 'FAIL'}`);
-
-        if (!this.currentTestPassed) {
-
-        }
-
-        if (!this.currentTestPassed) {
+        if (!test.passed) {
           this.failcount = this.failcount + 1;
         }
       }
@@ -52,22 +81,51 @@ export default class ylTest extends ylComponent {
     // TODO fire the given event on the element
   }
 
-  expects(condition) {
-    if (!condition) {
-      this.currentTestPassed = false;
-    }
-  }
 
-  describes(name, test) {
-    this.describeStack.push(name);
-    this.name = this.describeStack[0];
-
+  describe(name, test) {
+    this.nameStack.push(name);
+    this.name = this.nameStack[0];
     test();
-    this.describeStack.pop();;
+    this.nameStack.pop();
   }
 
-  has(name, test) {
-    this.tests[`${this.describeStack} has ${name}`] = test;
+  it(name, test) {
+    this.nameStack.push(name);
+    this.tests.push(new Test(this.nameStack, test));
+    this.nameStack.pop();
+  }
+
+  expect(object, key) {
+    let valueName = object?.constructor?.name || "object";
+
+    if (!key) {
+      object = [ object ];
+      key = 0;
+    }
+
+    return {
+      to_exist: () => {
+          this.currentTest.assert(object[key] != null,
+            `Expected ${valueName} to exist`);
+      },
+      to_be: (value) => {
+          this.currentTest.assert(object[key] == value,
+            `Expected ${valueName} to be ${value}`);
+      },
+      to_have: (selector, content) => {
+        index = index || 0;
+
+        const children = object.querySelectorAll(selector);
+
+        this.currentTest.assert(children.length > 0,
+          `Expected to find ${selector} in ${objectName} but there were no matches`);
+
+        let had_content = false;
+        for (const child in this.children) {
+          this.currentTest.assert("Had ")
+        }
+      }
+    };
   }
 } 
 

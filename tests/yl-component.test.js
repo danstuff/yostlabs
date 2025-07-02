@@ -1,7 +1,14 @@
-this.describes('yl-component', () => {
+this.describe('yl-component', () => {
     const component = this.querySelector('yl-component');
+    const observedAttributes = component.constructor.observedAttributes;
 
-    this.has('no observed attributes', () => { 
-        this.expects(component.constructor.observedAttributes.length == 0);
+    this.it('has no observed attributes', () => { 
+        this.expect(observedAttributes.length).to_be(1);
+        this.expect(false);
+        this.expect(false);
     });
+
+    this.it('has something else', () => {
+        this.expect(true);
+    })
 })

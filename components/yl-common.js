@@ -6,4 +6,5 @@ export { default as ylIf } from "./yl-if";
 export { default as ylImageview } from "./yl-imageview";
 export { default as ylModal } from "./yl-modal";
 export { default as ylNavbar } from "./yl-navbar";
+export { default as ylTest } from "./yl-test";
 export { default as ylTile } from "./yl-tile";
