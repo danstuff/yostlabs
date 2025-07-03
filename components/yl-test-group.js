@@ -24,8 +24,8 @@ class Test {
   assert(condition, message) {
     if (!condition) {
       this.failCount++;
-      throw message;
       this.failLog += " " + message;
+      console.assert(condition, message);
     }
   }
 }
@@ -37,7 +37,7 @@ function shuffle(array) {
   }
 }
 
-export default class ylTest extends ylComponent {
+export default class ylTestGroup extends ylComponent {
   static get observedAttributes() {
     return ['name', 'src', 'failcount'];
   }
@@ -77,7 +77,7 @@ export default class ylTest extends ylComponent {
     });
   }
 
-  does(event, element) {
+  do(event, element) {
     // TODO fire the given event on the element
   }
 
@@ -96,37 +96,47 @@ export default class ylTest extends ylComponent {
   }
 
   expect(object, key) {
-    let valueName = object?.constructor?.name || "object";
+    let name = object?.constructor?.name || "object";
 
     if (!key) {
       object = [ object ];
       key = 0;
     }
 
+    // TODO negation
     return {
       to_exist: () => {
           this.currentTest.assert(object[key] != null,
-            `Expected ${valueName} to exist`);
+            `Expected ${name} to exist`);
       },
       to_be: (value) => {
           this.currentTest.assert(object[key] == value,
-            `Expected ${valueName} to be ${value}`);
+            `Expected ${name} to be ${value}`);
       },
       to_have: (selector, content) => {
         index = index || 0;
 
         const children = object.querySelectorAll(selector);
 
+        const msg = 
+          `Expected to find '${selector}' with content '` + 
+          `${content}' in instance of ${name}, but` + 
+          ` there were no matches`;
         this.currentTest.assert(children.length > 0,
-          `Expected to find ${selector} in ${objectName} but there were no matches`);
+          );
 
         let had_content = false;
         for (const child in this.children) {
-          this.currentTest.assert("Had ")
+          if (child.innerHTML.includes(content)) {
+            had_content = true;
+            break;
+          }
         }
+        this.currentTest.assert(had_content,
+          `Expected to find ${content}`);
       }
     };
   }
 } 
 
-ylTest.defineElement();
+ylTestGroup.defineElement();

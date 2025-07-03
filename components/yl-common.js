@@ -1,10 +1,10 @@
-export { default as ylFilterset } from "./yl-filterset";
+export { default as ylFilterset } from "./yl-filter-set";
 export { default as ylFooter } from "./yl-footer";
 export { default as ylGrid } from "./yl-grid";
 export { default as ylIcon } from "./yl-icon";
 export { default as ylIf } from "./yl-if";
-export { default as ylImageview } from "./yl-imageview";
+export { default as ylImageview } from "./yl-image-view";
 export { default as ylModal } from "./yl-modal";
 export { default as ylNavbar } from "./yl-navbar";
-export { default as ylTest } from "./yl-test";
+export { default as ylTestGroup } from "./yl-test-group";
 export { default as ylTile } from "./yl-tile";

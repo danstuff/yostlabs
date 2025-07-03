@@ -1,6 +1,6 @@
 import ylComponent from "./yl-component";
 
-export default class ylImageview extends ylComponent {
+export default class ylImageView extends ylComponent {
 
   static get observedAttributes() {
     return ['src', 'vignette'];
@@ -33,4 +33,4 @@ export default class ylImageview extends ylComponent {
   }
 }
 
-ylImageview.defineElement();
+ylImageView.defineElement();

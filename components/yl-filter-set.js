@@ -1,6 +1,6 @@
 import ylComponent from "./yl-component";
 
-export default class ylFilterset extends ylComponent {
+export default class ylFilterSet extends ylComponent {
 
   static get observedAttributes() {
     return ['name'];
@@ -37,4 +37,4 @@ export default class ylFilterset extends ylComponent {
   }
 }
 
-ylFilterset.defineElement();
+ylFilterSet.defineElement();
