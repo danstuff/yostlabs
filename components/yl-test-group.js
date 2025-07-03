@@ -1,5 +1,17 @@
 import ylComponent from './yl-component';
 
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+
+function mapSource(code, startIndex) {
+  // TODO
+  return {};
+}
+
 class Test {
   get status() {
     const name = this.names.join(' ');
@@ -10,30 +22,34 @@ class Test {
     }
   }
 
-  get failMessage() {
-    retuirn `  `;
+  get failLine() {
+    let map = this.sourceMap;
+    for (const i in this.names) {
+      map = map[this.names[i]];
+      if (!map) {
+        break;
+      }
+    }
+
+    return map ? map[this.assertCount] : '00';
   }
 
-  constructor(names, run) {
+  constructor(names, sourceMap, run) {
     this.names = [...names];
+    this.sourceMap = sourceMap;
     this.run = run;
+    this.assertCount = 0;
     this.failCount = 0;
     this.failLog = "";
   }
 
   assert(condition, message) {
+    this.assertCount++;
+
     if (!condition) {
       this.failCount++;
-      this.failLog += " " + message;
-      console.assert(condition, message);
+      this.failLog += ` ${message}\n  >> ${this.failLine}\n`;
     }
-  }
-}
-
-function shuffle(array) {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
   }
 }
 
@@ -56,9 +72,11 @@ export default class ylTestGroup extends ylComponent {
 
     this.tests = [];
 
-    // TODO I'm very concerned about the security of this LOL
+    // TODO sanitize URL and/or JS before executing
     fetch(this.src).then(response => response.text()).then(data => {
       
+      this.sourceMap = mapSource(data);
+
       this.nameStack = [];
       Function(data).bind(this)();
 
@@ -77,10 +95,20 @@ export default class ylTestGroup extends ylComponent {
     });
   }
 
-  do(event, element) {
-    // TODO fire the given event on the element
+  click(target) {
+    target.click();
   }
 
+  type(string) {
+    return {
+      in : (target) => {
+        for (const key of string) {
+          target.dispatchEvent(
+            new KeyboardEvent('keypress', { key: key }));
+        }
+      }      
+    }
+  }
 
   describe(name, test) {
     this.nameStack.push(name);
@@ -91,17 +119,29 @@ export default class ylTestGroup extends ylComponent {
 
   it(name, test) {
     this.nameStack.push(name);
-    this.tests.push(new Test(this.nameStack, test));
+    this.tests.push(new Test(this.nameStack, this.sourceMap, test));
     this.nameStack.pop();
   }
 
   expect(object, key) {
     let name = object?.constructor?.name || "object";
 
-    if (!key) {
+    if (key) {
+      name += `.${key}`;
+    } else {
       object = [ object ];
       key = 0;
     }
+
+    const exist = (o, k, t) => {
+      this.currentTest.assert((o[k] != null) == t,
+        `Expected ${name} to ${t ? '' : 'not '}exist but got ${o[k]}`);
+    };
+
+    const be = (o, k, v, t) => {
+      this.currentTest.assert((o[k] == v) == t,
+        `Expected ${name} to ${t ? '' : 'not '}be ${value} but got ${o[k]}`);
+    };
 
     // TODO negation
     return {
@@ -120,10 +160,10 @@ export default class ylTestGroup extends ylComponent {
 
         const msg = 
           `Expected to find '${selector}' with content '` + 
-          `${content}' in instance of ${name}, but` + 
-          ` there were no matches`;
+          `${content}' in instance of ${name}, but `;
+
         this.currentTest.assert(children.length > 0,
-          );
+          msg + `there were no matches.`);
 
         let had_content = false;
         for (const child in this.children) {
@@ -133,7 +173,7 @@ export default class ylTestGroup extends ylComponent {
           }
         }
         this.currentTest.assert(had_content,
-          `Expected to find ${content}`);
+          msg + `no matching selector had content.`);
       }
     };
   }

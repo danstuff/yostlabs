@@ -4,8 +4,8 @@ this.describe('yl-component', () => {
 
     this.it('has no observed attributes', () => { 
         this.expect(observedAttributes.length).to_be(1);
-        this.expect(false);
-        this.expect(false);
+        this.expect(false).to_be(null);
+        this.expect(false).to_be(true);
     });
 
     this.it('has something else', () => {
