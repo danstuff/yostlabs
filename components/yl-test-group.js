@@ -1,15 +1,29 @@
 import ylComponent from './yl-component';
 
-function shuffle(array) {
-  for (let i = array.length - 1; i > 0; i--) {
+function shuffle(a) {
+  for (let i = a.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
+    [a[i], a[j]] = [a[j], a[i]];
   }
 }
 
-function mapSource(code, startIndex) {
-  // TODO
-  return {};
+class SourceMap {
+  constructor() {
+    this.children = [];
+    this.lines = [];
+    this.lets = [];
+  }
+
+  getNode(names) {
+    let map = this;
+    for (const i in names) {
+      map = map.children[names[i]];
+      if (!map) {
+        break;
+      }
+    }
+    return map;
+  }
 }
 
 class Test {
@@ -20,18 +34,6 @@ class Test {
     } else {
       return `${name}: FAIL (${this.failCount})\n${this.failLog}`;
     }
-  }
-
-  get failLine() {
-    let map = this.sourceMap;
-    for (const i in this.names) {
-      map = map[this.names[i]];
-      if (!map) {
-        break;
-      }
-    }
-
-    return map ? map[this.assertCount] : '00';
   }
 
   constructor(names, sourceMap, run) {
@@ -61,8 +63,18 @@ export default class ylTestGroup extends ylComponent {
   get html() {
     return `
       <div>${this.name}</div>
-      <slot></slot>
+      <div class="frame">
+        <slot></slot>
+      </div>
       <div>Failed examples: ${this.failcount || 0}</div>
+    `;
+  }
+
+  get css() {
+    return `
+      .frame {
+        border: 1px dashed black;
+      }
     `;
   }
 
@@ -75,16 +87,15 @@ export default class ylTestGroup extends ylComponent {
     // TODO sanitize URL and/or JS before executing
     fetch(this.src).then(response => response.text()).then(data => {
       
-      this.sourceMap = mapSource(data);
+      this.sourceMap = new SourceMap(data);
 
-      this.nameStack = [];
       Function(data).bind(this)();
 
       shuffle(this.tests);
 
-      // TODO run in parallel
       for (const test of this.tests) {
-        this.currentTest = test;
+        this.test = test;
+        this.setup();
         test.run();
         console.log(test.status);
 
@@ -110,71 +121,67 @@ export default class ylTestGroup extends ylComponent {
     }
   }
 
-  describe(name, test) {
+  describe(name, setup) {
     this.nameStack.push(name);
     this.name = this.nameStack[0];
-    test();
+    setup();
     this.nameStack.pop();
   }
 
-  it(name, test) {
+  let(run) {
+    this.letStack.push(run);
+  }
+
+  it(name, run) {
     this.nameStack.push(name);
-    this.tests.push(new Test(this.nameStack, this.sourceMap, test));
+    this.tests.push(new Test(this.nameStack, this.sourceMap, run));
     this.nameStack.pop();
   }
 
-  expect(object, key) {
+  expect(object) {
     let name = object?.constructor?.name || "object";
 
-    if (key) {
-      name += `.${key}`;
-    } else {
-      object = [ object ];
-      key = 0;
+    const to_exist = (t) => {
+      this.test.assert((object != null) == t,
+        `Expected ${name} to ${t ? '' : 'not '}exist but got ${o}`);
+    };
+
+    const to_be = (value, t) => {
+      this.test.assert((object == value) == t,
+        `Expected ${name} to ${t ? '' : 'not '}be ${value} but got ${object}`);
+    };
+
+    const to_have = (selector, t) => {
+      const msg = 
+        `Expected to find '${selector}' with content '` + 
+        `${content}' in ${name}, but `;
+
+      const children = object.querySelectorAll(selector);
+      this.test.assert((children.length ? true : false) == t,
+        msg + `there were no matches.`);
+
+      return {
+        with: (content) => {
+          let match = false;
+          for (const child of children) {
+            match = match || child.innerHTML.contains(content);
+            if (match) {
+              break;
+            }
+          }
+          this.test.assert(match == t,
+            msg + `no matching selector had content.`);
+        }
+      };
     }
 
-    const exist = (o, k, t) => {
-      this.currentTest.assert((o[k] != null) == t,
-        `Expected ${name} to ${t ? '' : 'not '}exist but got ${o[k]}`);
-    };
-
-    const be = (o, k, v, t) => {
-      this.currentTest.assert((o[k] == v) == t,
-        `Expected ${name} to ${t ? '' : 'not '}be ${value} but got ${o[k]}`);
-    };
-
-    // TODO negation
     return {
-      to_exist: () => {
-          this.currentTest.assert(object[key] != null,
-            `Expected ${name} to exist`);
-      },
-      to_be: (value) => {
-          this.currentTest.assert(object[key] == value,
-            `Expected ${name} to be ${value}`);
-      },
-      to_have: (selector, content) => {
-        index = index || 0;
-
-        const children = object.querySelectorAll(selector);
-
-        const msg = 
-          `Expected to find '${selector}' with content '` + 
-          `${content}' in instance of ${name}, but `;
-
-        this.currentTest.assert(children.length > 0,
-          msg + `there were no matches.`);
-
-        let had_content = false;
-        for (const child in this.children) {
-          if (child.innerHTML.includes(content)) {
-            had_content = true;
-            break;
-          }
-        }
-        this.currentTest.assert(had_content,
-          msg + `no matching selector had content.`);
-      }
+      to_exist:     ()         => { to_exist(true); },
+      to_not_exist: ()         => { to_exist(false); },
+      to_be:        (value)    => { to_be(value, true); },
+      to_not_be:    (value)    => { to_be(value, false); },
+      to_have:      (selector) => { return to_have(selector, true); },
+      to_not_have:  (selector) => { return to_have(selector, false); },
     };
   }
 } 
