@@ -10,7 +10,7 @@ function shuffle(a) {
 class SourceNode {
   constructor(name, parent, source) {
     this.name = name;
-    this.path = parent?.path ? parent.path.append(' ' + name) : '';
+    this.path = parent?.path ? [...parent.path, name] : [name];
 
     // TODO guard against multiple matches
     this.sourceIndex = source.indexOf(name, parent?.sourceIndex || 0);
@@ -26,7 +26,7 @@ class SourceNode {
     }
 
     let map = this;
-    for (const i in names) {
+    for (let i = 1; i < names.length; i++) {
       map = map.children[names[i]];
       if (!map) {
         break;
@@ -78,10 +78,11 @@ class SourceNode {
 
 class Test {
   get status() {
+    const fullName = this.path.join(' ');
     if (this.failCount <= 0) {
-      return `${this.path}: PASS`;
+      return `${fullName}: PASS`;
     } else {
-      return `${this.path}: FAIL (${this.failCount})\n${this.failLog}`;
+      return `${fullName}: FAIL (${this.failCount})\n${this.failLog}`;
     }
   }
 
@@ -99,7 +100,7 @@ class Test {
     // TODO
     if (!condition) {
       this.failCount++;
-      this.failLog += ` ${message}\n  >> ${this.failLine}\n`;
+      this.failLog += `  ${message}\n   >> ${this.failLine}\n`;
     }
   }
 }
@@ -153,7 +154,8 @@ export default class ylTestGroup extends ylComponent {
       for (const test of this.tests) {
         this.test = test;
 
-        this.runSetups();
+        this.data = {};
+        this.runSetups(test);
         test.run();
 
         console.log(test.status);
@@ -165,10 +167,9 @@ export default class ylTestGroup extends ylComponent {
     });
   }
 
-  runSetups() {
-    // TODO names is not defined here...
-    this.rootSourceNode.walk(this.names, (m) => {
-      for(const setup in m.setups) {
+  runSetups(test) {
+    this.rootSourceNode.walk(test.path, (m) => {
+      for(const setup of m.setups) {
         setup();
       }
     });

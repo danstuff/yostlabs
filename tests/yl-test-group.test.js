@@ -1,6 +1,5 @@
 this.describe('yl-test-group', () => {
   this.let(() => {
-    this.data = {};
     this.data.foo = "bar";
   });
 
