@@ -7,47 +7,96 @@ function shuffle(a) {
   }
 }
 
-class SourceMap {
-  constructor() {
-    this.children = [];
-    this.lines = [];
-    this.lets = [];
+class SourceNode {
+  constructor(name, parent, source) {
+    this.name = name;
+    this.path = parent?.path ? parent.path.append(' ' + name) : '';
+
+    // TODO guard against multiple matches
+    this.sourceIndex = source.indexOf(name, parent?.sourceIndex || 0);
+    
+    this.parent = parent;
+    this.children = {};
+    this.setups = [];
   }
 
-  getNode(names) {
+  walk(names, callback) {
+    if (callback) {
+      callback(this);
+    }
+
     let map = this;
     for (const i in names) {
       map = map.children[names[i]];
       if (!map) {
         break;
       }
+      if (callback) {
+        callback(map);
+      }
     }
-    return map;
+  }
+
+  push(name, source) {
+    console.log(`push ${name}`);
+    const child = new SourceNode(name, this, source);
+    this.children[name] = child;
+    return child;
+  }
+
+  pop() {
+    console.log(`pop ${this.name}`);
+    return this.parent;
+  }
+
+  getLine(source, sourceIndex) {
+    sourceIndex = sourceIndex || this.sourceIndex;
+    return source.substr(
+      sourceIndex,
+      source.indexOf('\n', sourceIndex));
+  }
+
+  getLength(source) {
+    const nextIndex = this.parent.children.indexOf(this)+1;
+    if (nextIndex >= this.parent.children.length) {
+      return source.length - this.sourceIndex;
+    }
+    
+    const nextChild = this.parent.children[nextIndex];
+    return nextChild.sourceIndex - this.sourceIndex;
+  }
+
+  getExpectLine(source, count) {
+    let sourceIndex = this.sourceIndex;
+    while (count > 0) {
+      sourceIndex = source.indexOf('expect');
+      count--;
+    }
+    return this.getLine(source, sourceIndex);
   }
 }
 
 class Test {
   get status() {
-    const name = this.names.join(' ');
     if (this.failCount <= 0) {
-      return `${name}: PASS`;
+      return `${this.path}: PASS`;
     } else {
-      return `${name}: FAIL (${this.failCount})\n${this.failLog}`;
+      return `${this.path}: FAIL (${this.failCount})\n${this.failLog}`;
     }
   }
 
-  constructor(names, sourceMap, run) {
-    this.names = [...names];
-    this.sourceMap = sourceMap;
+  constructor(path, run) {
+    this.path = path;
     this.run = run;
     this.assertCount = 0;
     this.failCount = 0;
     this.failLog = "";
   }
 
-  assert(condition, message) {
+  assert(condition, message, source) {
     this.assertCount++;
 
+    // TODO
     if (!condition) {
       this.failCount++;
       this.failLog += ` ${message}\n  >> ${this.failLine}\n`;
@@ -72,36 +121,55 @@ export default class ylTestGroup extends ylComponent {
 
   get css() {
     return `
+      div {
+        margin: 5px;
+      }
+      
       .frame {
         border: 1px dashed black;
+        width: max-content;
       }
     `;
   }
 
   connectedCallback() {
-    this.name = "Loading Tests...";
+    this.name = "Downloading...";
     this.failcount = 0;
 
     this.tests = [];
 
     // TODO sanitize URL and/or JS before executing
-    fetch(this.src).then(response => response.text()).then(data => {
-      
-      this.sourceMap = new SourceMap(data);
+    fetch(this.src).then(response => response.text()).then(source => { 
+      this.name = "Loading Tests...";
 
-      Function(data).bind(this)();
+      this.source = source;
+      this.rootSourceNode = new SourceNode('', null, source);
+      this.sourceNode = this.rootSourceNode;
+
+      Function(source).bind(this)();
 
       shuffle(this.tests);
 
       for (const test of this.tests) {
         this.test = test;
-        this.setup();
+
+        this.runSetups();
         test.run();
+
         console.log(test.status);
 
         if (!test.passed) {
           this.failcount = this.failcount + 1;
         }
+      }
+    });
+  }
+
+  runSetups() {
+    // TODO names is not defined here...
+    this.rootSourceNode.walk(this.names, (m) => {
+      for(const setup in m.setups) {
+        setup();
       }
     });
   }
@@ -121,21 +189,20 @@ export default class ylTestGroup extends ylComponent {
     }
   }
 
-  describe(name, setup) {
-    this.nameStack.push(name);
-    this.name = this.nameStack[0];
-    setup();
-    this.nameStack.pop();
+  describe(name, call) {
+    this.sourceNode = this.sourceNode.push(name, this.source)
+    call();
+    this.sourceNode = this.sourceNode.pop();
   }
 
   let(run) {
-    this.letStack.push(run);
+    this.sourceNode.setups.push(run);
   }
 
   it(name, run) {
-    this.nameStack.push(name);
-    this.tests.push(new Test(this.nameStack, this.sourceMap, run));
-    this.nameStack.pop();
+    this.sourceNode = this.sourceNode.push(name, this.source);
+    this.tests.push(new Test(this.sourceNode.path, run));
+    this.sourceNode = this.sourceNode.pop();
   }
 
   expect(object) {
