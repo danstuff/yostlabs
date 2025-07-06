@@ -55,14 +55,14 @@ class SourceNode {
   }
 
   push(name) {
-    console.log(`push ${name}`);
+    // console.log(`push ${name}`);
     const child = new SourceNode(name, this);
     this.children[name] = child;
     return child;
   }
 
   pop() {
-    console.log(`pop ${this.name}`);
+    // console.log(`pop ${this.name}`);
     return this.parent;
   }
 
@@ -93,12 +93,16 @@ class SourceNode {
 }
 
 class Test {
+  get passed() {
+    return this.failCount == 0;
+  }
+
   get status() {
     const fullName = this.sourceNode.path.join(' ').trim();
     if (this.failCount <= 0) {
       return `${fullName}: PASS`;
     } else {
-      return `${fullName}: FAIL (${this.failCount})\n${this.failLog}`;
+      return `${fullName}: FAIL (${this.failCount})\n${this.failLog}\n`;
     }
   }
 
@@ -116,23 +120,25 @@ class Test {
     if (!condition) {
       this.failCount++;
       const line = this.sourceNode.getExpectLine(this.assertCount);
-      this.failLog += ` ${line.file}:${line.number} >\n  ${line.text}\n  ${message}\n`;
+      this.failLog += `\n ${line.file}:${line.number}\n  ${line.text}\n\n  ${message}\n`;
     }
   }
 }
 
 export default class ylTestGroup extends ylComponent {
   static get observedAttributes() {
-    return ['name', 'src', 'failcount'];
+    return ['status', 'src', 'failcount'];
   }
 
   get html() {
     return `
-      <div>${this.name}</div>
       <div class="frame">
         <slot></slot>
       </div>
-      <div>Failed examples: ${this.failcount || 0}</div>
+      <div class="${this.failcount ? "fail" : "pass"}">
+        <div class="status-box"></div>
+        <p>${this.src}<br>${this.status} Failed examples: ${this.failcount || 0}</p>
+      </div>
     `;
   }
 
@@ -140,24 +146,46 @@ export default class ylTestGroup extends ylComponent {
     return `
       div {
         margin: 5px;
+        vertical-align: middle;
+      }
+
+      p {
+        vertical-align: middle;
+        display: inline-block;
+        margin: 0;
       }
       
-      .frame {
+      div.frame {
         border: 1px dashed black;
         width: max-content;
+      }
+
+      div.status-box {
+        width: 1em;
+        height: 1em;
+        border: 1px solid black;
+        display: inline-block;
+      }
+
+      div.fail div.status-box {
+        background-color: #FF0000;
+      }
+
+      div.pass div.status-box {
+        background-color: #00FF00;
       }
     `;
   }
 
   connectedCallback() {
-    this.name = "Downloading...";
+    this.status = "Downloading...";
     this.failcount = 0;
 
     this.tests = [];
 
     // TODO sanitize URL and/or JS before executing
     fetch(this.src).then(response => response.text()).then(source => { 
-      this.name = "Loading Tests...";
+      this.status = "Loading Tests...";
 
       this.source = source;
       this.rootSourceNode = new SourceNode('', null, source, this.src);
@@ -166,6 +194,8 @@ export default class ylTestGroup extends ylComponent {
       Function(source).bind(this)();
 
       shuffle(this.tests);
+
+      this.status = "Running..."
 
       for (const test of this.tests) {
         this.test = test;
@@ -180,6 +210,8 @@ export default class ylTestGroup extends ylComponent {
           this.failcount = this.failcount + 1;
         }
       }
+
+      this.status = "Done."
     });
   }
 

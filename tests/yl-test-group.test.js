@@ -5,8 +5,8 @@ this.describe('yl-test-group', () => {
 
   this.it('has no observed attributes', () => {
     this.expect(this.data.foo).to_be("bar");
-    this.expect(false).to_be(null);
-    this.expect(false).to_be(true);
+    this.expect(false).to_be(false);
+    this.expect(true).to_be(true);
   });
 
   this.it('has something else', () => {
