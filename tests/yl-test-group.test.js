@@ -5,9 +5,10 @@ this.describe('yl-test-group', () => {
 
   this.it('has functional to_have expectations', () => {
     this.expect(this).to_have('div.foo').with("Test the test!");
+    this.expect(this).to_have('div.foo').without("Don't test the test!");
 
     this.expect(this).to_not_have('div.bar');
-    this.expect(this).to_not_have('div.foo').with("Don't test the test!");
+    this.expect(this).to_not_have('div.bar').without("Test the test!");
   });
 
   this.it('has functional to_exist expectations', () => {

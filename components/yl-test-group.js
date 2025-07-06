@@ -260,43 +260,46 @@ export default class ylTestGroup extends ylComponent {
     this.test.expectCount++;
     let name = object?.constructor?.name || "object";
 
-    const to_exist = (t) => {
+    const _to_exist = (t) => {
       this.test.assert((object != null) == t,
         `Expected ${name} to ${t ? '' : 'not '}exist but got ${object}`);
     };
 
-    const to_be = (value, t) => {
+    const _to_be = (value, t) => {
       this.test.assert((object == value) == t,
         `Expected ${name} to ${t ? '' : 'not '}be ${value} but got ${object}`);
     };
 
-    const to_have = (selector, t) => {
+    const _to_have = (selector, t) => {
       const children = object.querySelectorAll(selector);
       this.test.assert((children.length ? true : false) == t,
         `Expected to ${t ? '' : 'not '}find '${selector}' in ${name}, ` +
         `but got ${children.length} matches.`);
 
-      return {
-        with: (content) => {
-          let matches = 0;
-          for (const child of children) {
-            matches += child.innerHTML.includes(content) ? 1 : 0;
-          }
-
-          this.test.assert((matches != 0) == t,
-            `Expected to ${t ? '' : 'not '}find '${selector}' with content '` + 
-            `${content}' in ${name}, but got ${matches} matches.`);
+      const _with = (content, tt) => {
+        let matches = 0;
+        for (const child of children) {
+          matches += child.innerHTML.includes(content) ? 1 : 0;
         }
+
+        this.test.assert((matches != 0) == tt,
+          `Expected to ${t ? '' : 'not '}find '${selector}' with content '` + 
+          `${content}' in ${name}, but got ${matches} matches.`);
+      };
+
+      return {
+        with: (content) => { _with(content, true); },
+        without: (content) => { _with(content, false) } 
       };
     }
 
     return {
-      to_exist:     ()         => { to_exist(true); },
-      to_not_exist: ()         => { to_exist(false); },
-      to_be:        (value)    => { to_be(value, true); },
-      to_not_be:    (value)    => { to_be(value, false); },
-      to_have:      (selector) => { return to_have(selector, true); },
-      to_not_have:  (selector) => { return to_have(selector, false); },
+      to_exist:     ()         => { _to_exist(true); },
+      to_not_exist: ()         => { _to_exist(false); },
+      to_be:        (value)    => { _to_be(value, true); },
+      to_not_be:    (value)    => { _to_be(value, false); },
+      to_have:      (selector) => { return _to_have(selector, true); },
+      to_not_have:  (selector) => { return _to_have(selector, false); },
     };
   }
 } 
