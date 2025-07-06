@@ -9,17 +9,20 @@ function shuffle(a) {
 
 class SourceNode {
   get length() {
-    const nextIndex = this.parent.children.indexOf(this)+1;
-    if (nextIndex >= this.parent.children.length) {
+    const siblings = this.parent.children;
+    const siblingKeys = Object.keys(siblings);
+
+    const nextIndex = siblingKeys.indexOf(this.name)+1;
+    if (nextIndex >= siblings.length) {
       return this.source.length - this.index;
     }
     
-    const nextChild = this.parent.children[nextIndex];
-    return nextChild.sourceIndex - this.index;
+    const nextChild = siblings[siblingKeys[nextIndex]];
+    return nextChild.index - this.index;
   }
 
   get content() {
-    return this.source.substr(this.sourceIndex, this.length);
+    return this.source.substr(this.index, this.length);
   }
 
   constructor(name, parent, source, file) {
@@ -109,17 +112,15 @@ class Test {
   constructor(sourceNode, run) {
     this.sourceNode = sourceNode;
     this.run = run;
-    this.assertCount = 0;
+    this.expectCount = 0;
     this.failCount = 0;
     this.failLog = "";
   }
 
   assert(condition, message) {
-    this.assertCount++;
-
     if (!condition) {
       this.failCount++;
-      const line = this.sourceNode.getExpectLine(this.assertCount);
+      const line = this.sourceNode.getExpectLine(this.expectCount);
       this.failLog += `\n ${line.file}:${line.number}\n  ${line.text}\n\n  ${message}\n`;
     }
   }
@@ -164,6 +165,7 @@ export default class ylTestGroup extends ylComponent {
         width: 1em;
         height: 1em;
         border: 1px solid black;
+        border-radius: 1em;
         display: inline-block;
       }
 
@@ -255,11 +257,12 @@ export default class ylTestGroup extends ylComponent {
   }
 
   expect(object) {
+    this.test.expectCount++;
     let name = object?.constructor?.name || "object";
 
     const to_exist = (t) => {
       this.test.assert((object != null) == t,
-        `Expected ${name} to ${t ? '' : 'not '}exist but got ${o}`);
+        `Expected ${name} to ${t ? '' : 'not '}exist but got ${object}`);
     };
 
     const to_be = (value, t) => {
@@ -268,25 +271,21 @@ export default class ylTestGroup extends ylComponent {
     };
 
     const to_have = (selector, t) => {
-      const msg = 
-        `Expected to find '${selector}' with content '` + 
-        `${content}' in ${name}, but `;
-
       const children = object.querySelectorAll(selector);
       this.test.assert((children.length ? true : false) == t,
-        msg + `there were no matches.`);
+        `Expected to ${t ? '' : 'not '}find '${selector}' in ${name}, ` +
+        `but got ${children.length} matches.`);
 
       return {
         with: (content) => {
-          let match = false;
+          let matches = 0;
           for (const child of children) {
-            match = match || child.innerHTML.contains(content);
-            if (match) {
-              break;
-            }
+            matches += child.innerHTML.includes(content) ? 1 : 0;
           }
-          this.test.assert(match == t,
-            msg + `no matching selector had content.`);
+
+          this.test.assert((matches != 0) == t,
+            `Expected to ${t ? '' : 'not '}find '${selector}' with content '` + 
+            `${content}' in ${name}, but got ${matches} matches.`);
         }
       };
     }
