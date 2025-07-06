@@ -8,12 +8,29 @@ function shuffle(a) {
 }
 
 class SourceNode {
-  constructor(name, parent, source) {
+  get length() {
+    const nextIndex = this.parent.children.indexOf(this)+1;
+    if (nextIndex >= this.parent.children.length) {
+      return this.source.length - this.index;
+    }
+    
+    const nextChild = this.parent.children[nextIndex];
+    return nextChild.sourceIndex - this.index;
+  }
+
+  get content() {
+    return this.source.substr(this.sourceIndex, this.length);
+  }
+
+  constructor(name, parent, source, file) {
     this.name = name;
     this.path = parent?.path ? [...parent.path, name] : [name];
 
+    this.source = parent?.source || source;
+    this.file = parent?.file || file;
+
     // TODO guard against multiple matches
-    this.sourceIndex = source.indexOf(name, parent?.sourceIndex || 0);
+    this.index = this.source.indexOf(name, parent?.index || 0);
     
     this.parent = parent;
     this.children = {};
@@ -37,9 +54,9 @@ class SourceNode {
     }
   }
 
-  push(name, source) {
+  push(name) {
     console.log(`push ${name}`);
-    const child = new SourceNode(name, this, source);
+    const child = new SourceNode(name, this);
     this.children[name] = child;
     return child;
   }
@@ -49,36 +66,35 @@ class SourceNode {
     return this.parent;
   }
 
-  getLine(source, sourceIndex) {
-    sourceIndex = sourceIndex || this.sourceIndex;
-    return source.substr(
-      sourceIndex,
-      source.indexOf('\n', sourceIndex));
+  getLineNumber(index) {
+    const prevLines = this.source.substr(0, index);
+    return prevLines.match(/\r?\n/g).length+1;
   }
 
-  getLength(source) {
-    const nextIndex = this.parent.children.indexOf(this)+1;
-    if (nextIndex >= this.parent.children.length) {
-      return source.length - this.sourceIndex;
-    }
-    
-    const nextChild = this.parent.children[nextIndex];
-    return nextChild.sourceIndex - this.sourceIndex;
+  getLine(index) {
+    index = index || this.index;
+    return this.source.substr(
+      index,
+      this.source.indexOf('\n', index)-index);
   }
 
-  getExpectLine(source, count) {
-    let sourceIndex = this.sourceIndex;
+  getExpectLine(count) {
+    let index = this.index;
     while (count > 0) {
-      sourceIndex = source.indexOf('expect');
+      index = this.source.indexOf('this.expect', index+1);
       count--;
     }
-    return this.getLine(source, sourceIndex);
+    return {
+      file: this.file,
+      number: this.getLineNumber(index),
+      text: this.getLine(index)
+    };
   }
 }
 
 class Test {
   get status() {
-    const fullName = this.path.join(' ');
+    const fullName = this.sourceNode.path.join(' ').trim();
     if (this.failCount <= 0) {
       return `${fullName}: PASS`;
     } else {
@@ -86,21 +102,21 @@ class Test {
     }
   }
 
-  constructor(path, run) {
-    this.path = path;
+  constructor(sourceNode, run) {
+    this.sourceNode = sourceNode;
     this.run = run;
     this.assertCount = 0;
     this.failCount = 0;
     this.failLog = "";
   }
 
-  assert(condition, message, source) {
+  assert(condition, message) {
     this.assertCount++;
 
-    // TODO
     if (!condition) {
       this.failCount++;
-      this.failLog += `  ${message}\n   >> ${this.failLine}\n`;
+      const line = this.sourceNode.getExpectLine(this.assertCount);
+      this.failLog += ` ${line.file}:${line.number} >\n  ${line.text}\n  ${message}\n`;
     }
   }
 }
@@ -144,7 +160,7 @@ export default class ylTestGroup extends ylComponent {
       this.name = "Loading Tests...";
 
       this.source = source;
-      this.rootSourceNode = new SourceNode('', null, source);
+      this.rootSourceNode = new SourceNode('', null, source, this.src);
       this.sourceNode = this.rootSourceNode;
 
       Function(source).bind(this)();
@@ -168,7 +184,7 @@ export default class ylTestGroup extends ylComponent {
   }
 
   runSetups(test) {
-    this.rootSourceNode.walk(test.path, (m) => {
+    this.rootSourceNode.walk(test.sourceNode.path, (m) => {
       for(const setup of m.setups) {
         setup();
       }
@@ -191,7 +207,7 @@ export default class ylTestGroup extends ylComponent {
   }
 
   describe(name, call) {
-    this.sourceNode = this.sourceNode.push(name, this.source)
+    this.sourceNode = this.sourceNode.push(name);
     call();
     this.sourceNode = this.sourceNode.pop();
   }
@@ -201,8 +217,8 @@ export default class ylTestGroup extends ylComponent {
   }
 
   it(name, run) {
-    this.sourceNode = this.sourceNode.push(name, this.source);
-    this.tests.push(new Test(this.sourceNode.path, run));
+    this.sourceNode = this.sourceNode.push(name);
+    this.tests.push(new Test(this.sourceNode, run));
     this.sourceNode = this.sourceNode.pop();
   }
 
