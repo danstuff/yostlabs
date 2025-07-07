@@ -101,7 +101,8 @@ yl-modal[open] {
 }
 
 yl-modal::part(closeButton) {
-  font-size: 20px;
+  font-size: 16px;
+  margin: 5px;
 }
 
 yl-modal yl-image-view {
