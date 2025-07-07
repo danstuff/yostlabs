@@ -43,12 +43,7 @@ yl-footer {
 
 yl-footer::part(hr) {
   width: 400px;
-  background: #000000;
-  background: linear-gradient(90deg,
-    black 0%,
-    white 25%,
-    white 75%,
-    black 100%);
+  background-color: white;
 }
 
 yl-footer yl-icon {
@@ -58,11 +53,11 @@ yl-footer yl-icon {
 
 yl-modal {
   border: 1px solid white;
-  width: 0px;
+  width: 1000px;
   height: 0px;
   opacity: 0%;
-  box-shadow: 0px 0px 100px 100px #000000;
-  transition-property: width, height, visibility, opacity;
+  box-shadow: 0px 0px 10px 10px #000000;
+  transition-property: height, visibility, opacity;
   transition-duration: 0.25s;
 }
 

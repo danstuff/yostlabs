@@ -39,6 +39,14 @@ export default class ylComponent extends HTMLElement {
     this.renderDOM();
   }
 
+  /**
+   * Convert an attribute on an HTML element into a JavaScript value. 
+   * Empty attributes return true, no attribute returns null, and 
+   * numbers are converted from strings.
+   * @param {*} element The HTML element.
+   * @param {*} attribute The attribute to convert.
+   * @returns Bool, number, string, or null.
+   */
   static decodeAttribute(element, attribute) {
     const value = element.getAttribute(attribute);
 
@@ -54,6 +62,14 @@ export default class ylComponent extends HTMLElement {
     return value;
   }
 
+  /**
+   * Set an HTML element's attribute based on the given value. True
+   * values set the attribute to empty, null and false remove the
+   * attribute, and anything else becomes a string value.
+   * @param {*} element The HTML element.
+   * @param {*} attribute The attribute to set. 
+   * @param {*} value The value to set the attribute to.
+   */
   static encodeAttribute(element, attribute, value) {
     if (value == this.decodeAttribute(element, attribute)) {
       return;
@@ -109,16 +125,12 @@ export default class ylComponent extends HTMLElement {
    * after an attribute is changed.
    */ 
   renderDOM() {
-    // TODO preserve scroll position
-
-    this.shadowRoot.innerHTML = '';
-    if (this.css !== '') {
-      this.shadowRoot.innerHTML += `<style>${this.css}</style>`;
+    const newHTML = `<style>${this.css}</style>` + this.html;
+    if (this.shadowRoot.innerHTML != newHTML) {
+      this.shadowRoot.innerHTML = newHTML;
+      this.dom = {};
+      this.mapDOM();
     }
-    this.shadowRoot.innerHTML += this.html;
-
-    this.dom = {};
-    this.mapDOM();
   }
 
   /**
@@ -149,7 +161,6 @@ export default class ylComponent extends HTMLElement {
       "");
 
     this.innerHTML = bufferHTML + template.outerHTML;
-    console.log(this.innerHTML);
   }
 
   /**
