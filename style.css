@@ -104,7 +104,7 @@ yl-modal::part(closeButton) {
   font-size: 20px;
 }
 
-yl-modal yl-imageview {
+yl-modal yl-image-view {
   border-top: 1px solid var(--dark);
   border-bottom: 1px solid var(--dark);
 }

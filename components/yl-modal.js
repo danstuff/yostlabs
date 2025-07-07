@@ -50,7 +50,6 @@ export default class ylModal extends ylComponent {
       div[part="content"] {
         display: flex;
         flex-direction: column;
-        overflow-y: auto;
         height: 100%;
       }
 

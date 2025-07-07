@@ -30,7 +30,6 @@
         <yl-tile
           title="Test"
           image="images/live_demos/enso.jpg"
-          description="This is a test of the thing!"
           data-app-category="software"
           data-open-modal="tile">
         </yl-tile>
@@ -82,7 +81,9 @@
       <template>
         <h3>yl-stub-title</h3>
         <yl-image-view src="yl-stub-image"></yl-image-view>
-        <p>yl-stub-description</p>
+        <yl-if truthy="yl-stub-description">
+          <p>yl-stub-description</p>
+        </yl-if>
         <yl-if truthy="yl-stub-href">
           <a href="yl-stub-href">Try It Now</a>
         </yl-if>
