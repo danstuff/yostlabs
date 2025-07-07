@@ -1,13 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Domine&display=swap');
+
+:root {
+  --light: #ffffff;
+  --primary: #f0e9e2;
+  --dark: #504f57;
+
+  --bg-light: #2b2a30;
+  --bg-primary: #19181d;
+  --bg-dark: #17161b;
+}
+
 html, body {
   margin: 0;
   padding: 0;
-  background-color: black;
-  color: white;
-  scrollbar-color: white black;
+  height: 100%;
+  background-color: var(--bg-primary);
+  color: var(--primary);
+  scrollbar-color: var(--primary) var(--bg-primary);
+  font-family: "Domine", serif;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+h3 {
+  color: var(--light);
+  font-weight: 100;
 }
 
 yl-navbar {
-  box-shadow: 0px 0px 50px 40px #000000;
+  background-color: var(--bg-dark);
+  border-bottom: 1px solid var(--bg-light);
+  box-shadow: 0px 0px 25px 10px var(--bg-primary);
 }
 
 yl-navbar::part(icon) {
@@ -15,13 +41,19 @@ yl-navbar::part(icon) {
 }
 
 yl-navbar::part(links) {
-  margin: 0px 32px;
+  margin: 8px 32px;
 }
 
 yl-navbar a {
   margin: 8px;
-  color: white;   
+  color: var(--primary);   
   text-decoration: none;
+}
+
+yl-grid {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  scrollbar-gutter: stable both-edges;
 }
 
 yl-grid::part(wrapper) {
@@ -34,16 +66,17 @@ yl-tile {
 
 yl-tile::part(image) {
   width: 200px;
-  border: 1px solid white;
+  border: 1px solid var(--dark);
 }
 
 yl-footer {
-  box-shadow: 0px 0px 50px 40px #000000;
+  border-top: 1px solid var(--bg-light);
+  background-color: var(--bg-dark);
+  box-shadow: 0px 0px 25px 10px var(--bg-primary);
 }
 
 yl-footer::part(hr) {
-  width: 400px;
-  background-color: white;
+  background-color: var(--dark);
 }
 
 yl-footer yl-icon {
@@ -52,11 +85,11 @@ yl-footer yl-icon {
 }
 
 yl-modal {
-  border: 1px solid white;
+  border: 1px solid var(--dark);
+  background-color: var(--bg-light);
   width: 1000px;
   height: 0px;
   opacity: 0%;
-  box-shadow: 0px 0px 10px 10px #000000;
   transition-property: height, visibility, opacity;
   transition-duration: 0.25s;
 }
@@ -72,8 +105,8 @@ yl-modal::part(closeButton) {
 }
 
 yl-modal yl-imageview {
-  border-top: 1px solid white;
-  border-bottom: 1px solid white;
+  border-top: 1px solid var(--dark);
+  border-bottom: 1px solid var(--dark);
 }
 
 yl-modal h3 {
@@ -81,5 +114,9 @@ yl-modal h3 {
 }
 
 yl-modal p, yl-modal a {
-  margin-left: 1em;
+  margin: 1em;
+}
+
+yl-modal a {
+  color: var(--light);
 }
