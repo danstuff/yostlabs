@@ -8,7 +8,6 @@ export default class ylFooter extends ylComponent {
 
   get html() {
     return `
-      <hr part="hr"></hr>
       <div part="container">
         <slot></slot>
       </div>
@@ -18,9 +17,6 @@ export default class ylFooter extends ylComponent {
   get css() {
     return `
       :host {
-        position: sticky;
-        bottom: 0;
-
         display: flex;
         flex-direction: column;
 
@@ -28,15 +24,6 @@ export default class ylFooter extends ylComponent {
         align-items: center;
 
         background-color: inherit;
-      }
-
-      hr[part="hr"] {
-        margin: 0;
-        padding: 0;
-        border: none;
-        width: 100%;
-        max-width: 100%;
-        height: 1px;
       }
 
       div[part="container"] {

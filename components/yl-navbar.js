@@ -23,9 +23,6 @@ export default class ylNavbar extends ylComponent {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        position: sticky;
-        top: 0;
-        left: 0;
         width: 100%;
         z-index: 100;
         background-color: inherit;
