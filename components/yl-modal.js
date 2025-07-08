@@ -3,12 +3,12 @@ import ylComponent from "./yl-component";
 export default class ylModal extends ylComponent {
 
   static get observedAttributes() {
-    return ['name', 'open', 'maximized', 'width', 'height'];
+    return ['name', 'opened', 'maximized', 'width', 'height', 'x', 'y'];
   }
 
   get html() {
     return `
-      <div part="title-bar">
+      <div part="actions">
         <a part="maximize" href="#">&#9632;</a>
         <a part="close" href="#">x</a>
       </div>
@@ -24,10 +24,8 @@ export default class ylModal extends ylComponent {
         visibility: hidden;
         position: fixed;
         margin: auto;
-        left: 0;
-        right: 0;
-        top: 0;
-        bottom: 0;
+        left: ${this.x || 0}px;
+        top: ${this.y || 0}px;
         width: ${this.width || 1000}px;
         height: ${this.height || 800}px;
         max-width: 95%;
@@ -36,11 +34,13 @@ export default class ylModal extends ylComponent {
         background-color: inherit;
       }
 
-      :host([open]) {
+      :host([opened]) {
         visibility: visible;
       }
 
       :host([maximized]) {
+        left: 0;
+        top: 0;
         width: 100%;
         height: 100%;
         max-width: 100%;
@@ -53,10 +53,11 @@ export default class ylModal extends ylComponent {
         height: 100%;
       }
 
-      div[part="title-bar"] {
+      div[part="actions"] {
         position: absolute;
         top: 0;
         right: 0;
+        display: flex;
       }
 
       a {
@@ -69,27 +70,40 @@ export default class ylModal extends ylComponent {
   mapDOM() {
     this.dom.close = this.shadowRoot.querySelector('a[part="close"]');
     this.dom.maximize = this.shadowRoot.querySelector('a[part="maximize"]');
-    this.dom.template = this.querySelector('template');
-  }
+    this.dom.template = this.querySelector('template') || {};
 
-  onOpenModal(e) {
-    this.open = true;
-    this.fillStubs(this.dom.template || {}, e.target);
-  }
+    this.dom.close.onclick = () => {
+      this.opened = false;
+    }
 
-  onClick(e) {
-    if (e.target == this.dom.close) {
-      this.open = false;
-    } else if (e.target == this.dom.maximize) {
+    this.dom.maximize.onclick = () => {
       this.maximized = !this.maximized;
     }
-  }
 
-  connectedCallback() {
+    this.ondragstart = (e) => {
+      this.dragX = e.clientX;
+      this.dragY = e.clientY;
+    }
+
+    this.ondragend = (e) => {
+      const dx = this.dragX - e.clientX;
+      const dy = this.dragY - e.clientY;
+
+      this.x = (this.offsetLeft - dx);
+      this.y = (this.offsetTop - dy);
+    }
+
     this.bind(document,
       `[data-open-modal='${this.name || ""}']`, 
       'click',
-      'onOpenModal');
+      'open');
+  }
+
+  open(e) {
+    this.opened = true;
+    this.x = 0;
+    this.y = 0;
+    this.fillStubs(this.dom.template, e.target);
   }
 }
 

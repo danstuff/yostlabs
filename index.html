@@ -52,9 +52,17 @@
         </yl-tile>
 
         <yl-tile
-          title="YL"
-          image="images/software/yl.jpg"
-          description="The custom web component library and testing engine I wrote for this website."
+          title="ylComponent"
+          image="images/software/ylComponent.jpg"
+          description="The web component library I wrote while building this website."
+          data-app-category="software"
+          data-open-modal="tile">
+        </yl-tile>
+
+        <yl-tile
+          title="ylTest"
+          image="images/software/ylTest.jpg"
+          description="The Jest-inspired testing framework I wrote while building this website."
           data-app-category="software"
           data-open-modal="tile">
         </yl-tile>
@@ -76,7 +84,11 @@
       </yl-icon>
     </yl-footer>
 
-    <yl-modal name="tile" width="1000" height="800">
+    <yl-modal 
+      name="tile"
+      width="1000"
+      height="800"
+      draggable="true">
       Content missing
 
       <template>

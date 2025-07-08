@@ -92,14 +92,16 @@ yl-modal {
   transition-duration: 0.25s;
 }
 
-yl-modal[open] {
+yl-modal[opened] {
   transform: scale(1, 1);
 }
 
-yl-modal::part(title-bar) {
-  font-size: 32px;
+yl-modal::part(actions) {
+  font-size: 24px;
   line-height: 20px;
   padding: 8px;
+  padding-right: 10px;
+  column-gap: 10px;
 }
 
 yl-modal yl-image-view {

@@ -8,3 +8,4 @@ export { default as ylModal } from "./yl-modal";
 export { default as ylNavbar } from "./yl-navbar";
 export { default as ylTestGroup } from "./yl-test-group";
 export { default as ylTile } from "./yl-tile";
+export { default as ylWebFrame } from "./yl-web-frame";

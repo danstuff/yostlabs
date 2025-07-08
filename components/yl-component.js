@@ -3,6 +3,14 @@ export default class ylComponent extends HTMLElement {
   static get STUB_PREFIX() {
     return 'yl-stub-';
   }
+  
+  static get DRAG_MIN() {
+    return 2;
+  }
+
+  static get DRAG_SCALE() {
+    return 1.25;
+  }
 
   static get observedAttributes() {
     return [];
@@ -31,11 +39,10 @@ export default class ylComponent extends HTMLElement {
     
     this.attachShadow({ mode: 'open' });
     this.renderDOM();
-
-    this.registerCallbacks();
   }
 
-  attributeChangedCallback(_name, _oldValue, _newValue) {
+  attributeChangedCallback() {
+    // TODO don't immediately render, wait a few ms to see if anything else changes
     this.renderDOM();
   }
 
@@ -100,22 +107,6 @@ export default class ylComponent extends HTMLElement {
           return ylComponent.encodeAttribute(this, attribute, value);
         }
       })
-    }
-  }
-
-  /**
-   * If the child class has specially named functions defined such as
-   * 'onWindowResize' or 'onClick', register them as event listeners.
-   */
-  registerCallbacks() {
-    if (this.onWindowResize) {
-      window.addEventListener('resize', 
-        this.onWindowResize.bind(this));
-    }
-
-    if (this.onClick) {
-      this.shadowRoot.addEventListener('click',
-        this.onClick.bind(this));
     }
   }
 
