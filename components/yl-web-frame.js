@@ -1,0 +1,25 @@
+import ylComponent from "./yl-component";
+
+export default class ylWebFrame extends ylComponent {
+  static get observedAttributes() {
+    return ['src'];
+  }
+
+  get html() {
+    return `
+      <div part="wrapper"></div>
+    `;
+  }
+
+  mapDOM() {
+    this.dom.wrapper = this.shadowRoot.querySelector('div[part="wrapper"]');
+  }
+
+  connectedCallback() {
+    fetch(this.src).then(response => response.text()).then(source => { 
+      this.dom.wrapper.innerHTML = source;
+    });
+  }
+}
+
+ylWebFrame.defineElement();
