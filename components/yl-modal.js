@@ -3,24 +3,15 @@ import ylComponent from "./yl-component";
 export default class ylModal extends ylComponent {
 
   static get observedAttributes() {
-    return ['name', 'open'];
+    return ['name', 'open', 'maximized', 'width', 'height'];
   }
 
   get html() {
     return `
-      <a part="closeButton" href="#">
-        <svg
-          width="100%"
-          height="100%"
-          viewBox="0 0 100 100">
-          <path
-              style="stroke:white;stroke-width:0.75em;"
-              d="M 5,95 95,5"/>
-          <path
-              style="stroke:white;stroke-width:0.75em;"
-              d="M 5,5 95,95"/>
-        </svg>
-      </a>
+      <div part="title-bar">
+        <a part="maximize" href="#">&#9632;</a>
+        <a part="close" href="#">x</a>
+      </div>
       <div part="content">
         <slot></slot>
       </div>
@@ -37,6 +28,8 @@ export default class ylModal extends ylComponent {
         right: 0;
         top: 0;
         bottom: 0;
+        width: ${this.width || 1000}px;
+        height: ${this.height || 800}px;
         max-width: 95%;
         max-height: 95%;
         z-index: 200;
@@ -46,6 +39,13 @@ export default class ylModal extends ylComponent {
       :host([open]) {
         visibility: visible;
       }
+
+      :host([maximized]) {
+        width: 100%;
+        height: 100%;
+        max-width: 100%;
+        max-height: 100%;
+      }
       
       div[part="content"] {
         display: flex;
@@ -53,23 +53,22 @@ export default class ylModal extends ylComponent {
         height: 100%;
       }
 
-      a[part="closeButton"] {
+      div[part="title-bar"] {
         position: absolute;
-        top: 0.5em;
-        right: 0.5em;
-        width: 1em;
-        height: 1em;
+        top: 0;
+        right: 0;
       }
 
-      a[part="closeButton"] svg {
-        pointer-events: none;
+      a {
+        text-decoration: none;
+        color: inherit;
       }
     `;
   }
 
   mapDOM() {
-    this.dom.closeButton = this.shadowRoot.querySelector('a');
-    this.dom.background = this.shadowRoot.querySelector('div[part="background"]');
+    this.dom.close = this.shadowRoot.querySelector('a[part="close"]');
+    this.dom.maximize = this.shadowRoot.querySelector('a[part="maximize"]');
     this.dom.template = this.querySelector('template');
   }
 
@@ -79,11 +78,10 @@ export default class ylModal extends ylComponent {
   }
 
   onClick(e) {
-    if (e.target == this.dom.closeButton ||
-        e.target == this.dom.background) {
-      setTimeout(() => {
-        this.open = false;
-      }, 100);
+    if (e.target == this.dom.close) {
+      this.open = false;
+    } else if (e.target == this.dom.maximize) {
+      this.maximized = !this.maximized;
     }
   }
 
