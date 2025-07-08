@@ -87,20 +87,16 @@ yl-footer yl-icon {
 yl-modal {
   border: 1px solid var(--dark);
   background-color: var(--bg-light);
-  width: 1000px;
-  height: 0px;
-  opacity: 0%;
-  transition-property: height, visibility, opacity;
+  transform: scale(1, 0);
+  transition-property: transform, visibility, width, height;
   transition-duration: 0.25s;
 }
 
 yl-modal[open] {
-  width: 1000px;
-  height: 800px;
-  opacity: 100%;
+  transform: scale(1, 1);
 }
 
-yl-modal::part(closeButton) {
+yl-modal::part(close) {
   font-size: 16px;
   margin: 5px;
 }
