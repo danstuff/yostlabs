@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>yostlabs</title>
+    <title>YostLabs</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/x-icon" href="images/icons/logo_25.svg">
@@ -84,15 +84,12 @@
       </yl-icon>
     </yl-footer>
 
-    <yl-modal 
-      name="tile"
-      width="1000"
-      height="800"
-      draggable="true">
+    <yl-modal name="tile">
       Content missing
 
       <template>
-        <h3>yl-stub-title</h3>
+        <h3 slot="title">yl-stub-title</h3>
+
         <yl-image-view src="yl-stub-image"></yl-image-view>
         <yl-if truthy="yl-stub-description">
           <p>yl-stub-description</p>

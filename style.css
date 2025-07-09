@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Domine&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&display=swap');
 
 :root {
   --light: #ffffff;
@@ -17,7 +17,7 @@ html, body {
   background-color: var(--bg-primary);
   color: var(--primary);
   scrollbar-color: var(--primary) var(--bg-primary);
-  font-family: "Domine", serif;
+  font-family: "Inconsolata", mono;
 }
 
 body {
@@ -27,7 +27,7 @@ body {
 
 h3 {
   color: var(--light);
-  font-weight: 100;
+  font-weight: 500;
 }
 
 yl-navbar {
@@ -88,7 +88,7 @@ yl-modal {
   border: 1px solid var(--dark);
   background-color: var(--bg-light);
   transform: scale(1, 0);
-  transition-property: transform, visibility, width, height;
+  transition-property: transform, visibility, width, height, top, left;
   transition-duration: 0.25s;
 }
 
@@ -96,15 +96,25 @@ yl-modal[opened] {
   transform: scale(1, 1);
 }
 
+yl-modal::part(content) {
+  display: flex;
+  flex-direction: column;
+  text-overflow: ellipsis;
+  overflow: auto;
+}
+
 yl-modal::part(actions) {
-  font-size: 24px;
-  line-height: 20px;
+  font-size: 32px;
+  margin-right: 8px;
+}
+
+yl-modal::part(resize) {
+  font-size: 32px;
   padding: 8px;
-  padding-right: 10px;
-  column-gap: 10px;
 }
 
 yl-modal yl-image-view {
+  flex-grow: 1;
   border-top: 1px solid var(--dark);
   border-bottom: 1px solid var(--dark);
 }
