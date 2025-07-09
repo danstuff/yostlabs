@@ -29,12 +29,12 @@ export default class ylModal extends ylComponent {
         visibility: hidden;
         position: fixed;
         margin: auto;
-        left: ${this.x || 0}px;
-        top: ${this.y || 0}px;
-        width: ${this.width || 640}px;
-        height: ${this.height || 480}px;
-        max-width: 95%;
-        max-height: 95%;
+        left: ${this.x}px;
+        top: ${this.y}px;
+        width: ${this.width}px;
+        height: ${this.height}px;
+        max-width: calc(100% - 16px);
+        max-height: calc(100% - 16px);
         z-index: 200;
         background-color: inherit;
         font-family: inherit;
@@ -119,6 +119,12 @@ export default class ylModal extends ylComponent {
 
       this.x = (this.offsetLeft - dx);
       this.y = (this.offsetTop - dy);
+
+      this.x = Math.max(this.x, -this.width/2);
+      this.y = Math.max(this.y, 0);
+
+      this.x = Math.min(this.x, window.innerWidth-this.width/2);
+      this.y = Math.min(this.y, window.innerHeight-32);
     }
 
     this.dom.resize.ondragstart = (e) => {
@@ -140,6 +146,9 @@ export default class ylModal extends ylComponent {
       this.width = Math.max(this.width, 240);
       this.height = Math.max(this.height, 240);
 
+      this.width = Math.min(this.width, window.innerWidth);
+      this.height = Math.min(this.height, window.innerHeight);
+
       e.preventDefault();
     }
 
@@ -152,6 +161,13 @@ export default class ylModal extends ylComponent {
   open(e) {
     this.opened = true;
     this.fillStubs(this.dom.template, e.target);
+  }
+
+  connectedCallback() {
+    this.x = this.x || 0;
+    this.y = this.y || 0;
+    this.width = this.width || 640;
+    this.height = this.height || 480;
   }
 }
 
