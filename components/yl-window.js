@@ -1,6 +1,6 @@
 import ylComponent from "./yl-component";
 
-export default class ylModal extends ylComponent {
+export default class ylWindow extends ylComponent {
 
   static get observedAttributes() {
     return ['title', 'opened', 'maximized', 'width', 'height', 'x', 'y'];
@@ -160,4 +160,4 @@ export default class ylModal extends ylComponent {
   }
 }
 
-ylModal.defineElement();
+ylWindow.defineElement();

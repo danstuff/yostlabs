@@ -4,7 +4,7 @@ export { default as ylGrid } from "./yl-grid";
 export { default as ylIcon } from "./yl-icon";
 export { default as ylIf } from "./yl-if";
 export { default as ylImageview } from "./yl-image-view";
-export { default as ylModal } from "./yl-modal";
+export { default as ylWindow } from "./yl-window";
 export { default as ylNavbar } from "./yl-navbar";
 export { default as ylTemplate } from "./yl-template";
 export { default as ylTestGroup } from "./yl-test-group";
