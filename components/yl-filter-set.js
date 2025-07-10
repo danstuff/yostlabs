@@ -18,9 +18,9 @@ export default class ylFilterSet extends ylComponent {
     const filterCategory = 
       e.target.dataset[`${this.name}Filter`] || "";
 
-    const filterableChildren = 
+    const filterChildren = 
       this.querySelectorAll(`[data-${this.name}-category]`);
-    for (const child of filterableChildren) {
+    for (const child of filterChildren) {
       const childCategory = child.dataset[`${this.name}Category`];
 
       child.style.display = 
@@ -30,10 +30,21 @@ export default class ylFilterSet extends ylComponent {
   }
 
   connectedCallback() {
-    this.bind(document, 
-      `[data-${this.name}-filter]`,
-      'click',
-      'onFilter');
+      const actors = `[data-${this.name}-filter]`;
+      this.watch(document, actors, 'click', () => {
+      const filterCategory = 
+        e.target.dataset[`${this.name}Filter`] || "";
+
+      const filterChildren = 
+        this.querySelectorAll(`[data-${this.name}-category]`);
+      for (const child of filterChildren) {
+        const childCategory = child.dataset[`${this.name}Category`];
+
+        child.style.display = 
+          filterCategory == childCategory || filterCategory == "" ?
+            "initial" : "none";
+      }
+    });
   }
 }
 

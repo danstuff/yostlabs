@@ -12,7 +12,7 @@ export default class ylWebFrame extends ylComponent {
   }
 
   mapDOM() {
-    this.dom.wrapper = this.shadowRoot.querySelector('div[part="wrapper"]');
+    this.dom.wrapper = this.root.querySelector('div[part="wrapper"]');
   }
 
   connectedCallback() {

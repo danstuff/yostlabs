@@ -35,8 +35,8 @@ export default class ylNavbar extends ylComponent {
   }
 
   mapDOM() {
-    this.dom.icon = this.shadowRoot.querySelector('img');
-    this.dom.slot = this.shadowRoot.querySelector('slot');
+    this.dom.icon = this.root.querySelector('img');
+    this.dom.slot = this.root.querySelector('slot');
   }
 
   onClick() {

@@ -37,7 +37,7 @@ export default class ylComponent extends HTMLElement {
 
     this.reflectAttributes();
     
-    this.attachShadow({ mode: 'open' });
+    this.root = this.attachShadow({ mode: 'open' });
     this.renderDOM();
   }
 
@@ -117,8 +117,8 @@ export default class ylComponent extends HTMLElement {
    */ 
   renderDOM() {
     const newHTML = `<style>${this.css}</style>` + this.html;
-    if (this.shadowRoot.innerHTML != newHTML) {
-      this.shadowRoot.innerHTML = newHTML;
+    if (this.root.innerHTML != newHTML) {
+      this.root.innerHTML = newHTML;
       this.dom = {};
       this.mapDOM();
     }
@@ -129,12 +129,12 @@ export default class ylComponent extends HTMLElement {
    * @param {*} root The root element to search with selector.
    * @param {*} selector The selector to query root for descendant elements.
    * @param {*} srcEvent The event on to bind to on the external elements.  
-   * @param {*} targetEvent The function to trigger on this component when srcEvent is fired.
+   * @param {*} callback The function to trigger when srcEvent is fired.
    */
-  bind(root, selector, srcEvent, targetEvent) {
+  watch(root, selector, srcEvent, callback) {
     root.querySelectorAll(selector).forEach(element => {
       element.addEventListener(srcEvent, e => {
-        this[targetEvent](e);
+        callback(e);
       });
     });
   }

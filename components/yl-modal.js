@@ -90,10 +90,10 @@ export default class ylModal extends ylComponent {
   }
 
   mapDOM() {
-    this.dom.close = this.shadowRoot.querySelector('button[part="close"]');
-    this.dom.maximize = this.shadowRoot.querySelector('button[part="maximize"]');
-    this.dom.resize = this.shadowRoot.querySelector('button[part="resize"]');
-    this.dom.titlebar = this.shadowRoot.querySelector('div[part="titlebar"]')
+    this.dom.close = this.root.querySelector('button[part="close"]');
+    this.dom.maximize = this.root.querySelector('button[part="maximize"]');
+    this.dom.resize = this.root.querySelector('button[part="resize"]');
+    this.dom.titlebar = this.root.querySelector('div[part="titlebar"]')
     this.dom.template = this.querySelector('template') || {};
 
     this.dom.close.onclick = () => {
@@ -152,15 +152,11 @@ export default class ylModal extends ylComponent {
       e.preventDefault();
     }
 
-    this.bind(document,
-      `[data-open-modal='${this.name || ""}']`, 
-      'click',
-      'open');
-  }
-
-  open(e) {
-    this.opened = true;
-    this.fillStubs(this.dom.template, e.target);
+    const openers = `[data-open-modal='${this.name || ""}']`;
+    this.watch(document, openers, 'click', (e) => {
+      this.opened = true;
+      this.fillStubs(this.dom.template, e.target);
+    });
   }
 
   connectedCallback() {
