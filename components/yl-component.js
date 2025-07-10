@@ -1,17 +1,4 @@
 export default class ylComponent extends HTMLElement {
-
-  static get STUB_PREFIX() {
-    return 'yl-stub-';
-  }
-  
-  static get DRAG_MIN() {
-    return 2;
-  }
-
-  static get DRAG_SCALE() {
-    return 1.25;
-  }
-
   static get observedAttributes() {
     return [];
   }
@@ -130,6 +117,7 @@ export default class ylComponent extends HTMLElement {
    * @param {*} callback The function to trigger when srcEvent is fired.
    */
   watch(root, selector, srcEvent, callback) {
+    // TODO use MutationObserver to re-add event listeners on changes in root
     root.querySelectorAll(selector).forEach(element => {
       element.addEventListener(srcEvent, e => {
         callback(e);
