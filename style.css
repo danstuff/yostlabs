@@ -50,13 +50,13 @@ yl-navbar a {
   text-decoration: none;
 }
 
-yl-grid {
+yl-list {
   flex: 1 1 auto;
   overflow-y: auto;
   scrollbar-gutter: stable both-edges;
 }
 
-yl-grid::part(wrapper) {
+yl-list::part(wrapper) {
   max-width: 900px;
 }
 
@@ -84,7 +84,7 @@ yl-footer yl-icon {
   margin: 16px 32px;
 }
 
-yl-modal {
+yl-window {
   border: 1px solid var(--dark);
   background-color: var(--bg-light);
   transform: scale(1, 0);
@@ -92,41 +92,41 @@ yl-modal {
   transition-duration: 0.25s;
 }
 
-yl-modal[opened] {
+yl-window[opened] {
   transform: scale(1, 1);
 }
 
-yl-modal::part(content) {
+yl-window::part(content) {
   display: flex;
   flex-direction: column;
   text-overflow: ellipsis;
   overflow: auto;
 }
 
-yl-modal::part(actions) {
+yl-window::part(actions) {
   font-size: 32px;
   margin-right: 8px;
 }
 
-yl-modal::part(resize) {
+yl-window::part(resize) {
   font-size: 32px;
   padding: 8px;
 }
 
-yl-modal yl-image-view {
+yl-window yl-image-view {
   flex-grow: 1;
   border-top: 1px solid var(--dark);
   border-bottom: 1px solid var(--dark);
 }
 
-yl-modal h3 {
+yl-window h3 {
   margin: 0.5em;
 }
 
-yl-modal p, yl-modal a {
+yl-window p, yl-window a {
   margin: 1em;
 }
 
-yl-modal a {
+yl-window a {
   color: var(--light);
 }

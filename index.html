@@ -10,64 +10,62 @@
  </head>
   <body>
     <yl-navbar icon="images/icons/logo_25.svg" minwidth="530">
-      <a href="#" data-app-filter="software">Software</a>
-      <a href="#" data-app-filter="games">Games</a>
-      <a href="#" data-app-filter="crafts">Crafts</a>
-      <a href="#" data-app-filter="">All</a>
+      <a href="#" data-category="software">Software</a>
+      <a href="#" data-category="games">Games</a>
+      <a href="#" data-category="crafts">Crafts</a>
+      <a href="#" data-category="">All</a>
     </yl-navbar>
 
-    <yl-filter-set name="app">
-      <yl-grid>
-        <yl-tile
-          title="PromptGarden"
-          image="images/software/promptgarden.jpg"
-          description="An AI Document Editor that connects ChatGPT and Google Docs."
-          href="test"
-          data-app-category="software"
-          data-template="tile">
-        </yl-tile>
+    <yl-list grid categories="yl-navbar">
+      <yl-tile
+        title="PromptGarden"
+        image="images/software/promptgarden.jpg"
+        description="An AI Document Editor that connects ChatGPT and Google Docs."
+        href="test"
+        data-category="software"
+        data-copy-template="tile">
+      </yl-tile>
 
-        <yl-tile
-          title="YostOS"
-          image="images/software/yostos.jpg"
-          description="A virtual browser-based OS written in TypeScript."
-          data-app-category="software"
-          data-template="tile">
-        </yl-tile>
+      <yl-tile
+        title="YostOS"
+        image="images/software/yostos.jpg"
+        description="A virtual browser-based OS written in TypeScript."
+        data-category="software"
+        data-copy-template="tile">
+      </yl-tile>
 
-        <yl-tile
-          title="Enso"
-          image="images/games/enso.jpg"
-          description="A serene zen garden game that changes with the seasons."
-          data-app-category="games"
-          data-template="tile">
-        </yl-tile>
+      <yl-tile
+        title="Enso"
+        image="images/games/enso.jpg"
+        description="A serene zen garden game that changes with the seasons."
+        data-category="games"
+        data-copy-template="tile">
+      </yl-tile>
 
-        <yl-tile
-          title="Momul"
-          image="images/games/momul.jpg"
-          description="A chess-like abstract strategy game."
-          data-app-category="games"
-          data-template="tile">
-        </yl-tile>
+      <yl-tile
+        title="Momul"
+        image="images/games/momul.jpg"
+        description="A chess-like abstract strategy game."
+        data-category="games"
+        data-copy-template="tile">
+      </yl-tile>
 
-        <yl-tile
-          title="ylComponent"
-          image="images/software/ylComponent.jpg"
-          description="The web component library I wrote while building this website."
-          data-app-category="software"
-          data-template="tile">
-        </yl-tile>
+      <yl-tile
+        title="ylComponent"
+        image="images/software/ylComponent.jpg"
+        description="The web component library I wrote while building this website."
+        data-category="software"
+        data-copy-template="tile">
+      </yl-tile>
 
-        <yl-tile
-          title="ylTest"
-          image="images/software/ylTest.jpg"
-          description="The Jest-inspired testing framework I wrote while building this website."
-          data-app-category="software"
-          data-template="tile">
-        </yl-tile>
-      </yl-grid>
-    </yl-filter-set>
+      <yl-tile
+        title="ylTest"
+        image="images/software/ylTest.jpg"
+        description="The Jest-inspired testing framework I wrote while building this website."
+        data-category="software"
+        data-copy-template="tile">
+      </yl-tile>
+    </yl-list>
     
     <yl-footer>
       <yl-icon 
@@ -84,16 +82,18 @@
       </yl-icon>
     </yl-footer>
 
-    <yl-template name="tile">
-      <yl-modal opened title="yl-stub-title">
-        <yl-image-view src="yl-stub-image"></yl-image-view>
-        <yl-if truthy="yl-stub-description">
-          <p>yl-stub-description</p>
-        </yl-if>
-        <yl-if truthy="yl-stub-href">
-          <a href="yl-stub-href">Try It Now</a>
-        </yl-if>
-      </yl-modal>
-    </yl-template>
+    <yl-copier>
+      <template data-name="tile">
+        <yl-window title="yl-stub-title">
+          <yl-image-view src="yl-stub-image"></yl-image-view>
+          <yl-if truthy="yl-stub-description">
+            <p>yl-stub-description</p>
+          </yl-if>
+          <yl-if truthy="yl-stub-href">
+            <a href="yl-stub-href">Try It Now</a>
+          </yl-if>
+        </yl-window>
+      </template>
+    </yl-copier>
   </body>
 </html>

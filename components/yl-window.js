@@ -1,9 +1,12 @@
 import ylComponent from "./yl-component";
 
 export default class ylWindow extends ylComponent {
+  static get CLEANUP_MS() {
+    return 4000;
+  }
 
   static get observedAttributes() {
-    return ['title', 'opened', 'maximized', 'width', 'height', 'x', 'y'];
+    return ['title', 'opened', 'maximized', 'width', 'height', 'x', 'y', 'index'];
   }
 
   get html() {
@@ -35,7 +38,7 @@ export default class ylWindow extends ylComponent {
         height: ${this.height}px;
         max-width: calc(100% - 16px);
         max-height: calc(100% - 16px);
-        z-index: 200;
+        z-index: ${this.index + 200};
         background-color: inherit;
         font-family: inherit;
         display: flex;
@@ -97,6 +100,10 @@ export default class ylWindow extends ylComponent {
 
     this.dom.close.onclick = () => {
       this.opened = false;
+      this.destroyTimeout = this.destroyTimeout || 
+        setTimeout(() => {
+          this.parentNode.removeChild(this);
+        }, this.constructor.CLEANUP_MS);
     }
 
     this.dom.maximize.onclick = () => {
@@ -147,8 +154,6 @@ export default class ylWindow extends ylComponent {
 
       this.width = Math.min(this.width, window.innerWidth);
       this.height = Math.min(this.height, window.innerHeight);
-
-      e.preventDefault();
     }
   }
 
@@ -157,6 +162,11 @@ export default class ylWindow extends ylComponent {
     this.y = this.y || 0;
     this.width = this.width || 640;
     this.height = this.height || 480;
+    this.index = this.index || 0;
+
+    this.createTimeout = this.createTimeout || setTimeout(() => {
+      this.opened = true;
+    }, 10);
   }
 }
 

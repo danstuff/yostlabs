@@ -1,12 +1,11 @@
-export { default as ylFilterset } from "./yl-filter-set";
+export { default as ylCopier } from "./yl-copier";
 export { default as ylFooter } from "./yl-footer";
-export { default as ylGrid } from "./yl-grid";
 export { default as ylIcon } from "./yl-icon";
 export { default as ylIf } from "./yl-if";
 export { default as ylImageview } from "./yl-image-view";
-export { default as ylWindow } from "./yl-window";
+export { default as ylList } from "./yl-list";
 export { default as ylNavbar } from "./yl-navbar";
-export { default as ylTemplate } from "./yl-template";
 export { default as ylTestGroup } from "./yl-test-group";
 export { default as ylTile } from "./yl-tile";
 export { default as ylWebFrame } from "./yl-web-frame";
+export { default as ylWindow } from "./yl-window";
