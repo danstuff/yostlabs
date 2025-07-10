@@ -34,7 +34,7 @@ export default class ylNavbar extends ylComponent {
     `;
   }
 
-  mapDOM() {
+  renderedCallback() {
     this.dom.icon = this.root.querySelector('img');
     this.dom.slot = this.root.querySelector('slot');
   }

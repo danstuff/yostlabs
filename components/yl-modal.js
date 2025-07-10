@@ -3,13 +3,13 @@ import ylComponent from "./yl-component";
 export default class ylModal extends ylComponent {
 
   static get observedAttributes() {
-    return ['name', 'opened', 'maximized', 'width', 'height', 'x', 'y'];
+    return ['title', 'opened', 'maximized', 'width', 'height', 'x', 'y'];
   }
 
   get html() {
     return `
       <div part="titlebar" draggable="true">
-        <slot name="title"></slot>
+        <div part="title">${this.title || ""}</div>
         <div class="spacer"></div>
         <div part="actions">
           <button part="maximize" href="#">&#9633;</button>
@@ -58,6 +58,7 @@ export default class ylModal extends ylComponent {
       div[part="titlebar"] {
         width: 100%;
         display: flex;
+        cursor: grab;
       }
 
       div[part="content"] {
@@ -66,7 +67,6 @@ export default class ylModal extends ylComponent {
 
       div.spacer {
         flex-grow: 1;
-        cursor: grab;
       }
 
       button {
@@ -89,12 +89,11 @@ export default class ylModal extends ylComponent {
     `;
   }
 
-  mapDOM() {
+  renderedCallback() {
     this.dom.close = this.root.querySelector('button[part="close"]');
     this.dom.maximize = this.root.querySelector('button[part="maximize"]');
     this.dom.resize = this.root.querySelector('button[part="resize"]');
     this.dom.titlebar = this.root.querySelector('div[part="titlebar"]')
-    this.dom.template = this.querySelector('template') || {};
 
     this.dom.close.onclick = () => {
       this.opened = false;
@@ -151,12 +150,6 @@ export default class ylModal extends ylComponent {
 
       e.preventDefault();
     }
-
-    const openers = `[data-open-modal='${this.name || ""}']`;
-    this.watch(document, openers, 'click', (e) => {
-      this.opened = true;
-      this.fillStubs(this.dom.template, e.target);
-    });
   }
 
   connectedCallback() {

@@ -28,10 +28,6 @@ export default class ylComponent extends HTMLElement {
     return ``;
   }
 
-  mapDOM() {
-
-  }
-
   constructor() {
     super();
 
@@ -120,7 +116,9 @@ export default class ylComponent extends HTMLElement {
     if (this.root.innerHTML != newHTML) {
       this.root.innerHTML = newHTML;
       this.dom = {};
-      this.mapDOM();
+      if (this.renderedCallback) {
+        this.renderedCallback();
+      }
     }
   }
 
@@ -137,21 +135,6 @@ export default class ylComponent extends HTMLElement {
         callback(e);
       });
     });
-  }
-
-
-  fillStubs(template, source) {
-    let bufferHTML = template.innerHTML;
-    for (const attribute of source.attributes) {
-      bufferHTML = bufferHTML.replaceAll(
-        this.constructor.STUB_PREFIX + attribute.name,
-        source.getAttribute(attribute.name));
-    }
-    bufferHTML = bufferHTML.replaceAll(
-      new RegExp(`(${this.constructor.STUB_PREFIX})\\w+`, 'g'),
-      "");
-
-    this.innerHTML = bufferHTML + template.outerHTML;
   }
 
   /**

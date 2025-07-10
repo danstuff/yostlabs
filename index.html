@@ -24,7 +24,7 @@
           description="An AI Document Editor that connects ChatGPT and Google Docs."
           href="test"
           data-app-category="software"
-          data-open-modal="tile">
+          data-template="tile">
         </yl-tile>
 
         <yl-tile
@@ -32,7 +32,7 @@
           image="images/software/yostos.jpg"
           description="A virtual browser-based OS written in TypeScript."
           data-app-category="software"
-          data-open-modal="tile">
+          data-template="tile">
         </yl-tile>
 
         <yl-tile
@@ -40,7 +40,7 @@
           image="images/games/enso.jpg"
           description="A serene zen garden game that changes with the seasons."
           data-app-category="games"
-          data-open-modal="tile">
+          data-template="tile">
         </yl-tile>
 
         <yl-tile
@@ -48,7 +48,7 @@
           image="images/games/momul.jpg"
           description="A chess-like abstract strategy game."
           data-app-category="games"
-          data-open-modal="tile">
+          data-template="tile">
         </yl-tile>
 
         <yl-tile
@@ -56,7 +56,7 @@
           image="images/software/ylComponent.jpg"
           description="The web component library I wrote while building this website."
           data-app-category="software"
-          data-open-modal="tile">
+          data-template="tile">
         </yl-tile>
 
         <yl-tile
@@ -64,7 +64,7 @@
           image="images/software/ylTest.jpg"
           description="The Jest-inspired testing framework I wrote while building this website."
           data-app-category="software"
-          data-open-modal="tile">
+          data-template="tile">
         </yl-tile>
       </yl-grid>
     </yl-filter-set>
@@ -84,12 +84,8 @@
       </yl-icon>
     </yl-footer>
 
-    <yl-modal name="tile">
-      Content missing
-
-      <template>
-        <h3 slot="title" draggable="true">yl-stub-title</h3>
-
+    <yl-template name="tile">
+      <yl-modal opened title="yl-stub-title">
         <yl-image-view src="yl-stub-image"></yl-image-view>
         <yl-if truthy="yl-stub-description">
           <p>yl-stub-description</p>
@@ -97,7 +93,7 @@
         <yl-if truthy="yl-stub-href">
           <a href="yl-stub-href">Try It Now</a>
         </yl-if>
-      </template>
-    </yl-modal>
+      </yl-modal>
+    </yl-template>
   </body>
 </html>

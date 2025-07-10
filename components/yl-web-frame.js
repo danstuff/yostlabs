@@ -11,7 +11,7 @@ export default class ylWebFrame extends ylComponent {
     `;
   }
 
-  mapDOM() {
+  renderedCallback() {
     this.dom.wrapper = this.root.querySelector('div[part="wrapper"]');
   }
 
