@@ -65,7 +65,7 @@ export default class ylComponent extends HTMLElement {
       return;
     }
 
-    if (value) {
+    if (value || value == 0) {
       element.setAttribute(attribute, 
         typeof(value) == "boolean" ? 
         "" : value);

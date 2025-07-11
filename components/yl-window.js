@@ -5,8 +5,31 @@ export default class ylWindow extends ylComponent {
     return 4000;
   }
 
+  static get SETUP_MS() {
+    return 10;
+  }
+
+  static get SNAP_PX() {
+    return 100;
+  }
+
+  static get MIN_WINDOW_SIZE() {
+    return 240;
+  }
+
+  static get topZ() {
+    if (!this._topZ) {
+      this._topZ = 200;
+    }
+    return this._topZ;
+  }
+
+  static set topZ(value) {
+    this._topZ = value;
+  }
+
   static get observedAttributes() {
-    return ['title', 'opened', 'maximized', 'width', 'height', 'x', 'y', 'index'];
+    return ['title', 'opened', 'maximized', 'width', 'height', 'x', 'y', 'z'];
   }
 
   get html() {
@@ -14,7 +37,7 @@ export default class ylWindow extends ylComponent {
       <div part="titlebar" draggable="true">
         <div part="title">${this.title || ""}</div>
         <div class="spacer"></div>
-        <div part="actions">
+        <div>
           <button part="maximize" href="#">&#9633;</button>
           <button part="close" href="#">X</button>
         </div>
@@ -31,14 +54,13 @@ export default class ylWindow extends ylComponent {
       :host {
         visibility: hidden;
         position: fixed;
-        margin: auto;
         left: ${this.x}px;
         top: ${this.y}px;
         width: ${this.width}px;
         height: ${this.height}px;
         max-width: calc(100% - 16px);
         max-height: calc(100% - 16px);
-        z-index: ${this.index + 200};
+        z-index: ${this.z};
         background-color: inherit;
         font-family: inherit;
         display: flex;
@@ -59,7 +81,6 @@ export default class ylWindow extends ylComponent {
       }
 
       div[part="titlebar"] {
-        width: 100%;
         display: flex;
         cursor: grab;
       }
@@ -97,6 +118,14 @@ export default class ylWindow extends ylComponent {
     this.dom.maximize = this.root.querySelector('button[part="maximize"]');
     this.dom.resize = this.root.querySelector('button[part="resize"]');
     this.dom.titlebar = this.root.querySelector('div[part="titlebar"]')
+
+    this.onclick = () => {
+      this.z = ++this.constructor.topZ;
+    }
+
+    this.ondrag = () => {
+      this.z = ++this.constructor.topZ;
+    }
 
     this.dom.close.onclick = () => {
       this.opened = false;
@@ -149,8 +178,8 @@ export default class ylWindow extends ylComponent {
       this.width = (this.offsetWidth - dx);
       this.height = (this.offsetHeight - dy);
       
-      this.width = Math.max(this.width, 240);
-      this.height = Math.max(this.height, 240);
+      this.width = Math.max(this.width, this.constructor.MIN_WINDOW_SIZE);
+      this.height = Math.max(this.height, this.constructor.MIN_WINDOW_SIZE);
 
       this.width = Math.min(this.width, window.innerWidth);
       this.height = Math.min(this.height, window.innerHeight);
@@ -160,13 +189,13 @@ export default class ylWindow extends ylComponent {
   connectedCallback() {
     this.x = this.x || 0;
     this.y = this.y || 0;
+    this.z = this.z || this.constructor.topZ;
     this.width = this.width || 640;
     this.height = this.height || 480;
-    this.index = this.index || 0;
 
     this.createTimeout = this.createTimeout || setTimeout(() => {
       this.opened = true;
-    }, 10);
+    }, this.constructor.SETUP_MS);
   }
 }
 

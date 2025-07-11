@@ -99,13 +99,12 @@ yl-window[opened] {
 yl-window::part(content) {
   display: flex;
   flex-direction: column;
-  text-overflow: ellipsis;
   overflow: auto;
 }
 
-yl-window::part(actions) {
-  font-size: 32px;
-  margin-right: 8px;
+yl-window::part(titlebar) {
+  font-size: 24px;
+  padding: 8px;
 }
 
 yl-window::part(resize) {
@@ -125,8 +124,4 @@ yl-window h3 {
 
 yl-window p, yl-window a {
   margin: 1em;
-}
-
-yl-window a {
-  color: var(--light);
 }
