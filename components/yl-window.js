@@ -1,5 +1,9 @@
 import ylComponent from "./yl-component";
 
+function distance(x1, y1, x2, y2) {
+  return Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1));
+}
+
 export default class ylWindow extends ylComponent {
   static get CLEANUP_MS() {
     return 4000;
@@ -10,7 +14,7 @@ export default class ylWindow extends ylComponent {
   }
 
   static get SNAP_PX() {
-    return 100;
+    return 250;
   }
 
   static get MIN_WINDOW_SIZE() {
@@ -26,6 +30,17 @@ export default class ylWindow extends ylComponent {
 
   static set topZ(value) {
     this._topZ = value;
+  }
+
+  static get snapPoints() {
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    return [
+      { drag: [w/2, 0], drop: [0,   0, w, h/2] },
+      { drag: [w, h/2], drop: [w/2, 0, w/2, h] },
+      { drag: [w/2, h], drop: [0, h/2, w, h/2] },
+      { drag: [0, h/2], drop: [w/2, 0, w/2, h] }
+    ]
   }
 
   static get observedAttributes() {
@@ -139,12 +154,12 @@ export default class ylWindow extends ylComponent {
       this.maximized = !this.maximized;
     }
 
-    this.dom.titlebar.ondragstart = (e) => {
+    this.dom.titlebar.ondragstart = e => {
       this.dragX = e.clientX;
       this.dragY = e.clientY;
     }
 
-    this.dom.titlebar.ondragend = (e) => {
+    this.dom.titlebar.ondragend = e => {
       if (this.maximized) {
         return;
       }
@@ -160,14 +175,25 @@ export default class ylWindow extends ylComponent {
 
       this.x = Math.min(this.x, window.innerWidth-this.width/2);
       this.y = Math.min(this.y, window.innerHeight-32);
+
+      for (const point of this.constructor.snapPoints) {
+        if (distance(this.x, this.y, point.drag[0], point.drag[1]) <= 
+            this.constructor.SNAP_PX) {
+          this.x = point.drop[0];
+          this.y = point.drop[1];
+          this.width = point.drop[2];
+          this.height = point.drop[3];
+          break;
+        }
+      }
     }
 
-    this.dom.resize.ondragstart = (e) => {
+    this.dom.resize.ondragstart = e => {
       this.dragX = e.clientX;
       this.dragY = e.clientY;
     }
 
-    this.dom.resize.ondragend = (e) => {
+    this.dom.resize.ondragend = e => {
       if (this.maximized) {
         return;
       }
