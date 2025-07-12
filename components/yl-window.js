@@ -39,7 +39,7 @@ export default class ylWindow extends ylComponent {
       { drag: [w/2, 0], drop: [0,   0, w, h/2] },
       { drag: [w, h/2], drop: [w/2, 0, w/2, h] },
       { drag: [w/2, h], drop: [0, h/2, w, h/2] },
-      { drag: [0, h/2], drop: [w/2, 0, w/2, h] }
+      { drag: [0, h/2], drop: [0,   0, w/2, h] }
     ]
   }
 
@@ -73,8 +73,8 @@ export default class ylWindow extends ylComponent {
         top: ${this.y}px;
         width: ${this.width}px;
         height: ${this.height}px;
-        max-width: calc(100% - 16px);
-        max-height: calc(100% - 16px);
+        max-width: 100%;
+        max-height: 100%;
         z-index: ${this.z};
         background-color: inherit;
         font-family: inherit;
@@ -142,6 +142,24 @@ export default class ylWindow extends ylComponent {
       this.z = ++this.constructor.topZ;
     }
 
+    this.onkeydown = (e) => {
+      if (e.shiftKey) {
+        let drop = null;
+        switch(e.key) {
+          case "ArrowUp": drop = this.snapPoints[0].drop; break;
+          case "ArrowRight": drop = this.snapPoints[1].drop; break;
+          case "ArrowDown": drop = this.snapPoints[2].drop; break;
+          case "ArrowLeft": drop = this.snapPoints[3].drop; break;
+        }
+        if (drop) {
+          this.x = drop[0];
+          this.y = drop[1];
+          this.width = drop[2];
+          this.height = drop[3];
+        }
+      }
+    }
+
     this.dom.close.onclick = () => {
       this.opened = false;
       this.destroyTimeout = this.destroyTimeout || 
@@ -177,7 +195,7 @@ export default class ylWindow extends ylComponent {
       this.y = Math.min(this.y, window.innerHeight-32);
 
       for (const point of this.constructor.snapPoints) {
-        if (distance(this.x, this.y, point.drag[0], point.drag[1]) <= 
+        if (distance(e.clientX, e.clientY, point.drag[0], point.drag[1]) <= 
             this.constructor.SNAP_PX) {
           this.x = point.drop[0];
           this.y = point.drop[1];

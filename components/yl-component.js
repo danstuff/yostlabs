@@ -64,8 +64,9 @@ export default class ylComponent extends HTMLElement {
     if (value == this.decodeAttribute(element, attribute)) {
       return;
     }
+    console.log(attribute, value, value == 0)
 
-    if (value || value == 0) {
+    if (value || typeof(value) == "number") {
       element.setAttribute(attribute, 
         typeof(value) == "boolean" ? 
         "" : value);
