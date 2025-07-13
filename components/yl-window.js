@@ -4,49 +4,18 @@ function distance(x1, y1, x2, y2) {
   return Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1));
 }
 
+function inside(x, y, box) {
+  const hw = box[2]/2;
+  const hh = box[3]/2;
+  return (
+    x >= box[0] - hw &&
+    y >= box[1] - hh &&
+    x <= box[0] + hw &&
+    y <= box[1] + hh
+  );
+}
+
 export default class ylWindow extends ylComponent {
-  static get CLEANUP_MS() {
-    return 4000;
-  }
-
-  static get SETUP_MS() {
-    return 10;
-  }
-
-  static get SNAP_PX() {
-    return 250;
-  }
-
-  static get MIN_WINDOW_SIZE() {
-    return 240;
-  }
-
-  static get topZ() {
-    if (!this._topZ) {
-      this._topZ = 200;
-    }
-    return this._topZ;
-  }
-
-  static set topZ(value) {
-    this._topZ = value;
-  }
-
-  static get snapPoints() {
-    const w = window.innerWidth;
-    const h = window.innerHeight;
-    return [
-      { drag: [w/2, 0], drop: [0,   0, w, h/2] },
-      { drag: [w, h/2], drop: [w/2, 0, w/2, h] },
-      { drag: [w/2, h], drop: [0, h/2, w, h/2] },
-      { drag: [0, h/2], drop: [0,   0, w/2, h] }
-    ]
-  }
-
-  static get observedAttributes() {
-    return ['title', 'opened', 'maximized', 'width', 'height', 'x', 'y', 'z'];
-  }
-
   get html() {
     return `
       <div part="titlebar" draggable="true">
@@ -128,6 +97,54 @@ export default class ylWindow extends ylComponent {
     `;
   }
 
+  static get observedAttributes() {
+    return ['title', 'opened', 'maximized', 'width', 'height', 'x', 'y', 'z'];
+  }
+
+  static get CLEANUP_MS() {
+    return 4000;
+  }
+
+  static get SETUP_MS() {
+    return 10;
+  }
+
+  static get MIN_WINDOW_SIZE() {
+    return 240;
+  }
+
+  static get active() {
+    return this._active;
+  }
+
+  static set active(window) {
+    window.z = 201;
+    if(this._active) {
+      this._active.z = 200;
+    }
+    this._active = window;
+  }
+
+  static get snapPoints() {
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    const dw = 250;
+    const dh = 50;
+    return [
+      { drag: [w/2, 0, dw, dh], drop: [0,   0, w, h/2] },
+      { drag: [w, h/2, dh, dw], drop: [w/2, 0, w/2, h] },
+      { drag: [w/2, h, dw, dh], drop: [0, h/2, w, h/2] },
+      { drag: [0, h/2, dh, dw], drop: [0,   0, w/2, h] }
+    ]
+  }
+
+  drop(rect) {
+    this.x = rect[0];
+    this.y = rect[1];
+    this.width = rect[2];
+    this.height = rect[3];
+  }
+
   renderedCallback() {
     this.dom.close = this.root.querySelector('button[part="close"]');
     this.dom.maximize = this.root.querySelector('button[part="maximize"]');
@@ -135,29 +152,7 @@ export default class ylWindow extends ylComponent {
     this.dom.titlebar = this.root.querySelector('div[part="titlebar"]')
 
     this.onclick = () => {
-      this.z = ++this.constructor.topZ;
-    }
-
-    this.ondrag = () => {
-      this.z = ++this.constructor.topZ;
-    }
-
-    this.onkeydown = (e) => {
-      if (e.shiftKey) {
-        let drop = null;
-        switch(e.key) {
-          case "ArrowUp": drop = this.snapPoints[0].drop; break;
-          case "ArrowRight": drop = this.snapPoints[1].drop; break;
-          case "ArrowDown": drop = this.snapPoints[2].drop; break;
-          case "ArrowLeft": drop = this.snapPoints[3].drop; break;
-        }
-        if (drop) {
-          this.x = drop[0];
-          this.y = drop[1];
-          this.width = drop[2];
-          this.height = drop[3];
-        }
-      }
+      this.constructor.active = this;
     }
 
     this.dom.close.onclick = () => {
@@ -178,6 +173,8 @@ export default class ylWindow extends ylComponent {
     }
 
     this.dom.titlebar.ondragend = e => {
+      this.constructor.active = this;
+
       if (this.maximized) {
         return;
       }
@@ -195,12 +192,8 @@ export default class ylWindow extends ylComponent {
       this.y = Math.min(this.y, window.innerHeight-32);
 
       for (const point of this.constructor.snapPoints) {
-        if (distance(e.clientX, e.clientY, point.drag[0], point.drag[1]) <= 
-            this.constructor.SNAP_PX) {
-          this.x = point.drop[0];
-          this.y = point.drop[1];
-          this.width = point.drop[2];
-          this.height = point.drop[3];
+        if (inside(e.clientX, e.clientY, point.drag)) {
+          this.drop(point.drop);
           break;
         }
       }
@@ -233,12 +226,36 @@ export default class ylWindow extends ylComponent {
   connectedCallback() {
     this.x = this.x || 0;
     this.y = this.y || 0;
-    this.z = this.z || this.constructor.topZ;
+    this.z = this.z || 200;
     this.width = this.width || 640;
     this.height = this.height || 480;
 
+    if (!this.constructor.active) {
+      document.addEventListener('keydown', e => {
+        if (e.shiftKey) {
+          let dropRect = null;
+          switch(e.key) {
+            case "ArrowUp": dropRect = this.constructor.snapPoints[0].drop; break;
+            case "ArrowRight": dropRect = this.constructor.snapPoints[1].drop; break;
+            case "ArrowDown": dropRect = this.constructor.snapPoints[2].drop; break;
+            case "ArrowLeft": dropRect = this.constructor.snapPoints[3].drop; break;
+          }
+          if (dropRect) {
+            this.constructor.active.drop(dropRect);
+          }
+        }
+  
+        switch (e.key) {
+          case "f":
+            this.constructor.active.maximized = !this.constructor.active.maximized;
+            break;
+        }
+      });
+    }
+
     this.createTimeout = this.createTimeout || setTimeout(() => {
       this.opened = true;
+      this.constructor.active = this;
     }, this.constructor.SETUP_MS);
   }
 }
