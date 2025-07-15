@@ -29,19 +29,16 @@ export default class ylList extends ylComponent {
     `;
   }
 
-  connectedCallback() {
-    const host = document.querySelector(this.categories);
-    this.watch(host, '[data-category]', 'click', (e) => {
-      const filterCategory = e.target.dataset.category || "";
+  filter(e) {
+    const filterCategory = e.dataset.category || "";
 
-      for (const child of this.children) {
-        const childCategory = child.dataset.category || "";
+    for (const child of this.children) {
+      const childCategory = child.dataset.category || "";
 
-        child.style.display = 
-          filterCategory == childCategory || filterCategory == "" ?
-            "initial" : "none";
-      }
-    });
+      child.style.display = 
+        filterCategory == childCategory || filterCategory == "" ?
+          "initial" : "none";
+    }
   }
 }
 

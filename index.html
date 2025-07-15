@@ -6,24 +6,25 @@
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/x-icon" href="images/icons/logo_25.svg">
 
+    <script type="module" src="event-bus.js"></script>
     <script type="module" src="components/yl-common.js"></script>
  </head>
   <body>
     <yl-navbar icon="images/icons/logo_25.svg" minwidth="530">
-      <a href="#" data-category="software">Software</a>
-      <a href="#" data-category="games">Games</a>
-      <a href="#" data-category="crafts">Crafts</a>
-      <a href="#" data-category="">All</a>
+      <a href="#" data-broadcast="click->filter" data-category="software">Software</a>
+      <a href="#" data-broadcast="click->filter" data-category="games">Games</a>
+      <a href="#" data-broadcast="click->filter" data-category="crafts">Crafts</a>
+      <a href="#" data-broadcast="click->filter">All</a>
     </yl-navbar>
 
-    <yl-list grid categories="yl-navbar">
+    <yl-list grid data-receive="filter">
       <yl-tile
         title="PromptGarden"
         image="images/software/promptgarden.jpg"
         description="An AI Document Editor that connects ChatGPT and Google Docs."
         href="test"
         data-category="software"
-        data-copy-template="tile">
+        data-broadcast="click->open">
       </yl-tile>
 
       <yl-tile
@@ -31,7 +32,8 @@
         image="images/software/yostos.jpg"
         description="A virtual browser-based OS written in TypeScript."
         data-category="software"
-        data-copy-template="tile">
+        data-copy-name="tile"
+        data-broadcast="click->open">
       </yl-tile>
 
       <yl-tile
@@ -39,7 +41,7 @@
         image="images/games/enso.jpg"
         description="A serene zen garden game that changes with the seasons."
         data-category="games"
-        data-copy-template="tile">
+        data-broadcast="click->open">
       </yl-tile>
 
       <yl-tile
@@ -47,7 +49,7 @@
         image="images/games/momul.jpg"
         description="A chess-like abstract strategy game."
         data-category="games"
-        data-copy-template="tile">
+        data-broadcast="click->open">
       </yl-tile>
 
       <yl-tile
@@ -55,7 +57,7 @@
         image="images/software/ylComponent.jpg"
         description="The web component library I wrote while building this website."
         data-category="software"
-        data-copy-template="tile">
+        data-broadcast="click->open">
       </yl-tile>
 
       <yl-tile
@@ -63,7 +65,7 @@
         image="images/software/ylTest.jpg"
         description="The Jest-inspired testing framework I wrote while building this website."
         data-category="software"
-        data-copy-template="tile">
+        data-broadcast="click->open">
       </yl-tile>
     </yl-list>
     
@@ -82,18 +84,16 @@
       </yl-icon>
     </yl-footer>
 
-    <yl-copier>
-      <template data-name="tile">
-        <yl-window title="yl-stub-title">
-          <yl-image-view src="yl-stub-image"></yl-image-view>
-          <yl-if truthy="yl-stub-description">
-            <p>yl-stub-description</p>
-          </yl-if>
-          <yl-if truthy="yl-stub-href">
-            <a href="yl-stub-href">Try It Now</a>
-          </yl-if>
-        </yl-window>
-      </template>
-    </yl-copier>
+    <template>
+      <yl-window title="yl-stub-title" data-receive="open->stamp">
+        <yl-image-view src="yl-stub-image"></yl-image-view>
+        <yl-if truthy="yl-stub-description">
+          <p>yl-stub-description</p>
+        </yl-if>
+        <yl-if truthy="yl-stub-href">
+          <a href="yl-stub-href">Try It Now</a>
+        </yl-if>
+      </yl-window>
+    </template>
   </body>
 </html>

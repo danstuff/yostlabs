@@ -15,6 +15,14 @@ export default class ylComponent extends HTMLElement {
     return ``;
   }
 
+  static get RENDER_DELAY_MS() {
+    return 10;
+  }
+
+  static get STUB_PREFIX() {
+    return 'yl-stub-';
+  }
+
   constructor() {
     super();
 
@@ -25,8 +33,10 @@ export default class ylComponent extends HTMLElement {
   }
 
   attributeChangedCallback() {
-    // TODO don't immediately render, wait a few ms to see if anything else changes
-    this.renderDOM();
+    this.renderTimeout = this.renderTimeout || setTimeout(() => {
+      this.renderDOM();
+      this.renderTimeout = null;
+    }, this.constructor.RENDER_DELAY_MS);
   }
 
   /**
@@ -75,7 +85,7 @@ export default class ylComponent extends HTMLElement {
   }
 
   /**
-   * Automatically define getters and setters for this object's 
+   * Automatically define getters and setters for this element's 
    * observedAttributes. For example, you could get the value of
    * attribute 'foo' on a component using this.foo, or set the 
    * value of foo to 'bar' with this.foo = 'bar'.
@@ -109,20 +119,23 @@ export default class ylComponent extends HTMLElement {
     }
   }
 
-  /**
-   * Bind an event from another part of the application to an event on this component.
-   * @param {*} root The root element to search with selector.
-   * @param {*} selector The selector to query root for descendant elements.
-   * @param {*} srcEvent The event on to bind to on the external elements.  
-   * @param {*} callback The function to trigger when srcEvent is fired.
-   */
-  watch(root, selector, srcEvent, callback) {
-    // TODO use MutationObserver to re-add event listeners on changes in root
-    root.querySelectorAll(selector).forEach(element => {
-      element.addEventListener(srcEvent, e => {
-        callback(e);
-      });
-    });
+  stamp(source) {
+    let copyHTML = this.outerHTML;
+    for (const attribute of source.attributes) {
+      copyHTML = copyHTML.replaceAll(
+        this.constructor.STUB_PREFIX + attribute.name,
+        source.getAttribute(attribute.name));
+    }
+    copyHTML = copyHTML.replaceAll(
+      new RegExp(`(${this.constructor.STUB_PREFIX})\\w+`, 'g'),
+      "");
+    
+    const copy = new DOMParser()
+      .parseFromString(copyHTML,"text/html").body.firstChild;
+
+    copy.dataset.receive = null;
+
+    this.parentElement.insertBefore(copy, this);
   }
 
   /**
