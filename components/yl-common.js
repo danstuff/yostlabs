@@ -1,4 +1,3 @@
-export { default as ylCopier } from "./yl-copier";
 export { default as ylFooter } from "./yl-footer";
 export { default as ylIcon } from "./yl-icon";
 export { default as ylIf } from "./yl-if";
