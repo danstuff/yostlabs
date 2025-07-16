@@ -121,16 +121,20 @@ export default class ylWindow extends ylComponent {
     return 'yl-stub-';
   }
 
-  static get active() {
-    return this._active;
+  get active() {
+    return this.constructor._active;
   }
 
-  static set active(window) {
-    window.z = 201;
-    if(this._active) {
-      this._active.z = 200;
+  set active(window) {
+    if (this.constructor._active === window) {
+      return;
     }
-    this._active = window;
+
+    window.z = 201;
+    if(this.constructor._active) {
+      this.constructor._active.z = 200;
+    }
+    this.constructor._active = window;
   }
 
   static get snapPoints() {
@@ -180,7 +184,7 @@ export default class ylWindow extends ylComponent {
     this.dom.titlebar = this.root.querySelector('div[part="titlebar"]')
 
     this.onclick = () => {
-      this.constructor.active = this;
+      this.active = this;
     }
 
     this.dom.close.onclick = () => {
@@ -201,7 +205,7 @@ export default class ylWindow extends ylComponent {
     }
 
     this.dom.titlebar.ondragend = e => {
-      this.constructor.active = this;
+      this.active = this;
 
       if (this.maximized) {
         return;
@@ -262,7 +266,7 @@ export default class ylWindow extends ylComponent {
       return;
     }
 
-    if (!this.constructor.active) {
+    if (!this.active) {
       document.addEventListener('keydown', e => {
         if (e.shiftKey) {
           let dropRect = null;
@@ -273,13 +277,13 @@ export default class ylWindow extends ylComponent {
             case "ArrowLeft": dropRect = this.constructor.snapPoints[3].drop; break;
           }
           if (dropRect) {
-            this.constructor.active.drop(dropRect);
+            this.active.drop(dropRect);
           }
         }
   
         switch (e.key) {
           case "f":
-            this.constructor.active.maximized = !this.constructor.active.maximized;
+            this.active.maximized = !this.active.maximized;
             break;
         }
       });
@@ -287,7 +291,7 @@ export default class ylWindow extends ylComponent {
 
     this.createTimeout = this.createTimeout || setTimeout(() => {
       this.opened = true;
-      this.constructor.active = this;
+      this.active = this;
     }, this.constructor.SETUP_MS);
   }
 }
