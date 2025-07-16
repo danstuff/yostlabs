@@ -64,6 +64,10 @@ export default class ylWindow extends ylComponent {
         max-height: 100%;
       }
 
+      :host([template]) {
+        visibility: hidden;
+      }
+
       div[part="titlebar"] {
         display: flex;
         cursor: grab;
@@ -98,7 +102,7 @@ export default class ylWindow extends ylComponent {
   }
 
   static get observedAttributes() {
-    return ['title', 'opened', 'maximized', 'width', 'height', 'x', 'y', 'z'];
+    return ['title', 'opened', 'maximized', 'template', 'width', 'height', 'x', 'y', 'z'];
   }
 
   static get CLEANUP_MS() {
@@ -111,6 +115,10 @@ export default class ylWindow extends ylComponent {
 
   static get MIN_WINDOW_SIZE() {
     return 240;
+  }
+
+  static get STUB_PREFIX() {
+    return 'yl-stub-';
   }
 
   static get active() {
@@ -143,6 +151,26 @@ export default class ylWindow extends ylComponent {
     this.y = rect[1];
     this.width = rect[2];
     this.height = rect[3];
+  }
+
+  stamp(source) {
+    let copyHTML = this.outerHTML;
+    for (const attribute of source.attributes) {
+      copyHTML = copyHTML.replaceAll(
+        this.constructor.STUB_PREFIX + attribute.name,
+        source.getAttribute(attribute.name));
+    }
+    copyHTML = copyHTML.replaceAll(
+      new RegExp(`(${this.constructor.STUB_PREFIX})\\w+`, 'g'),
+      "");
+    
+    const copy = new DOMParser()
+      .parseFromString(copyHTML,"text/html").body.firstChild;
+
+    copy.dataset.receive = "";
+    copy.removeAttribute('template');
+
+    this.parentElement.insertBefore(copy, this);
   }
 
   renderedCallback() {
@@ -251,6 +279,10 @@ export default class ylWindow extends ylComponent {
             break;
         }
       });
+    }
+
+    if (this.template) {
+      return;
     }
 
     this.createTimeout = this.createTimeout || setTimeout(() => {

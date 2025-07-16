@@ -53,8 +53,8 @@
       </yl-tile>
 
       <yl-tile
-        title="ylComponent"
-        image="images/software/ylComponent.jpg"
+        title="ylComponents"
+        image="images/software/ylComponents.jpg"
         description="The web component library I wrote while building this website."
         data-category="software"
         data-broadcast="click->open">
@@ -84,16 +84,14 @@
       </yl-icon>
     </yl-footer>
 
-    <template>
-      <yl-window title="yl-stub-title" data-receive="open->stamp">
-        <yl-image-view src="yl-stub-image"></yl-image-view>
-        <yl-if truthy="yl-stub-description">
-          <p>yl-stub-description</p>
-        </yl-if>
-        <yl-if truthy="yl-stub-href">
-          <a href="yl-stub-href">Try It Now</a>
-        </yl-if>
-      </yl-window>
-    </template>
+    <yl-window title="yl-stub-title" template data-receive="open->stamp">
+      <yl-image-view src="yl-stub-image"></yl-image-view>
+      <yl-if truthy="yl-stub-description">
+        <p>yl-stub-description</p>
+      </yl-if>
+      <yl-if truthy="yl-stub-href">
+        <a href="yl-stub-href">Try It Now</a>
+      </yl-if>
+    </yl-window>
   </body>
 </html>

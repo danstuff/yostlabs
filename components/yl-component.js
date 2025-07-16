@@ -19,10 +19,6 @@ export default class ylComponent extends HTMLElement {
     return 10;
   }
 
-  static get STUB_PREFIX() {
-    return 'yl-stub-';
-  }
-
   constructor() {
     super();
 
@@ -117,25 +113,6 @@ export default class ylComponent extends HTMLElement {
         this.renderedCallback();
       }
     }
-  }
-
-  stamp(source) {
-    let copyHTML = this.outerHTML;
-    for (const attribute of source.attributes) {
-      copyHTML = copyHTML.replaceAll(
-        this.constructor.STUB_PREFIX + attribute.name,
-        source.getAttribute(attribute.name));
-    }
-    copyHTML = copyHTML.replaceAll(
-      new RegExp(`(${this.constructor.STUB_PREFIX})\\w+`, 'g'),
-      "");
-    
-    const copy = new DOMParser()
-      .parseFromString(copyHTML,"text/html").body.firstChild;
-
-    copy.dataset.receive = null;
-
-    this.parentElement.insertBefore(copy, this);
   }
 
   /**
