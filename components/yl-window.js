@@ -258,6 +258,10 @@ export default class ylWindow extends ylComponent {
     this.width = this.width || 640;
     this.height = this.height || 480;
 
+    if (this.template) {
+      return;
+    }
+
     if (!this.constructor.active) {
       document.addEventListener('keydown', e => {
         if (e.shiftKey) {
@@ -279,10 +283,6 @@ export default class ylWindow extends ylComponent {
             break;
         }
       });
-    }
-
-    if (this.template) {
-      return;
     }
 
     this.createTimeout = this.createTimeout || setTimeout(() => {
