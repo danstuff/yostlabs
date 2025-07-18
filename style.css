@@ -60,13 +60,9 @@ yl-list::part(wrapper) {
   max-width: 900px;
 }
 
-yl-tile {
+yl-icon {
   margin: 32px;
-}
-
-yl-tile::part(image) {
-  width: 200px;
-  border: 1px solid var(--dark);
+  height: 200px;
 }
 
 yl-footer {

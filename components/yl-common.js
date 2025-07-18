@@ -6,5 +6,5 @@ export { default as ylList } from "./yl-list";
 export { default as ylNavbar } from "./yl-navbar";
 export { default as ylTestGroup } from "./yl-test-group";
 export { default as ylTile } from "./yl-tile";
-export { default as ylWebFrame } from "./yl-web-frame";
+export { default as ylAppFrame } from "./yl-app-frame";
 export { default as ylWindow } from "./yl-window";

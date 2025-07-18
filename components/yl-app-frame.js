@@ -1,6 +1,6 @@
 import ylComponent from "./yl-component";
 
-export default class ylWebFrame extends ylComponent {
+export default class ylAppFrame extends ylComponent {
   static get observedAttributes() {
     return ['src'];
   }
@@ -16,10 +16,13 @@ export default class ylWebFrame extends ylComponent {
   }
 
   connectedCallback() {
-    fetch(this.src).then(response => response.text()).then(source => { 
+    if (!this.src) {
+      return;
+    }
+    fetch(this.src).then(response => response.text()).then(source => {  
       this.dom.wrapper.innerHTML = source;
     });
   }
 }
 
-ylWebFrame.defineElement();
+ylAppFrame.defineElement();
