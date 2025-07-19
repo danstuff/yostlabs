@@ -75,6 +75,7 @@ export default class ylWindow extends ylComponent {
 
       div[part="content"] {
         flex-grow: 1;
+        overflow: auto;
       }
 
       div.spacer {
@@ -167,6 +168,7 @@ export default class ylWindow extends ylComponent {
     copyHTML = copyHTML.replaceAll(
       new RegExp(`(${this.constructor.STUB_PREFIX})\\w+`, 'g'),
       "");
+    console.log(copyHTML);
     
     const copy = new DOMParser()
       .parseFromString(copyHTML,"text/html").body.firstChild;

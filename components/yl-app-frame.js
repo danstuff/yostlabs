@@ -16,9 +16,7 @@ export default class ylAppFrame extends ylComponent {
   }
 
   connectedCallback() {
-    if (!this.src) {
-      return;
-    }
+    if (!this.src) { return; }
     fetch(this.src).then(response => response.text()).then(source => {  
       this.dom.wrapper.innerHTML = source;
     });

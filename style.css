@@ -92,12 +92,6 @@ yl-window[opened] {
   transform: scale(1, 1);
 }
 
-yl-window::part(content) {
-  display: flex;
-  flex-direction: column;
-  overflow: auto;
-}
-
 yl-window::part(titlebar) {
   font-size: 24px;
   padding: 8px;
@@ -106,18 +100,4 @@ yl-window::part(titlebar) {
 yl-window::part(resize) {
   font-size: 32px;
   padding: 8px;
-}
-
-yl-window yl-image-view {
-  flex-grow: 1;
-  border-top: 1px solid var(--dark);
-  border-bottom: 1px solid var(--dark);
-}
-
-yl-window h3 {
-  margin: 0.5em;
-}
-
-yl-window p, yl-window a {
-  margin: 1em;
 }
