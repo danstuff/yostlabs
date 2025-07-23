@@ -62,7 +62,7 @@ yl-list::part(wrapper) {
 
 yl-icon {
   margin: 32px;
-  height: 200px;
+  height: 100px;
 }
 
 yl-footer {
@@ -100,4 +100,9 @@ yl-window::part(titlebar) {
 yl-window::part(resize) {
   font-size: 32px;
   padding: 8px;
+}
+
+yl-window iframe {
+  border: 1px solid var(--dark);
+  flex-grow: 1;
 }

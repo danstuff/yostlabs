@@ -7,19 +7,19 @@ export default class ylAppFrame extends ylComponent {
 
   get html() {
     return `
-      <div part="wrapper"></div>
+      <iframe src="${this.src}"></iframe>
     `;
   }
 
   renderedCallback() {
-    this.dom.wrapper = this.root.querySelector('div[part="wrapper"]');
-  }
+    this.dom.frame = this.root.querySelector('iframe');
 
-  connectedCallback() {
-    if (!this.src) { return; }
-    fetch(this.src).then(response => response.text()).then(source => {  
-      this.dom.wrapper.innerHTML = source;
-    });
+    this.dom.frame.onload = () => {
+      this.dom.frame.style.width = 
+        this.dom.frame.contentWindow.document.body.scrollWidth + "px";
+      this.dom.frame.style.height = 
+        this.dom.frame.contentWindow.document.body.scrollHeight + "px";
+    }
   }
 }
 
