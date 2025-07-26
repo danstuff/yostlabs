@@ -34,22 +34,10 @@ export default class ylNavbar extends ylComponent {
     `;
   }
 
-  renderedCallback() {
-    this.dom.icon = this.root.querySelector('img');
-    this.dom.slot = this.root.querySelector('slot');
-  }
-
-  onClick() {
-    this.expanded = this.compact ? !this.expanded : false;
-  }
-
-  onWindowResize() {
-    this.compact = this.offsetWidth < this.minwidth;
-    this.expanded = this.compact ? this.expanded : false;
-  }
-
   connectedCallback() {
-    this.onWindowResize();
+    window.addEventListener('resize', e => {
+      this.compact = this.offsetWidth < this.minwidth;
+    });
   }
 }
 
