@@ -11,15 +11,19 @@ export default class ylAppFrame extends ylComponent {
     `;
   }
 
-  renderedCallback() {
-    this.dom.frame = this.root.querySelector('iframe');
+  get css() {
+    return `
+      :host {
+        display: flex;
+        height: 100%;
+      }
 
-    this.dom.frame.onload = () => {
-      this.dom.frame.style.width = 
-        this.dom.frame.contentWindow.document.body.scrollWidth + "px";
-      this.dom.frame.style.height = 
-        this.dom.frame.contentWindow.document.body.scrollHeight + "px";
-    }
+      iframe {
+        flex-grow: 1;
+        border: none;
+        align-self: stretch;
+      }
+    `;
   }
 }
 
