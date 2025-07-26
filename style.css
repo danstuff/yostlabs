@@ -65,6 +65,10 @@ yl-icon {
   height: 100px;
 }
 
+yl-icon::part(title) {
+  padding: 8px;
+}
+
 yl-footer {
   border-top: 1px solid var(--bg-light);
   background-color: var(--bg-dark);

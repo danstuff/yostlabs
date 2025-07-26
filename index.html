@@ -23,7 +23,7 @@
         image="images/icons/promptgarden.svg"
         src="apps/PromptGarden/pg-demo/index.html"
         data-category="software"
-        data-broadcast="click->open">
+        data-broadcast="click->openApp">
       </yl-icon>
 
       <yl-icon
@@ -32,7 +32,7 @@
         src="apps/YostOS/index.html"
         data-category="software"
         data-copy-name="tile"
-        data-broadcast="click->open">
+        data-broadcast="click->openApp">
       </yl-icon>
 
       <yl-icon
@@ -40,14 +40,23 @@
         image="images/icons/enso.svg"
         src="apps/enso-zen-garden/index.html"
         data-category="games"
-        data-broadcast="click->open">
+        data-broadcast="click->openApp">
       </yl-icon>
 
       <yl-icon
         title="Momul"
-        image="images/games/momul.jpg"
+        image="images/icons/momul.svg"
+        src="apps/momul/dist/index.html"
         data-category="games"
-        data-broadcast="click->open">
+        data-broadcast="click->openApp">
+      </yl-icon>
+
+      <yl-icon
+        title="Turtles"
+        image="images/icons/turtles.svg"
+        src="index.html"
+        data-category="software"
+        data-broadcast="click->openApp">
       </yl-icon>
     </yl-list>
     
@@ -66,7 +75,7 @@
       </yl-icon>
     </yl-footer>
 
-    <yl-window title="yl-stub-title" template data-receive="open->stamp">
+    <yl-window title="yl-stub-title" template data-receive="openApp->stamp">
       <yl-app-frame src="yl-stub-src" title="yl-stub-title"></yl-app-frame>
     </yl-window>
   </body>
