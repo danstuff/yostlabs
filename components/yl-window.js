@@ -1,9 +1,5 @@
 import ylComponent from "./yl-component";
 
-function distance(x1, y1, x2, y2) {
-  return Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1));
-}
-
 function inside(x, y, box) {
   const hw = box[2]/2;
   const hh = box[3]/2;
@@ -13,6 +9,12 @@ function inside(x, y, box) {
     x <= box[0] + hw &&
     y <= box[1] + hh
   );
+}
+
+function clamp(x, min, max) {
+  x = Math.max(x, min);
+  x = Math.min(x, max);
+  return x;
 }
 
 export default class ylWindow extends ylComponent {
@@ -218,14 +220,14 @@ export default class ylWindow extends ylComponent {
       this.x = (this.offsetLeft - dx);
       this.y = (this.offsetTop - dy);
 
-      this.x = Math.max(this.x, -this.width/2);
-      this.y = Math.max(this.y, 0);
+      this.x = clamp(this.x, -this.width/2, window.innerWidth-this.width/2);
+      this.y = clamp(this.y, 0, window.innerHeight-32);
 
-      this.x = Math.min(this.x, window.innerWidth-this.width/2);
-      this.y = Math.min(this.y, window.innerHeight-32);
+      const cx = clamp(e.clientX, 0, window.innerWidth);
+      const cy = clamp(e.clientY, 0, window.innerHeight);
 
       for (const point of this.constructor.snapPoints) {
-        if (inside(e.clientX, e.clientY, point.drag)) {
+        if (inside(cx, cy, point.drag)) {
           this.drop(point.drop);
           break;
         }
