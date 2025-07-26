@@ -6,9 +6,7 @@ export default class ylAppFrame extends ylComponent {
   }
 
   get html() {
-    return `
-      <iframe src="${this.src}"></iframe>
-    `;
+    return `<iframe src="${this.src}"></iframe>`;
   }
 
   get css() {
