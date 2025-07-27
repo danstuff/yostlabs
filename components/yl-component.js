@@ -115,6 +115,22 @@ export default class ylComponent extends HTMLElement {
     }
   }
 
+  /** Print some text to the screen for debugging purposes. */
+  debugLog(text) {
+    let log = document.querySelector('div#yl-debug');
+    if (!log) {
+      log = document.createElement('div');
+      log.id = 'yl-debug';
+      document.body.appendChild(log);
+    }
+
+    const p = document.createElement('p');
+    p.innerText = text;
+    log.append(p);
+
+    console.log(text);
+  }
+
   /**
    * Use the custom elements API to associate an HTML custom 
    * element's name with this class instance. A CamelCase class 
