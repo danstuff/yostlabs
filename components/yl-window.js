@@ -80,6 +80,10 @@ export default class ylWindow extends ylComponent {
         overflow: auto;
       }
 
+      :host([disabled]) > div[part="content"] {
+        display: none;
+      }
+
       div.spacer {
         flex-grow: 1;
       }
@@ -105,7 +109,7 @@ export default class ylWindow extends ylComponent {
   }
 
   static get observedAttributes() {
-    return ['title', 'opened', 'maximized', 'template', 'width', 'height', 'x', 'y', 'z'];
+    return ['title', 'opened', 'maximized', 'disabled', 'template', 'width', 'height', 'x', 'y', 'z'];
   }
 
   static get CLEANUP_MS() {
@@ -184,7 +188,7 @@ export default class ylWindow extends ylComponent {
     this.dom.close = this.root.querySelector('button[part="close"]');
     this.dom.maximize = this.root.querySelector('button[part="maximize"]');
     this.dom.resize = this.root.querySelector('button[part="resize"]');
-    this.dom.titlebar = this.root.querySelector('div[part="titlebar"]')
+    this.dom.titlebar = this.root.querySelector('div[part="titlebar"]');
 
     this.onclick = () => {
       this.active = this;
@@ -203,11 +207,14 @@ export default class ylWindow extends ylComponent {
     }
 
     this.dom.titlebar.ondragstart = e => {
+      this.disabled = true;
+      
       this.dragX = e.clientX;
       this.dragY = e.clientY;
     }
 
     this.dom.titlebar.ondragend = e => {
+      this.disabled = false;
       this.active = this;
 
       if (this.maximized) {
@@ -250,11 +257,8 @@ export default class ylWindow extends ylComponent {
       this.width = (this.offsetWidth - dx);
       this.height = (this.offsetHeight - dy);
       
-      this.width = Math.max(this.width, this.constructor.MIN_WINDOW_SIZE);
-      this.height = Math.max(this.height, this.constructor.MIN_WINDOW_SIZE);
-
-      this.width = Math.min(this.width, window.innerWidth);
-      this.height = Math.min(this.height, window.innerHeight);
+      this.width = clamp(this.width, this.constructor.MIN_WINDOW_SIZE, window.innerWidth);
+      this.height = clamp(this.height, this.constructor.MIN_WINDOW_SIZE, window.innerHeight);
     }
   }
 
@@ -274,10 +278,10 @@ export default class ylWindow extends ylComponent {
         if (e.shiftKey) {
           let dropRect = null;
           switch(e.key) {
-            case "ArrowUp": dropRect = this.constructor.snapPoints[0].drop; break;
+            case "ArrowUp":    dropRect = this.constructor.snapPoints[0].drop; break;
             case "ArrowRight": dropRect = this.constructor.snapPoints[1].drop; break;
-            case "ArrowDown": dropRect = this.constructor.snapPoints[2].drop; break;
-            case "ArrowLeft": dropRect = this.constructor.snapPoints[3].drop; break;
+            case "ArrowDown":  dropRect = this.constructor.snapPoints[2].drop; break;
+            case "ArrowLeft":  dropRect = this.constructor.snapPoints[3].drop; break;
           }
           if (dropRect) {
             this.active.drop(dropRect);
