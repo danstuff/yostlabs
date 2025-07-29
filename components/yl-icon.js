@@ -8,7 +8,7 @@ export default class ylIcon extends ylComponent {
 
   get html() {
     return `
-      <a href="${this.href}">
+      <a href="${this.href}" part="wrapper">
         <img src="${this.image}"></img>
         ${this.title ? `<p part="title">${this.title}</p>` : ''}
       </a>
@@ -17,15 +17,25 @@ export default class ylIcon extends ylComponent {
 
   get css() {
     return `
-      a, img {
-        display: flex;
+      :host([vertical]) a {
         flex-direction: column;
+      }
+
+      a {
+        display: flex;
         align-items:center;
         text-decoration: inherit;
         color: inherit;
         width: inherit;
         height: inherit;
       }
+
+      img {
+        flex-shrink: 1;
+        width: inherit;
+        height: inherit;
+      }
+
       p {
         margin: 0;
         padding: 0;

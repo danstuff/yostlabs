@@ -56,13 +56,9 @@ yl-list {
   scrollbar-gutter: stable both-edges;
 }
 
-yl-list::part(wrapper) {
-  max-width: 900px;
-}
-
 yl-icon {
-  margin: 32px;
-  height: 100px;
+  height: 64px;
+  margin: 16px;
 }
 
 yl-icon::part(title) {

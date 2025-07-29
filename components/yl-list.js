@@ -26,6 +26,12 @@ export default class ylList extends ylComponent {
         flex-wrap: wrap;
         justify-content: center;
       }
+
+      div[part="wrapper"] {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+      }
     `;
   }
 
