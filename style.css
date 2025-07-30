@@ -34,10 +34,13 @@ yl-navbar {
   background-color: var(--bg-dark);
   border-bottom: 1px solid var(--bg-light);
   box-shadow: 0px 0px 25px 10px var(--bg-primary);
+  animation: fade 0.5s ease-in;
 }
 
 yl-navbar::part(icon) {
   margin: 16px;
+  animation: fade 0.5s ease-in;
+  height: 32px;
 }
 
 yl-navbar::part(links) {
@@ -58,12 +61,20 @@ yl-list {
 
 yl-icon {
   height: 64px;
-  margin: 16px;
+  padding: 16px;
+  animation: fade 0.5s ease-in both;
+  opacity: 0;
 }
 
 yl-icon::part(title) {
   padding: 8px;
 }
+
+yl-icon:nth-child(1) { animation-delay: 0.0s; }
+yl-icon:nth-child(2) { animation-delay: 0.1s; }
+yl-icon:nth-child(3) { animation-delay: 0.2s; }
+yl-icon:nth-child(4) { animation-delay: 0.3s; }
+yl-icon:nth-child(5) { animation-delay: 0.4s; }
 
 yl-footer {
   border-top: 1px solid var(--bg-light);
@@ -102,7 +113,11 @@ yl-window::part(resize) {
   padding: 8px;
 }
 
-yl-window iframe {
-  border: 1px solid var(--dark);
-  flex-grow: 1;
+yl-window yl-list::part(wrapper) {
+  width: 100%;
+}
+
+@keyframes fade {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
 }

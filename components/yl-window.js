@@ -116,7 +116,7 @@ export default class ylWindow extends ylComponent {
     return 4000;
   }
 
-  static get SETUP_MS() {
+  static get OPEN_MS() {
     return 10;
   }
 
@@ -180,8 +180,16 @@ export default class ylWindow extends ylComponent {
 
     copy.dataset.receive = "";
     copy.removeAttribute('template');
-
+    
     this.parentElement.insertBefore(copy, this);
+    copy.open();
+  }
+
+  open() {
+    this.openTimeout = this.openTimeout || setTimeout(() => {
+      this.opened = true;
+      this.active = this;
+    }, this.constructor.OPEN_MS);
   }
 
   renderedCallback() {
@@ -295,11 +303,6 @@ export default class ylWindow extends ylComponent {
         }
       });
     }
-
-    this.createTimeout = this.createTimeout || setTimeout(() => {
-      this.opened = true;
-      this.active = this;
-    }, this.constructor.SETUP_MS);
   }
 }
 
