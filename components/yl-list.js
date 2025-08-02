@@ -23,8 +23,9 @@ export default class ylList extends ylComponent {
 
       :host([grid]) div[part="wrapper"] {
         display: inline-flex;
+        flex-direction: row;
         flex-wrap: wrap;
-        justify-content: center;
+        justify-content: start;
       }
 
       div[part="wrapper"] {

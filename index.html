@@ -36,19 +36,10 @@
       </yl-icon>
 
       <yl-icon
-        title="Enso"
-        image="images/icons/enso.svg"
-        src="apps/enso-zen-garden/index.html"
+        title="Games"
+        image="images/icons/folder.svg"
         data-category="games"
-        data-broadcast="click->openApp">
-      </yl-icon>
-
-      <yl-icon
-        title="Momul"
-        image="images/icons/momul.svg"
-        src="apps/momul/dist/index.html"
-        data-category="games"
-        data-broadcast="click->openApp">
+        data-broadcast="click->openGames">
       </yl-icon>
 
       <yl-icon
@@ -93,12 +84,32 @@
       </yl-list>
     </yl-window>
 
+    <yl-window title="Games" template data-receive="openGames->stamp">
+      <yl-list grid>
+        <yl-icon
+          title="Enso"
+          image="images/icons/enso.svg"
+          src="apps/enso-zen-garden/index.html"
+          data-category="games"
+          data-broadcast="click->openApp">
+        </yl-icon>
+  
+        <yl-icon
+          title="Momul"
+          image="images/icons/momul.svg"
+          src="apps/momul/dist/index.html"
+          data-category="games"
+          data-broadcast="click->openApp">
+        </yl-icon>
+      </yl-list>
+    </yl-window>
+
     <yl-window title="yl-stub-title" template data-receive="openApp->stamp">
       <yl-app-frame src="yl-stub-src" title="yl-stub-title"></yl-app-frame>
     </yl-window>
 
     <yl-window title="yl-stub-title" template data-receive="openPhoto->stamp">
-      <img src="yl-stub-src" title="yl-stub-title"></img>
+      <yl-image-view src="yl-stub-src" title="yl-stub-title"></yl-image-view>
     </yl-window>
   </body>
 </html>
