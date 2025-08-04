@@ -23,7 +23,7 @@ export default class ylWindow extends ylComponent {
       <div part="titlebar" draggable="true">
         <div part="title">${this.title || ""}</div>
         <div class="spacer"></div>
-        <div>
+        <div class="buttons">
           <button part="maximize" href="#">&#9633;</button>
           <button part="close" href="#">X</button>
         </div>
@@ -40,13 +40,13 @@ export default class ylWindow extends ylComponent {
       :host {
         visibility: hidden;
         position: fixed;
-        left: ${this.x}px;
-        top: ${this.y}px;
-        width: ${this.width}px;
-        height: ${this.height}px;
+        left: ${this.x || 0}px;
+        top: ${this.y || 0}px;
+        width: ${this.width || 0}px;
+        height: ${this.height || 0}px;
         max-width: 100%;
         max-height: 100%;
-        z-index: ${this.z};
+        z-index: ${this.z || 0};
         background-color: inherit;
         font-family: inherit;
         display: flex;
@@ -80,12 +80,12 @@ export default class ylWindow extends ylComponent {
         overflow: auto;
       }
 
-      :host([disabled]) > div[part="content"] {
-        display: none;
-      }
-
       div.spacer {
         flex-grow: 1;
+      }
+
+      div.buttons {
+        display: flex;
       }
 
       button {
@@ -105,11 +105,16 @@ export default class ylWindow extends ylComponent {
         right: 2px;
         cursor: grab;
       }
+
+      button[part="maximize"], button[part="close"] {
+        width: 1em;
+        height: 1em;
+      }
     `;
   }
 
   static get observedAttributes() {
-    return ['title', 'opened', 'maximized', 'disabled', 'template', 'width', 'height', 'x', 'y', 'z'];
+    return ['title', 'opened', 'maximized', 'template', 'width', 'height', 'x', 'y', 'z'];
   }
 
   static get CLEANUP_MS() {
@@ -197,6 +202,7 @@ export default class ylWindow extends ylComponent {
     this.dom.maximize = this.root.querySelector('button[part="maximize"]');
     this.dom.resize = this.root.querySelector('button[part="resize"]');
     this.dom.titlebar = this.root.querySelector('div[part="titlebar"]');
+    this.dom.content = this.root.querySelector('div[part="content"]');
 
     this.onclick = () => {
       this.active = this;
@@ -215,7 +221,7 @@ export default class ylWindow extends ylComponent {
     }
 
     this.dom.titlebar.ondragstart = e => {
-      this.disabled = true;
+      this.dom.content.style['pointer-events'] = 'none';
       
       this.dragX = e.clientX;
       this.dragY = e.clientY;
@@ -271,15 +277,15 @@ export default class ylWindow extends ylComponent {
   }
 
   connectedCallback() {
+    if (this.template) {
+      return;
+    }
+
     this.x = this.x || 0;
     this.y = this.y || 0;
     this.z = this.z || 200;
     this.width = this.width || 640;
     this.height = this.height || 480;
-
-    if (this.template) {
-      return;
-    }
 
     if (!this.active) {
       document.addEventListener('keydown', e => {

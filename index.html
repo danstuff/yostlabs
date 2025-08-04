@@ -10,19 +10,11 @@
     <script type="module" src="components/yl-common.js"></script>
  </head>
   <body>
-    <yl-navbar icon="images/icons/logo_25.svg" minwidth="530">
-      <a href="#" data-broadcast="click->filter" data-category="software">Software</a>
-      <a href="#" data-broadcast="click->filter" data-category="games">Games</a>
-      <a href="#" data-broadcast="click->filter" data-category="crafts">Crafts</a>
-      <a href="#" data-broadcast="click->filter">All</a>
-    </yl-navbar>
-
-    <yl-list data-receive="filter">
+    <yl-list>
       <yl-icon
         title="Editor"
         image="images/icons/editor.svg"
         src="apps/PromptGarden/pg-demo/index.html"
-        data-category="software"
         data-broadcast="click->openApp">
       </yl-icon>
 
@@ -30,15 +22,12 @@
         title="Assembler"
         image="images/icons/assembler.svg"
         src="apps/YostOS/index.html"
-        data-category="software"
-        data-copy-name="tile"
         data-broadcast="click->openApp">
       </yl-icon>
 
       <yl-icon
         title="Games"
         image="images/icons/folder.svg"
-        data-category="games"
         data-broadcast="click->openGames">
       </yl-icon>
 
@@ -46,41 +35,81 @@
         title="Gallery"
         image="images/icons/folder.svg"
         src="apps/momul/dist/index.html"
-        data-category="crafts"
         data-broadcast="click->openGallery">
       </yl-icon>
     </yl-list>
     
-    <yl-footer>
+    <yl-navbar logo="images/icons/logo_25.svg" minwidth="530">
       <yl-icon 
         image="images/icons/github.svg" 
         href="https://github.com/danstuff">
       </yl-icon>
+
       <yl-icon 
         image="images/icons/linkedin.svg" 
         href="https://linkedin.com/in/danyost23">
       </yl-icon>
+
       <yl-icon 
         image="images/icons/youtube.svg" 
         href="https://www.youtube.com/@danielyost601">
       </yl-icon>
-    </yl-footer>
+    </yl-navbar>
 
     <yl-window title="Gallery" template data-receive="openGallery->stamp">
       <yl-list grid>
         <yl-icon
+          title="Leather and Brass Bracelet"
           image="images/gallery/bracelet.jpg"
           data-broadcast="click->openPhoto">
         </yl-icon>
+
         <yl-icon
+          title="Stainless Steel Ring"
+          image="images/gallery/ring.jpg"
+          data-broadcast="click->openPhoto">
+        </yl-icon>
+
+        <yl-icon
+          title="Coffee Table"
           image="images/gallery/coffee_table.jpg"
           data-broadcast="click->openPhoto">
         </yl-icon>
+
         <yl-icon
+          title="Walnut Incense Holders"
           image="images/gallery/incense_holders.jpg"
           data-broadcast="click->openPhoto">
         </yl-icon>
-        
+
+        <yl-icon
+          title="Walnut Incense Holders"
+          image="images/gallery/incense_holders.jpg"
+          data-broadcast="click->openPhoto">
+        </yl-icon>
+
+        <yl-icon
+          title="Oak Serving Tray"
+          image="images/gallery/oak_serving_tray_v1.jpg"
+          data-broadcast="click->openPhoto">
+        </yl-icon>
+
+        <yl-icon
+          title="Large Oak Serving Tray"
+          image="images/gallery/oak_serving_tray_v2.jpg"
+          data-broadcast="click->openPhoto">
+        </yl-icon>
+
+        <yl-icon
+          title="Oak Sunshine Tiles"
+          image="images/gallery/sunshine_tiles_v1.jpg"
+          data-broadcast="click->openPhoto">
+        </yl-icon>
+        <yl-icon
+          title="Pine Sunshine Tiles"
+          image="images/gallery/sunshine_tiles_v2.jpg"
+          data-broadcast="click->openPhoto">
+        </yl-icon>
       </yl-list>
     </yl-window>
 
@@ -109,7 +138,7 @@
     </yl-window>
 
     <yl-window title="yl-stub-title" template data-receive="openPhoto->stamp">
-      <yl-image-view src="yl-stub-src" title="yl-stub-title"></yl-image-view>
+      <yl-image-view src="yl-stub-image" title="yl-stub-title"></yl-image-view>
     </yl-window>
   </body>
 </html>

@@ -3,15 +3,15 @@ import ylComponent from "./yl-component"
 export default class ylNavbar extends ylComponent {
 
   static get observedAttributes() {
-    return ['compact', 'icon', 'minwidth', 'url'];
+    return ['compact', 'logo', 'minwidth', 'url'];
   }
 
   get html() {
     return `
       <a href="${this.url || "/"}">
-        <img part="icon" src="${this.icon}"></img>
+        <img part="logo" src="${this.logo}"></img>
       </a>
-      <div part="links">
+      <div part="items">
         <slot></slot>
       </div>
     `;
@@ -30,6 +30,11 @@ export default class ylNavbar extends ylComponent {
 
       :host([compact]) {
         flex-direction: column;
+      }
+
+      div[part='items'] {
+        display: flex;
+        flex-direction: row;
       }
     `;
   }

@@ -32,8 +32,12 @@ export default class ylIcon extends ylComponent {
 
       img {
         flex-shrink: 1;
-        width: inherit;
         height: inherit;
+      }
+
+      :host([vertical]) a img {
+        width: inherit;
+        height: unset;
       }
 
       p {

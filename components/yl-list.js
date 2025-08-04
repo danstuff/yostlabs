@@ -18,7 +18,7 @@ export default class ylList extends ylComponent {
     return `
       :host {
         display: flex;
-        justify-content: center;
+        justify-content: start;
       }
 
       :host([grid]) div[part="wrapper"] {
