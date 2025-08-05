@@ -76,8 +76,15 @@ export default class ylWindow extends ylComponent {
       }
 
       div[part="content"] {
+        display: flex;
         flex-grow: 1;
         overflow: auto;
+      }
+
+      div[part="title"] {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
       }
 
       div.spacer {
@@ -197,6 +204,14 @@ export default class ylWindow extends ylComponent {
     }, this.constructor.OPEN_MS);
   }
 
+  close() {
+    this.opened = false;
+    this.destroyTimeout = this.destroyTimeout || 
+      setTimeout(() => {
+        this.parentNode.removeChild(this);
+      }, this.constructor.CLEANUP_MS);
+  }
+
   renderedCallback() {
     this.dom.close = this.root.querySelector('button[part="close"]');
     this.dom.maximize = this.root.querySelector('button[part="maximize"]');
@@ -209,11 +224,7 @@ export default class ylWindow extends ylComponent {
     }
 
     this.dom.close.onclick = () => {
-      this.opened = false;
-      this.destroyTimeout = this.destroyTimeout || 
-        setTimeout(() => {
-          this.parentNode.removeChild(this);
-        }, this.constructor.CLEANUP_MS);
+      this.close();
     }
 
     this.dom.maximize.onclick = () => {
@@ -288,6 +299,7 @@ export default class ylWindow extends ylComponent {
     this.height = this.height || 480;
 
     if (!this.active) {
+      this.active = this;
       document.addEventListener('keydown', e => {
         if (e.shiftKey) {
           let dropRect = null;
@@ -305,6 +317,9 @@ export default class ylWindow extends ylComponent {
         switch (e.key) {
           case "f":
             this.active.maximized = !this.active.maximized;
+            break;
+          case "Escape":
+            this.active.close();
             break;
         }
       });

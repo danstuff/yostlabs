@@ -55,7 +55,7 @@ yl-list {
   overflow-y: auto;
 }
 
-yl-list[grid] yl-icon {
+yl-list yl-icon {
   width: 160px;
 }
 

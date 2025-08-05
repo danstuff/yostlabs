@@ -16,11 +16,6 @@ export default class ylList extends ylComponent {
 
   get css() {
     return `
-      :host {
-        display: flex;
-        justify-content: start;
-      }
-
       :host([grid]) div[part="wrapper"] {
         display: inline-flex;
         flex-direction: row;

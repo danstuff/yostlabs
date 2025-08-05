@@ -22,6 +22,15 @@ export default class ylImageView extends ylComponent {
     </svg>
     `;
   }
+
+  get css() {
+    return `
+      :host {
+        display: flex;
+        flex-grow: 1;
+      }
+    `;
+  }
 }
 
 ylImageView.defineElement();
