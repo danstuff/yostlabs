@@ -291,12 +291,21 @@ export default class ylWindow extends ylComponent {
     if (this.template) {
       return;
     }
-
-    this.x = this.x || 0;
-    this.y = this.y || 0;
-    this.z = this.z || 200;
+    
     this.width = this.width || 640;
     this.height = this.height || 480;
+
+    const count = document.querySelectorAll('yl-window[opened]').length+1;
+    const x = Math.max(window.innerWidth - this.width, 0) / 2 + count*10;
+    const y = Math.max(window.innerHeight - this.height, 0) / 2 + count*10;
+    
+    if (window.innerWidth < this.width) {
+      this.maximized = true;
+    }
+    
+    this.x = this.x || x;
+    this.y = this.y || y;
+    this.z = this.z || 200;
 
     if (!this.active) {
       this.active = this;

@@ -2,7 +2,7 @@ export * from "./yl-app-frame";
 export * from "./yl-footer";
 export * from "./yl-icon";
 export * from "./yl-if";
-export * from "./yl-image-view";
+export * from "./yl-pan-zoom";
 export * from "./yl-list";
 export * from "./yl-navbar";
 export * from "./yl-test-group";

@@ -33,7 +33,6 @@ export default class EventBus {
     const observer = new MutationObserver(mutations => {
       mutations.forEach(mutation => {
         mutation.addedNodes.forEach(element => {
-          console.log(element)
           this.elementAdded(element);
         });
       })
