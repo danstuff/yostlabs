@@ -16,58 +16,45 @@ export default class ylPanZoom extends ylComponent {
         user-select: none;
         touch-action: none;
       }
-      .container {
+      img {
         position: absolute;
         transform-origin: 0 0;
-        cursor: grab;
-      }
-      .container:active {
         cursor: grabbing;
-      }
-      img {
-        display: block;
+        transform: translate(${this.x}px, ${this.y}px) scale(${this.zoom});
         pointer-events: none;
+        width: 100%;
       }
     `;
   }
 
   get html() {
     return `
-      <div class="container">
-        <img src="${this.src || ''}" />
-      </div>
+      <img src="${this.src || ''}"></img>
     `;
   }
 
   connectedCallback() {
-    this.zoom = 1;
+    this.dom.img = this.root.querySelector('img');
+
+    this.zoom = 1.0;
     this.x = 0;
     this.y = 0;
     
     this._dragStart = null;
     this._lastTransform = { x: 0, y: 0 };
 
+    // Add wheel event to component
     this.addEventListener('wheel', this._handleWheel.bind(this));
    
+    // Add touch events to container
     this.addEventListener('touchstart', this._handleDragStart.bind(this));
-    document.addEventListener('touchmove', this._handleDragMove.bind(this));
-    document.addEventListener('touchend', this._handleDragEnd.bind(this));
+    this.addEventListener('touchmove', this._handleDragMove.bind(this));
+    this.addEventListener('touchend', this._handleDragEnd.bind(this));
 
+    // Add mousedown to container, but move and up to document
     this.addEventListener('mousedown', this._handleDragStart.bind(this));
     document.addEventListener('mousemove', this._handleDragMove.bind(this));
     document.addEventListener('mouseup', this._handleDragEnd.bind(this));
-  }
-
-  renderedCallback() {
-    this._updateTransform();
-  }
-
-  _updateTransform() {
-    const container = this.root.querySelector('.container');
-    if (container) {
-      container.style.transform = 
-        `translate(${this.x}px, ${this.y}px) scale(${this.zoom})`;
-    }
   }
 
   _handleWheel(event) {
@@ -88,8 +75,6 @@ export default class ylPanZoom extends ylComponent {
     this.x = x - (x - this.x) * (newZoom / this.zoom);
     this.y = y - (y - this.y) * (newZoom / this.zoom);
     this.zoom = newZoom;
-    
-    this._updateTransform();
   }
 
   _handleDragStart(event) {
@@ -138,26 +123,26 @@ export default class ylPanZoom extends ylComponent {
           touch2.clientY - touch1.clientY
         );
         
-        const scale = currentDistance / this._initialPinchDistance;
-        const delta = scale > 1 ? 1.1 : 0.9;
-        
+        const delta = currentDistance / this._initialPinchDistance;
+
         this._handleZoom(
           this._pinchMidpoint.x,
           this._pinchMidpoint.y,
           delta
         );
+
+        this._initialPinchDistance = currentDistance;
+
       } else if (this._dragStart) {
         // Handle single touch pan
         const touch = event.touches[0];
         this.x = touch.clientX - this._dragStart.x;
         this.y = touch.clientY - this._dragStart.y;
-        this._updateTransform();
       }
     } else if (this._dragStart) {
       // Handle mouse drag
       this.x = event.clientX - this._dragStart.x;
       this.y = event.clientY - this._dragStart.y;
-      this._updateTransform();
     }
   }
 
