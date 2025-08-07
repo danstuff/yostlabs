@@ -126,7 +126,7 @@ export default class ylComponent extends HTMLElement {
 
     const p = document.createElement('p');
     p.innerText = text;
-    log.append(p);
+    log.prepend(p);
 
     console.log(text);
   }
