@@ -62,8 +62,6 @@ yl-list yl-icon {
 yl-icon {
   height: 64px;
   padding: 16px;
-  animation: fade 0.5s ease-in both;
-  opacity: 0;
 }
 
 yl-icon::part(title) {

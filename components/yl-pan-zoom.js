@@ -15,11 +15,11 @@ export default class ylPanZoom extends ylComponent {
         height: 100%;
         user-select: none;
         touch-action: none;
+        cursor: move;
       }
       img {
         position: absolute;
         transform-origin: 0 0;
-        cursor: grabbing;
         transform: translate(${this.x}px, ${this.y}px) scale(${this.zoom});
         pointer-events: none;
         width: 100%;

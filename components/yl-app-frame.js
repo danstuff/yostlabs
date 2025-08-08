@@ -13,6 +13,7 @@ export default class ylAppFrame extends ylComponent {
     return `
       :host {
         display: flex;
+        width: 100%;
         height: 100%;
       }
 
