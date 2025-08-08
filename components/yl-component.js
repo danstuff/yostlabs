@@ -29,10 +29,7 @@ export default class ylComponent extends HTMLElement {
   }
 
   attributeChangedCallback() {
-    this.renderTimeout = this.renderTimeout || setTimeout(() => {
-      this.renderDOM();
-      this.renderTimeout = null;
-    }, this.constructor.RENDER_DELAY_MS);
+    this.renderDOM();
   }
 
   /**
