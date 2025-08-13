@@ -31,7 +31,7 @@ export default class ylWindow extends ylComponent {
       <div part="content">
         <slot></slot>
       </div>
-      <button part="resize" draggable="true">&#9698;</button>
+      ${ this.maximized ? "" : `<button part="resize" draggable="true">&#9698;</button>` }
     `;
   }
 
@@ -149,11 +149,25 @@ export default class ylWindow extends ylComponent {
       return;
     }
 
-    window.z = 201;
+    if (window) {
+      window.z = 201;
+    }
     if(this.constructor._active) {
       this.constructor._active.z = 200;
     }
     this.constructor._active = window;
+  }
+
+  get keyListener() {
+    return this.constructor._keyListener;
+  }
+
+  set keyListener(listener) {
+    if (this.constructor._keyListener) {
+      document.removeEventListener('keydown', this.constructor._keyListener);
+    }
+    this.constructor._keyListener = listener;
+    document.addEventListener('keydown', listener);
   }
 
   static get snapPoints() {
@@ -266,6 +280,10 @@ export default class ylWindow extends ylComponent {
       }
     }
 
+    if (!this.dom.resize) {
+      return;
+    }
+
     this.dom.resize.ondragstart = e => {
       this.dragX = e.clientX;
       this.dragY = e.clientY;
@@ -309,30 +327,38 @@ export default class ylWindow extends ylComponent {
 
     if (!this.active) {
       this.active = this;
-      document.addEventListener('keydown', e => {
-        if (e.shiftKey) {
-          let dropRect = null;
-          switch(e.key) {
-            case "ArrowUp":    dropRect = this.constructor.snapPoints[0].drop; break;
-            case "ArrowRight": dropRect = this.constructor.snapPoints[1].drop; break;
-            case "ArrowDown":  dropRect = this.constructor.snapPoints[2].drop; break;
-            case "ArrowLeft":  dropRect = this.constructor.snapPoints[3].drop; break;
-          }
-          if (dropRect) {
-            this.active.drop(dropRect);
-          }
-        }
-  
-        switch (e.key) {
-          case "f":
-            this.active.maximized = !this.active.maximized;
-            break;
-          case "Escape":
-            this.active.close();
-            break;
-        }
-      });
     }
+
+    this.keyListener ||= e => {
+      if (!this.active) {
+        return;
+      }
+
+      if (e.shiftKey) {
+        let dropRect = null;
+        switch(e.key) {
+          case "ArrowUp":    dropRect = this.constructor.snapPoints[0].drop; break;
+          case "ArrowRight": dropRect = this.constructor.snapPoints[1].drop; break;
+          case "ArrowDown":  dropRect = this.constructor.snapPoints[2].drop; break;
+          case "ArrowLeft":  dropRect = this.constructor.snapPoints[3].drop; break;
+        }
+        if (dropRect) {
+          this.active.drop(dropRect);
+        }
+      }
+
+      switch (e.key) {
+        case "f":
+          if (e.shiftKey) {
+            this.active.maximized = !this.active.maximized;
+          }
+          break;
+        case "Escape":
+          this.active.close();
+          this.active = document.querySelector('yl-window[opened]');
+          break;
+      }
+    };
   }
 }
 
