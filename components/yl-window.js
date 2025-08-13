@@ -124,19 +124,19 @@ export default class ylWindow extends ylComponent {
     return ['title', 'opened', 'maximized', 'template', 'width', 'height', 'x', 'y', 'z'];
   }
 
-  static get CLEANUP_MS() {
+  get CLEANUP_MS() {
     return 4000;
   }
 
-  static get OPEN_MS() {
+  get OPEN_MS() {
     return 10;
   }
 
-  static get MIN_WINDOW_SIZE() {
+  get MIN_WINDOW_SIZE() {
     return 240;
   }
 
-  static get STUB_PREFIX() {
+  get STUB_PREFIX() {
     return 'yl-stub-';
   }
 
@@ -170,7 +170,7 @@ export default class ylWindow extends ylComponent {
     document.addEventListener('keydown', listener);
   }
 
-  static get snapPoints() {
+  get snapPoints() {
     const w = window.innerWidth;
     const h = window.innerHeight;
     const dw = 250;
@@ -194,11 +194,11 @@ export default class ylWindow extends ylComponent {
     let copyHTML = this.outerHTML;
     for (const attribute of source.attributes) {
       copyHTML = copyHTML.replaceAll(
-        this.constructor.STUB_PREFIX + attribute.name,
+        this.STUB_PREFIX + attribute.name,
         source.getAttribute(attribute.name));
     }
     copyHTML = copyHTML.replaceAll(
-      new RegExp(`(${this.constructor.STUB_PREFIX})\\w+`, 'g'),
+      new RegExp(`(${this.STUB_PREFIX})\\w+`, 'g'),
       "");
     
     const copy = new DOMParser()
@@ -215,7 +215,7 @@ export default class ylWindow extends ylComponent {
     this.openTimeout = this.openTimeout || setTimeout(() => {
       this.opened = true;
       this.active = this;
-    }, this.constructor.OPEN_MS);
+    }, this.OPEN_MS);
   }
 
   close() {
@@ -223,7 +223,7 @@ export default class ylWindow extends ylComponent {
     this.destroyTimeout = this.destroyTimeout || 
       setTimeout(() => {
         this.parentNode.removeChild(this);
-      }, this.constructor.CLEANUP_MS);
+      }, this.CLEANUP_MS);
   }
 
   renderedCallback() {
@@ -272,7 +272,7 @@ export default class ylWindow extends ylComponent {
       const cx = clamp(e.clientX, 0, window.innerWidth);
       const cy = clamp(e.clientY, 0, window.innerHeight);
 
-      for (const point of this.constructor.snapPoints) {
+      for (const point of this.snapPoints) {
         if (inside(cx, cy, point.drag)) {
           this.drop(point.drop);
           break;
@@ -300,8 +300,8 @@ export default class ylWindow extends ylComponent {
       this.width = (this.offsetWidth - dx);
       this.height = (this.offsetHeight - dy);
       
-      this.width = clamp(this.width, this.constructor.MIN_WINDOW_SIZE, window.innerWidth);
-      this.height = clamp(this.height, this.constructor.MIN_WINDOW_SIZE, window.innerHeight);
+      this.width = clamp(this.width, this.MIN_WINDOW_SIZE, window.innerWidth);
+      this.height = clamp(this.height, this.MIN_WINDOW_SIZE, window.innerHeight);
     }
   }
 
@@ -337,10 +337,10 @@ export default class ylWindow extends ylComponent {
       if (e.shiftKey) {
         let dropRect = null;
         switch(e.key) {
-          case "ArrowUp":    dropRect = this.constructor.snapPoints[0].drop; break;
-          case "ArrowRight": dropRect = this.constructor.snapPoints[1].drop; break;
-          case "ArrowDown":  dropRect = this.constructor.snapPoints[2].drop; break;
-          case "ArrowLeft":  dropRect = this.constructor.snapPoints[3].drop; break;
+          case "ArrowUp":    dropRect = this.snapPoints[0].drop; break;
+          case "ArrowRight": dropRect = this.snapPoints[1].drop; break;
+          case "ArrowDown":  dropRect = this.snapPoints[2].drop; break;
+          case "ArrowLeft":  dropRect = this.snapPoints[3].drop; break;
         }
         if (dropRect) {
           this.active.drop(dropRect);

@@ -24,7 +24,7 @@ export default class ylNavbar extends ylComponent {
         justify-content: space-between;
         align-items: center;
         align-self: stretch; 
-        z-index: 1000;
+        z-index: 100;
         background-color: inherit;
       }
 
