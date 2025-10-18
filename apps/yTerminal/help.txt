@@ -1,0 +1,6 @@
+Welcome to yTerminal!
+
+There's not much to do here right now, but hopefully it will eventually be a cool web terminal for functional programming.
+List of cool commands:
+  help         <- Prints this dialog.
+  print [url]  <- Fetch text from the given url and print it to the console.
