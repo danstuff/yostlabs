@@ -1,0 +1,365 @@
+import ylComponent from "./yl-component";
+
+function inside(x, y, box) {
+  const hw = box[2]/2;
+  const hh = box[3]/2;
+  return (
+    x >= box[0] - hw &&
+    y >= box[1] - hh &&
+    x <= box[0] + hw &&
+    y <= box[1] + hh
+  );
+}
+
+function clamp(x, min, max) {
+  x = Math.max(x, min);
+  x = Math.min(x, max);
+  return x;
+}
+
+export default class ylWindow extends ylComponent {
+  get html() {
+    return `
+      <div part="titlebar" draggable="true">
+        <div part="title">${this.title || ""}</div>
+        <div class="spacer"></div>
+        <div class="buttons">
+          <button part="maximize" href="#">&#9633;</button>
+          <button part="close" href="#">X</button>
+        </div>
+      </div>
+      <div part="content">
+        <slot></slot>
+      </div>
+      ${ this.maximized ? "" : `<button part="resize" draggable="true">&#9698;</button>` }
+    `;
+  }
+
+  get css() {
+    return `
+      :host {
+        visibility: hidden;
+        position: fixed;
+        left: ${this.x || 0}px;
+        top: ${this.y || 0}px;
+        width: ${this.width || 0}px;
+        height: ${this.height || 0}px;
+        max-width: 100%;
+        max-height: 100%;
+        z-index: ${this.z || 0};
+        background-color: inherit;
+        font-family: inherit;
+        display: flex;
+        flex-direction: column;
+      }
+
+      :host([opened]) {
+        visibility: visible;
+      }
+
+      :host([maximized]) {
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        max-width: 100%;
+        max-height: 100%;
+      }
+
+      :host([template]) {
+        visibility: hidden;
+      }
+
+      div[part="titlebar"] {
+        display: flex;
+        cursor: grab;
+      }
+
+      div[part="content"] {
+        display: flex;
+        flex-grow: 1;
+        overflow: auto;
+      }
+
+      div[part="title"] {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+
+      div.spacer {
+        flex-grow: 1;
+      }
+
+      div.buttons {
+        display: flex;
+      }
+
+      button {
+        text-decoration: none;
+        color: inherit;
+        background: none;
+        border: none;
+        padding: 0;
+        font: inherit;
+        font-family: inherit;
+        cursor: pointer;
+      }
+
+      button[part="resize"] {
+        position: absolute;
+        bottom: 1px;
+        right: 2px;
+        cursor: grab;
+      }
+
+      button[part="maximize"], button[part="close"] {
+        width: 1em;
+        height: 1em;
+      }
+    `;
+  }
+
+  static get observedAttributes() {
+    return ['title', 'opened', 'maximized', 'template', 'width', 'height', 'x', 'y', 'z'];
+  }
+
+  get CLEANUP_MS() {
+    return 4000;
+  }
+
+  get OPEN_MS() {
+    return 10;
+  }
+
+  get MIN_WINDOW_SIZE() {
+    return 240;
+  }
+
+  get STUB_PREFIX() {
+    return 'yl-stub-';
+  }
+
+  get active() {
+    return this.constructor._active;
+  }
+
+  set active(window) {
+    if (this.constructor._active === window) {
+      return;
+    }
+
+    if (window) {
+      window.z = 201;
+    }
+    if(this.constructor._active) {
+      this.constructor._active.z = 200;
+    }
+    this.constructor._active = window;
+  }
+
+  get keyListener() {
+    return this.constructor._keyListener;
+  }
+
+  set keyListener(listener) {
+    if (this.constructor._keyListener) {
+      document.removeEventListener('keydown', this.constructor._keyListener);
+    }
+    this.constructor._keyListener = listener;
+    document.addEventListener('keydown', listener);
+  }
+
+  get snapPoints() {
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    const dw = 250;
+    const dh = 50;
+    return [
+      { drag: [w/2, 0, dw, dh], drop: [0,   0, w, h/2] },
+      { drag: [w, h/2, dh, dw], drop: [w/2, 0, w/2, h] },
+      { drag: [w/2, h, dw, dh], drop: [0, h/2, w, h/2] },
+      { drag: [0, h/2, dh, dw], drop: [0,   0, w/2, h] }
+    ]
+  }
+
+  drop(rect) {
+    this.x = rect[0];
+    this.y = rect[1];
+    this.width = rect[2];
+    this.height = rect[3];
+  }
+
+  stamp(source) {
+    let copyHTML = this.outerHTML;
+    for (const attribute of source.attributes) {
+      copyHTML = copyHTML.replaceAll(
+        this.STUB_PREFIX + attribute.name,
+        source.getAttribute(attribute.name));
+    }
+    copyHTML = copyHTML.replaceAll(
+      new RegExp(`(${this.STUB_PREFIX})\\w+`, 'g'),
+      "");
+    
+    const copy = new DOMParser()
+      .parseFromString(copyHTML,"text/html").body.firstChild;
+
+    copy.dataset.receive = "";
+    copy.removeAttribute('template');
+    
+    this.parentElement.insertBefore(copy, this);
+    copy.open();
+  }
+
+  open() {
+    this.openTimeout = this.openTimeout || setTimeout(() => {
+      this.opened = true;
+      this.active = this;
+    }, this.OPEN_MS);
+  }
+
+  close() {
+    this.opened = false;
+    this.destroyTimeout = this.destroyTimeout || 
+      setTimeout(() => {
+        this.parentNode.removeChild(this);
+      }, this.CLEANUP_MS);
+  }
+
+  renderedCallback() {
+    this.dom.close = this.root.querySelector('button[part="close"]');
+    this.dom.maximize = this.root.querySelector('button[part="maximize"]');
+    this.dom.resize = this.root.querySelector('button[part="resize"]');
+    this.dom.titlebar = this.root.querySelector('div[part="titlebar"]');
+    this.dom.content = this.root.querySelector('div[part="content"]');
+
+    this.onclick = () => {
+      this.active = this;
+    }
+
+    this.dom.close.onclick = () => {
+      this.close();
+    }
+
+    this.dom.maximize.onclick = () => {
+      this.maximized = !this.maximized;
+    }
+
+    this.dom.titlebar.ondragstart = e => {
+      this.dom.content.style['pointer-events'] = 'none';
+      
+      this.dragX = e.clientX;
+      this.dragY = e.clientY;
+    }
+
+    this.dom.titlebar.ondragend = e => {
+      this.disabled = false;
+      this.active = this;
+
+      if (this.maximized) {
+        return;
+      }
+
+      const dx = this.dragX - e.clientX;
+      const dy = this.dragY - e.clientY;
+
+      this.x = (this.offsetLeft - dx);
+      this.y = (this.offsetTop - dy);
+
+      this.x = clamp(this.x, -this.width/2, window.innerWidth-this.width/2);
+      this.y = clamp(this.y, 0, window.innerHeight-32);
+
+      const cx = clamp(e.clientX, 0, window.innerWidth);
+      const cy = clamp(e.clientY, 0, window.innerHeight);
+
+      for (const point of this.snapPoints) {
+        if (inside(cx, cy, point.drag)) {
+          this.drop(point.drop);
+          break;
+        }
+      }
+    }
+
+    if (!this.dom.resize) {
+      return;
+    }
+
+    this.dom.resize.ondragstart = e => {
+      this.dragX = e.clientX;
+      this.dragY = e.clientY;
+    }
+
+    this.dom.resize.ondragend = e => {
+      if (this.maximized) {
+        return;
+      }
+
+      const dx = this.dragX - e.clientX;
+      const dy = this.dragY - e.clientY;
+
+      this.width = (this.offsetWidth - dx);
+      this.height = (this.offsetHeight - dy);
+      
+      this.width = clamp(this.width, this.MIN_WINDOW_SIZE, window.innerWidth);
+      this.height = clamp(this.height, this.MIN_WINDOW_SIZE, window.innerHeight);
+    }
+  }
+
+  connectedCallback() {
+    if (this.template) {
+      return;
+    }
+    
+    this.width = this.width || 640;
+    this.height = this.height || 480;
+
+    const count = document.querySelectorAll('yl-window[opened]').length+1;
+    const x = Math.max(window.innerWidth - this.width, 0) / 2 + count*10;
+    const y = Math.max(window.innerHeight - this.height, 0) / 2 + count*10;
+    
+    if (window.innerWidth < this.width) {
+      this.maximized = true;
+    }
+    
+    this.x = this.x || x;
+    this.y = this.y || y;
+    this.z = this.z || 200;
+
+    if (!this.active) {
+      this.active = this;
+    }
+
+    this.keyListener ||= e => {
+      if (!this.active) {
+        return;
+      }
+
+      if (e.shiftKey) {
+        let dropRect = null;
+        switch(e.key) {
+          case "ArrowUp":    dropRect = this.snapPoints[0].drop; break;
+          case "ArrowRight": dropRect = this.snapPoints[1].drop; break;
+          case "ArrowDown":  dropRect = this.snapPoints[2].drop; break;
+          case "ArrowLeft":  dropRect = this.snapPoints[3].drop; break;
+        }
+        if (dropRect) {
+          this.active.drop(dropRect);
+        }
+      }
+
+      switch (e.key) {
+        case "f":
+          if (e.shiftKey) {
+            this.active.maximized = !this.active.maximized;
+          }
+          break;
+        case "Escape":
+          this.active.close();
+          this.active = document.querySelector('yl-window[opened]');
+          break;
+      }
+    };
+  }
+}
+
+ylWindow.defineElement();

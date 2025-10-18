@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>yTerminal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/x-icon" href="images/icons/logo_25.svg">
+
+    <script type="module" src="yl-terminal.js"></script>
+  </head>
+  <body>
+    <yl-terminal>
+      <div slot="logs">
+        <p>New terminal session started. Type 'help' for more info.</p>
+      </div>
+      <div slot="inputs">
+        <button>></button>
+        <input name="terminal-text" type="text"/>
+      </div>
+    </yl-terminal>
+  </body>
+</html>

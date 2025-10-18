@@ -1,0 +1,137 @@
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&display=swap');
+
+:root {
+  --light: #ffffff;
+  --primary: #f0e9e2;
+  --dark: #504f57;
+
+  --bg-light: #2b2a30;
+  --bg-primary: #19181d;
+  --bg-dark: #17161b;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background-color: var(--bg-primary);
+  color: var(--primary);
+  scrollbar-color: var(--primary) var(--bg-primary);
+  font-family: "Inconsolata", mono;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+h3 {
+  color: var(--light);
+  font-weight: 500;
+}
+
+yl-navbar {
+  background-color: var(--bg-dark);
+  border-bottom: 1px solid var(--bg-light);
+  box-shadow: 0px 0px 25px 10px var(--bg-primary);
+  animation: fade 0.5s ease-in;
+}
+
+yl-navbar::part(logo) {
+  margin: 8px 16px;
+  height: 48px;
+}
+
+yl-navbar::part(links) {
+  margin: 8px 16px;
+}
+
+yl-navbar yl-icon {
+  height: 32px;
+}
+
+yl-list {
+  flex: 1 1 auto;
+  overflow-y: auto;
+}
+
+yl-list yl-icon {
+  width: 160px;
+}
+
+yl-icon {
+  height: 64px;
+  padding: 16px;
+}
+
+yl-icon::part(title) {
+  padding: 8px;
+}
+
+yl-footer {
+  border-top: 1px solid var(--bg-light);
+  background-color: var(--bg-dark);
+  box-shadow: 0px 0px 25px 10px var(--bg-primary);
+}
+
+yl-footer::part(hr) {
+  background-color: var(--dark);
+}
+
+yl-footer yl-icon {
+  height: 16px;
+  margin: 16px 32px;
+}
+
+yl-window {
+  border: 1px solid var(--dark);
+  background-color: var(--bg-light);
+  box-shadow: 0px 0px 15px 5px var(--bg-dark);
+  transform: scale(1, 0);
+  transition-property: transform, visibility, width, height, top, left;
+  transition-duration: 0.25s;
+}
+
+yl-window[opened] {
+  transform: scale(1, 1);
+}
+
+yl-window::part(titlebar) {
+  font-size: 24px;
+  padding: 4px;
+  border-bottom: 1px solid var(--dark);
+}
+
+yl-window::part(resize) {
+  font-size: 32px;
+  padding: 8px;
+}
+
+yl-window::part(content) {
+  background-color: var(--bg-dark);
+}
+
+yl-window yl-list::part(wrapper) {
+  width: 100%;
+}
+
+#yl-debug {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  max-height: 200px;
+  box-shadow: 0px 0px 150px 50px var(--bg-dark) inset;
+  color: var(--primary);
+  overflow-y: auto;
+  padding: 16px;
+  z-index: 1000;
+}
+
+#yl-debug p {
+  animation: fade 0.5s ease-in;
+}
+
+@keyframes fade {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
