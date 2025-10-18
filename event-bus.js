@@ -13,7 +13,7 @@ export default class EventBus {
       return;
     }
 
-    const [ elementFrom, elementTo ] = broadcast.split("->");
+    let [ elementFrom, elementTo ] = broadcast.split("->");
     elementTo ||= elementFrom;
 
     element.addEventListener(elementFrom, () => {  
