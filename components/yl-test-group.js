@@ -1,4 +1,4 @@
-import ylComponent from './yl-component';
+import ylComponent from './yl-component.js';
 
 function shuffle(a) {
   for (let i = a.length - 1; i > 0; i--) {
