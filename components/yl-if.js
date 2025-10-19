@@ -1,4 +1,4 @@
-import ylComponent from "./yl-component";
+import ylComponent from "./yl-component.js";
 
 export default class ylIf extends ylComponent {
   static get observedAttributes() {

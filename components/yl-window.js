@@ -1,4 +1,4 @@
-import ylComponent from "./yl-component";
+import ylComponent from "./yl-component.js";
 
 function inside(x, y, box) {
   const hw = box[2]/2;
