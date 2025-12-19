@@ -33,6 +33,7 @@ export default class ylIcon extends ylComponent {
       img {
         flex-shrink: 1;
         height: inherit;
+        user-select: none;
       }
 
       :host([vertical]) a img {
@@ -43,6 +44,7 @@ export default class ylIcon extends ylComponent {
       p {
         margin: 0;
         padding: 0;
+        user-select: none;
       }
     `;
   }

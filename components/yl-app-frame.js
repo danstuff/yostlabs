@@ -24,6 +24,15 @@ export default class ylAppFrame extends ylComponent {
       }
     `;
   }
+
+  renderedCallback() {
+    this.dom.iframe = this.root.querySelector('iframe');
+    this.dom.iframe.contentWindow.addEventListener('keydown', e => {
+      if (e.key == "Escape") {
+        this.dom.iframe.blur();
+      }
+    });
+  }
 }
 
 ylAppFrame.defineElement();

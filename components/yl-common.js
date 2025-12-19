@@ -7,3 +7,4 @@ export * from "./yl-list.js";
 export * from "./yl-navbar.js";
 export * from "./yl-test-group.js";
 export * from "./yl-window.js";
+export * from "./yl-dropzone.js";

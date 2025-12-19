@@ -14,19 +14,21 @@
       <yl-icon
         title="Terminal"
         image="images/icons/assembler.svg"
-        src="apps/yTerminal/index.html"
+        src="/apps/yTerminal/index.html"
         data-broadcast="click->openApp">
       </yl-icon>
 
       <yl-icon
         title="Games"
         image="images/icons/folder.svg"
+        src="games.html"
         data-broadcast="click->openGames">
       </yl-icon>
 
       <yl-icon
         title="Gallery"
         image="images/icons/folder.svg"
+        src="gallery.html"
         data-broadcast="click->openGallery">
       </yl-icon>
     </yl-list>
@@ -126,12 +128,38 @@
       </yl-list>
     </yl-window>
 
-    <yl-window title="yl-stub-title" template data-receive="openApp->stamp">
+    <yl-window title="yl-stub-title" uri="yl-stub-src" template data-receive="openApp->stamp">
       <yl-app-frame src="yl-stub-src" title="yl-stub-title"></yl-app-frame>
     </yl-window>
 
     <yl-window title="yl-stub-title" template data-receive="openPhoto->stamp">
       <yl-pan-zoom src="yl-stub-image"></yl-pan-zoom>
     </yl-window>
+
+    <yl-dropzone
+      hotkey="Shift,ArrowLeft"
+      from= "[0.00,0.00,0.25,1.00]" 
+      to=   "[0.00,0.00,0.50,1.00]">
+    </yl-dropzone>
+    <yl-dropzone
+      hotkey="Shift,ArrowRight"
+      from= "[0.75,0.00,0.25,1.00]"
+      to=   "[0.50,0.00,0.50,1.00]">
+    </yl-dropzone>
+    <yl-dropzone
+      hotkey="Shift,ArrowUp"
+      from= "[0.25,0.00,0.50,0.25]"
+      to=   "[0.00,0.00,1.00,0.50]">
+    </yl-dropzone>
+    <yl-dropzone
+      hotkey="Shift,ArrowDown"
+      from= "[0.25,0.75,0.50,0.25]"
+      to=   "[0.00,0.50,1.00,0.50]">
+    </yl-dropzone>
+    <yl-dropzone
+      hotkey="Shift,Enter"
+      from= "[0.250,0.250,0.50,0.50]"
+      to=   "[0.125,0.125,0.75,0.75]">
+    </yl-dropzone>
   </body>
 </html>

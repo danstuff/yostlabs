@@ -1,16 +1,5 @@
 import ylComponent from "./yl-component.js";
 
-function inside(x, y, box) {
-  const hw = box[2]/2;
-  const hh = box[3]/2;
-  return (
-    x >= box[0] - hw &&
-    y >= box[1] - hh &&
-    x <= box[0] + hw &&
-    y <= box[1] + hh
-  );
-}
-
 function clamp(x, min, max) {
   x = Math.max(x, min);
   x = Math.min(x, max);
@@ -22,7 +11,7 @@ export default class ylWindow extends ylComponent {
     return `
       <div part="titlebar" draggable="true">
         <div part="title">${this.title || ""}</div>
-        <div class="spacer"></div>
+        <div class="spacer" draggable="true"></div>
         <div class="buttons">
           <button part="maximize" href="#">&#9633;</button>
           <button part="close" href="#">X</button>
@@ -31,7 +20,6 @@ export default class ylWindow extends ylComponent {
       <div part="content">
         <slot></slot>
       </div>
-      ${ this.maximized ? "" : `<button part="resize" draggable="true">&#9698;</button>` }
     `;
   }
 
@@ -106,14 +94,7 @@ export default class ylWindow extends ylComponent {
         cursor: pointer;
       }
 
-      button[part="resize"] {
-        position: absolute;
-        bottom: 1px;
-        right: 2px;
-        cursor: grab;
-      }
-
-      button[part="maximize"], button[part="close"] {
+      button[part="close"] {
         width: 1em;
         height: 1em;
       }
@@ -121,7 +102,7 @@ export default class ylWindow extends ylComponent {
   }
 
   static get observedAttributes() {
-    return ['title', 'opened', 'maximized', 'template', 'width', 'height', 'x', 'y', 'z'];
+    return ['title', 'opened', 'maximized', 'template', 'width', 'height', 'x', 'y', 'z', 'uri'];
   }
 
   get CLEANUP_MS() {
@@ -152,6 +133,7 @@ export default class ylWindow extends ylComponent {
     if (window) {
       window.z = 201;
     }
+
     if(this.constructor._active) {
       this.constructor._active.z = 200;
     }
@@ -170,24 +152,20 @@ export default class ylWindow extends ylComponent {
     document.addEventListener('keydown', listener);
   }
 
-  get snapPoints() {
-    const w = window.innerWidth;
-    const h = window.innerHeight;
-    const dw = 250;
-    const dh = 50;
-    return [
-      { drag: [w/2, 0, dw, dh], drop: [0,   0, w, h/2] },
-      { drag: [w, h/2, dh, dw], drop: [w/2, 0, w/2, h] },
-      { drag: [w/2, h, dw, dh], drop: [0, h/2, w, h/2] },
-      { drag: [0, h/2, dh, dw], drop: [0,   0, w/2, h] }
-    ]
+  drag(e) {
+    e.dataTransfer.setData('text', this.uri);
+    e.effectAllowed = 'copyMove';
+
+    this.dom.content.style['display'] = 'none';
   }
 
   drop(rect) {
-    this.x = rect[0];
-    this.y = rect[1];
-    this.width = rect[2];
-    this.height = rect[3];
+    this.x = rect.x;
+    this.y = rect.y;
+    this.width = rect.w;
+    this.height = rect.h;
+
+    this.dom.content.style['display'] = undefined;
   }
 
   stamp(source) {
@@ -200,13 +178,13 @@ export default class ylWindow extends ylComponent {
     copyHTML = copyHTML.replaceAll(
       new RegExp(`(${this.STUB_PREFIX})\\w+`, 'g'),
       "");
-    
+
     const copy = new DOMParser()
       .parseFromString(copyHTML,"text/html").body.firstChild;
 
     copy.dataset.receive = "";
     copy.removeAttribute('template');
-    
+ 
     this.parentElement.insertBefore(copy, this);
     copy.open();
   }
@@ -220,7 +198,7 @@ export default class ylWindow extends ylComponent {
 
   close() {
     this.opened = false;
-    this.destroyTimeout = this.destroyTimeout || 
+    this.destroyTimeout ||=
       setTimeout(() => {
         this.parentNode.removeChild(this);
       }, this.CLEANUP_MS);
@@ -229,7 +207,6 @@ export default class ylWindow extends ylComponent {
   renderedCallback() {
     this.dom.close = this.root.querySelector('button[part="close"]');
     this.dom.maximize = this.root.querySelector('button[part="maximize"]');
-    this.dom.resize = this.root.querySelector('button[part="resize"]');
     this.dom.titlebar = this.root.querySelector('div[part="titlebar"]');
     this.dom.content = this.root.querySelector('div[part="content"]');
 
@@ -245,82 +222,27 @@ export default class ylWindow extends ylComponent {
       this.maximized = !this.maximized;
     }
 
-    this.dom.titlebar.ondragstart = e => {
-      this.dom.content.style['pointer-events'] = 'none';
-      
-      this.dragX = e.clientX;
-      this.dragY = e.clientY;
-    }
-
-    this.dom.titlebar.ondragend = e => {
-      this.disabled = false;
-      this.active = this;
-
-      if (this.maximized) {
-        return;
-      }
-
-      const dx = this.dragX - e.clientX;
-      const dy = this.dragY - e.clientY;
-
-      this.x = (this.offsetLeft - dx);
-      this.y = (this.offsetTop - dy);
-
-      this.x = clamp(this.x, -this.width/2, window.innerWidth-this.width/2);
-      this.y = clamp(this.y, 0, window.innerHeight-32);
-
-      const cx = clamp(e.clientX, 0, window.innerWidth);
-      const cy = clamp(e.clientY, 0, window.innerHeight);
-
-      for (const point of this.snapPoints) {
-        if (inside(cx, cy, point.drag)) {
-          this.drop(point.drop);
-          break;
-        }
-      }
-    }
-
-    if (!this.dom.resize) {
-      return;
-    }
-
-    this.dom.resize.ondragstart = e => {
-      this.dragX = e.clientX;
-      this.dragY = e.clientY;
-    }
-
-    this.dom.resize.ondragend = e => {
-      if (this.maximized) {
-        return;
-      }
-
-      const dx = this.dragX - e.clientX;
-      const dy = this.dragY - e.clientY;
-
-      this.width = (this.offsetWidth - dx);
-      this.height = (this.offsetHeight - dy);
-      
-      this.width = clamp(this.width, this.MIN_WINDOW_SIZE, window.innerWidth);
-      this.height = clamp(this.height, this.MIN_WINDOW_SIZE, window.innerHeight);
-    }
+    this.dom.titlebar.ondragstart = this.drag.bind(this);
   }
 
   connectedCallback() {
     if (this.template) {
       return;
     }
-    
+
     this.width = this.width || 640;
     this.height = this.height || 480;
 
     const count = document.querySelectorAll('yl-window[opened]').length+1;
-    const x = Math.max(window.innerWidth - this.width, 0) / 2 + count*10;
-    const y = Math.max(window.innerHeight - this.height, 0) / 2 + count*10;
-    
-    if (window.innerWidth < this.width) {
+    const x = (count+4)*16;
+    const y = (count+4)*16;
+
+    if (window.innerWidth < x+this.width) {
+      this.width = window.innerWidth-x;
+      this.height = window.innerHeight-y;
       this.maximized = true;
     }
-    
+
     this.x = this.x || x;
     this.y = this.y || y;
     this.z = this.z || 200;
@@ -334,24 +256,9 @@ export default class ylWindow extends ylComponent {
         return;
       }
 
-      if (e.shiftKey) {
-        let dropRect = null;
-        switch(e.key) {
-          case "ArrowUp":    dropRect = this.snapPoints[0].drop; break;
-          case "ArrowRight": dropRect = this.snapPoints[1].drop; break;
-          case "ArrowDown":  dropRect = this.snapPoints[2].drop; break;
-          case "ArrowLeft":  dropRect = this.snapPoints[3].drop; break;
-        }
-        if (dropRect) {
-          this.active.drop(dropRect);
-        }
-      }
-
       switch (e.key) {
         case "f":
-          if (e.shiftKey) {
-            this.active.maximized = !this.active.maximized;
-          }
+          this.active.maximized = !this.active.maximized;
           break;
         case "Escape":
           this.active.close();
